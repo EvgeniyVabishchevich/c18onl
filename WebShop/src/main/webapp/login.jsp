@@ -10,14 +10,14 @@
 <jsp:include page="scripts-links.jsp"/>
 <jsp:include page="header.jsp"/>
 
-<form action="/categories">
+<form action="/login">
     <div class="mb-3">
         <label for="login" class="form-label">Login</label>
-        <input type="text" class="form-control" id="login">
+        <input name="login" type="text" class="form-control" id="login" value="admin">
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password">
+        <input name="password" type="password" class="form-control" id="password" value="admin">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
