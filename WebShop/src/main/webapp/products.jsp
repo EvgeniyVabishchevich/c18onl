@@ -3,9 +3,9 @@
 <html>
 <head>
     <title>Title</title>
+    <jsp:include page="scriptsLinks.jsp"/>
 </head>
 <body>
-<jsp:include page="scripts-links.jsp"/>
 <jsp:include page="header.jsp"/>
 
 <h1>${categoryName}</h1>
