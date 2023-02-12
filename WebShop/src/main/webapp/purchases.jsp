@@ -6,8 +6,6 @@
     <jsp:include page="scriptsLinks.jsp"/>
 </head>
 <body>
-<c:if test="${sessionScope.get('purchases') == null}">
     Your shopping cart is empty
-</c:if>
 </body>
 </html>
