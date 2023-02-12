@@ -16,21 +16,24 @@ import java.util.List;
 public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<Category> categories = (ArrayList<Category>) request.getSession().getAttribute("categories");
         String categoryName = request.getParameter("categoryName");
-        if (categoryName != null) {
-            List<Category> categories = (ArrayList<Category>) request.getSession().getAttribute("categories");
+        Category category = findCategory(categories, categoryName);
 
-            request.setAttribute("categoryName", categoryName);
-            request.setAttribute("products", getProductsByCategoryName(categories, categoryName));
+        if (category == null) {
+            request.setAttribute("errorMsg", "No such category.");
+            request.getRequestDispatcher("error404.jsp").forward(request, response);
         }
+
+        request.setAttribute("categoryName", categoryName);
+        request.setAttribute("products", category.getProductList());
         request.getRequestDispatcher("products.jsp").forward(request, response);
     }
 
-    public List<Product> getProductsByCategoryName(List<Category> categories, String categoryName) {
+    public Category findCategory(List<Category> categories, String categoryName) {
         return categories.stream()
                 .filter(category -> category.getName().equals(categoryName))
                 .findFirst()
-                .orElse(null)
-                .getProductList();
+                .orElse(null);
     }
 }
