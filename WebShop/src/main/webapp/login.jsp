@@ -10,7 +10,7 @@
 <jsp:include page="scripts-links.jsp"/>
 <jsp:include page="header.jsp"/>
 
-<form action="/login">
+<form action="/login" method="post">
     <div class="mb-3">
         <label for="login" class="form-label">Login</label>
         <input name="login" type="text" class="form-control" id="login" value="admin">
