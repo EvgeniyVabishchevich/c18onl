@@ -1,4 +1,4 @@
-package com.example.webshop.model;
+package com.tms.webshop.model;
 
 import java.util.List;
 
