@@ -14,13 +14,12 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = httpRequest.getSession();
+        HttpSession session = httpRequest.getSession(false);
         String uri = httpRequest.getRequestURI();
 
-        if((session == null || session.getAttribute("login") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")){
+        if ((session == null || session.getAttribute("login") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")) {
             httpResponse.sendRedirect("login.jsp");
-        }
-        else {
+        } else {
             chain.doFilter(request, response);
         }
     }

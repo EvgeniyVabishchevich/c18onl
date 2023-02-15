@@ -3,11 +3,10 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <jsp:include page="scriptsLinks.jsp"/>
 </head>
 
 <body>
-<jsp:include page="scripts-links.jsp"/>
 <jsp:include page="header.jsp"/>
 
 <form action="/login" method="post">
