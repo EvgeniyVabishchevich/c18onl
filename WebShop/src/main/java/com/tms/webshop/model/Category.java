@@ -3,16 +3,19 @@ package com.tms.webshop.model;
 import java.util.List;
 
 public class Category {
-    private String id;
+    private int id;
     private String name;
     private String imageName;
     private List<Product> productList;
 
-    public Category(String id, String name, String imageName, List<Product> productList) {
+    public Category(int id, String name, String imageName, List<Product> productList) {
         this.id = id;
         this.name = name;
         this.imageName = imageName;
         this.productList = productList;
+    }
+
+    public Category() {
     }
 
     public Category(String name, String imageName, List<Product> productList) {
@@ -26,11 +29,11 @@ public class Category {
         this.imageName = imageName;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
