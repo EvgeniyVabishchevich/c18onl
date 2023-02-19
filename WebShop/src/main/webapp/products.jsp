@@ -4,9 +4,24 @@
 <head>
     <title>Title</title>
     <jsp:include page="scriptsLinks.jsp"/>
+    <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function addProductId(productId) {
+            $.ajax
+            ({
+                url: '/add-product',
+                data: {productId: productId},
+                type: 'post',
+                success: function () {
+                    alert('product added');
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
+
 <c:if test="${products.size() == 0}">
     Products list is empty now. Sorry.
 </c:if>
@@ -22,7 +37,10 @@
             <div class="col-10">
                 Model : ${product.getName()}<br>
                 Description : ${product.getDescription()}<br>
-                Price : ${product.getPrice()} $
+                Price : ${product.getPrice()} $<br>
+                <button type="button" class="btn" value="${product.getId()}" onclick="addProductId(this.value)">Add to
+                    basket
+                </button>
             </div>
         </div>
     </c:forEach>
