@@ -16,7 +16,7 @@ public class ProductsDAO {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
-    public List<Product> findCategoryProducts(int categoryId) {
+    public List<Product> findProductsByCategory(int categoryId) {
         List<Product> products = new ArrayList<>();
 
         try {
@@ -24,20 +24,40 @@ public class ProductsDAO {
             ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM products WHERE category_id = %d", categoryId));
 
             while (resultSet.next()) {
-                Product product = new Product();
-
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("name"));
-                product.setDescription(resultSet.getString("description"));
-                product.setPrice(resultSet.getBigDecimal("price"));
-                product.setImageName(resultSet.getString("image_name"));
-
-                products.add(product);
+                products.add(getProductFromResult(resultSet));
             }
         } catch (SQLException e) {
-            System.out.println("SQL exception." + e.getMessage());
+            System.out.println("SQL exception, while trying to find products by category.");
         }
 
         return products;
+    }
+
+    public Product findProduct(int id) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM products WHERE id = %d", id));
+
+            if (resultSet.next()) {
+                return getProductFromResult(resultSet);
+            } else {
+                throw new SQLException();
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL exception, while trying to find product by id.");
+        }
+        return null;
+    }
+
+    private Product getProductFromResult(ResultSet resultSet) throws SQLException {
+        Product product = new Product();
+
+        product.setId(resultSet.getInt("id"));
+        product.setName(resultSet.getString("name"));
+        product.setDescription(resultSet.getString("description"));
+        product.setPrice(resultSet.getBigDecimal("price"));
+        product.setImageName(resultSet.getString("image_name"));
+
+        return product;
     }
 }

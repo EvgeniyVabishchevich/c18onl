@@ -30,7 +30,7 @@ public class CategoryDAO {
                 category.setId(resultSet.getInt("id"));
                 category.setName(resultSet.getString("name"));
                 category.setImageName(resultSet.getString("image_name"));
-                category.setProductList(productsDAO.findCategoryProducts(category.getId()));
+                category.setProductList(productsDAO.findProductsByCategory(category.getId()));
 
                 categories.add(category);
             }
