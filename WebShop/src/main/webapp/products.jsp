@@ -38,7 +38,7 @@
                 Model : ${product.getName()}<br>
                 Description : ${product.getDescription()}<br>
                 Price : ${product.getPrice()} $<br>
-                <button type="button" class="btn" value="${product.getId()}" onclick="addProductId(this.value)">Add to
+                <button type="button" class="btn btn-success" value="${product.getId()}" onclick="addProductId(this.value)">Add to
                     basket
                 </button>
             </div>
