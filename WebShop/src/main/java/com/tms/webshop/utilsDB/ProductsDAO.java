@@ -44,7 +44,7 @@ public class ProductsDAO {
                 throw new SQLException();
             }
         } catch (SQLException e) {
-            System.out.println("SQL exception, while trying to find product by id. Check");
+            System.out.println("SQL exception, while trying to find product by id.");
         }
         return null;
     }
