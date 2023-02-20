@@ -1,4 +1,4 @@
-package com.tms.webshop;
+package com.tms.webshop.servlets;
 
 import com.tms.webshop.model.Category;
 import com.tms.webshop.model.Product;
@@ -23,11 +23,11 @@ public class ProductServlet extends HttpServlet {
         if (category == null) {
             request.setAttribute("errorMsg", "No such category.");
             request.getRequestDispatcher("error404.jsp").forward(request, response);
+        } else {
+            request.setAttribute("categoryName", categoryName);
+            request.setAttribute("products", category.getProductList());
+            request.getRequestDispatcher("products.jsp").forward(request, response);
         }
-
-        request.setAttribute("categoryName", categoryName);
-        request.setAttribute("products", category.getProductList());
-        request.getRequestDispatcher("products.jsp").forward(request, response);
     }
 
     public Category findCategory(List<Category> categories, String categoryName) {
