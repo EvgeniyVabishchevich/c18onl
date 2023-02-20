@@ -1,4 +1,4 @@
-package com.tms.webshop;
+package com.tms.webshop.servlets;
 
 import com.tms.webshop.model.Category;
 import com.tms.webshop.model.Product;

@@ -1,4 +1,4 @@
-package com.tms.utilsDB;
+package com.tms.webshop.utilsDB;
 
 import com.tms.webshop.model.Product;
 

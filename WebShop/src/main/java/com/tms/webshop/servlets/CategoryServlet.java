@@ -1,10 +1,8 @@
-package com.tms.webshop;
+package com.tms.webshop.servlets;
 
 import java.io.*;
-import java.util.List;
 
-import com.tms.utilsDB.CategoryDAO;
-import com.tms.webshop.model.Category;
+import com.tms.webshop.utilsDB.CategoryDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

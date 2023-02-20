@@ -1,12 +1,11 @@
-package com.tms.webshop;
+package com.tms.webshop.servlets;
 
-import com.tms.utils.Constants;
+import com.tms.webshop.utils.Constants;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @WebServlet(value = "/login")

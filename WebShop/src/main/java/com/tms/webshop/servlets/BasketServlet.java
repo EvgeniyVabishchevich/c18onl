@@ -1,15 +1,13 @@
-package com.tms.webshop;
+package com.tms.webshop.servlets;
 
-import com.tms.utilsDB.ProductsDAO;
+import com.tms.webshop.utilsDB.ProductsDAO;
 import com.tms.webshop.model.Product;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 @WebServlet(name = "BasketServlet", value = "/show-basket")
 public class BasketServlet extends HttpServlet {

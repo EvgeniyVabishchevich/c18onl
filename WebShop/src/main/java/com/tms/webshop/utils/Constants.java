@@ -1,4 +1,4 @@
-package com.tms.utils;
+package com.tms.webshop.utils;
 
 public class Constants {
     private Constants(){}
