@@ -1,4 +1,4 @@
-package com.tms.webshop.filters;
+package com.tms.webshop.shopFilters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
