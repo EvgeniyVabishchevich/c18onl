@@ -16,7 +16,7 @@ import java.util.List;
 public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Category> categories = (ArrayList<Category>) request.getSession().getAttribute("categories");
+        List<Category> categories = (ArrayList<Category>) request.getSession().getAttribute("categories");
         String categoryName = request.getParameter("categoryName");
         Category category = findCategory(categories, categoryName);
 
