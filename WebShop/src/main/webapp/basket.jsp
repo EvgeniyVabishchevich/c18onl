@@ -16,36 +16,43 @@
             })
         }
 
-        function recalculateDisplayedInfo(elementId){
+        function recalculateDisplayedInfo(elementId) {
             let amount = parseInt(document.getElementById("count_" + elementId).textContent) - 1;
-            if(amount == 0) {
+            let price = parseInt(document.getElementById("total_" + elementId).textContent) / (amount + 1);
+            if (amount == 0) {
                 document.getElementById("row_" + elementId).style.display = "none";
-                return;
             }
             recalculateAmount(elementId, amount);
-            recalculateTotal(elementId, amount);
+            recalculateTotal(elementId, price);
+            recalculateTotalAll(price);
         }
 
-        function recalculateAmount(labelId, amount){
+        function recalculateAmount(labelId, amount) {
             document.getElementById("count_" + labelId).textContent = (amount).toString();
         }
 
-        function recalculateTotal(totalId, amount){
-            let totalBefore = parseInt(document.getElementById("total_" + totalId).textContent);
-            document.getElementById("total_" + totalId).textContent = ((totalBefore / (amount + 1)) * amount).toString();
+        function recalculateTotal(totalId, removedPrice) {
+            let newTotal = parseInt(document.getElementById("total_" + totalId).textContent) - removedPrice;
+            document.getElementById("total_" + totalId).textContent = newTotal.toString();
+        }
+
+        function recalculateTotalAll(removedPrice) {
+            document.getElementById("totalAll").textContent =
+                (parseInt(document.getElementById("totalAll").textContent) - removedPrice).toString();
         }
     </script>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
 
+<c:set var="total" value="0"/>
 <c:if test="${productsMap.size() == 0}">
     Products list is empty now. Sorry.
 </c:if>
 <c:if test="${productsMap.size() > 0}">
-    <h1>${categoryName}</h1>
     <c:forEach var="product" items="${productsMap.keySet()}" varStatus="loop">
-        <div class="row" id="row_${loop.count}">
+        <c:set var="total" value="${total + product.getPrice() * productsMap.get(product)}"/>
+        <div class="row mb-3" id="row_${loop.count}">
             <div class="col">
                 <div class="container-sm">
                     <img class="img-fluid" src="images/${product.getImageName()}">
@@ -63,6 +70,11 @@
             </div>
         </div>
     </c:forEach>
+    <div class="row">
+        <div class="col">
+            Total price for all selected products : <label id="totalAll">${total}</label> $.
+        </div>
+    </div>
 </c:if>
 </body>
 </html>
