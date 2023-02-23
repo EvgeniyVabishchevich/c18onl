@@ -1,7 +1,6 @@
 package com.tms.webshop.servlets;
 
 import com.tms.webshop.model.Category;
-import com.tms.webshop.model.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

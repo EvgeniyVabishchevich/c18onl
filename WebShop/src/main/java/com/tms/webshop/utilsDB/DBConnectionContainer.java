@@ -9,7 +9,7 @@ public enum DBConnectionContainer {
 
     private Connection connection;
 
-    public void createConnection(String dbUrl, String dbUser, String dbPassword){
+    public void createConnection(String dbUrl, String dbUser, String dbPassword) {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
