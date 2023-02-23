@@ -9,18 +9,18 @@ public enum DBConnectionContainer {
 
     private Connection connection;
 
-    public Connection getConnection() {
-        if (connection == null) {
-            try {
-                Class.forName("org.postgresql.Driver");
-                connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/webshop",
-                        "postgres", "1234qwer");
-            } catch (SQLException e) {
-                System.out.println("Connection error");
-            } catch (ClassNotFoundException e) {
-                System.out.println("Can't find postgresql driver.");
-            }
+    public void createConnection(String dbUrl, String dbUser, String dbPassword){
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Can't find postgresql driver.");
         }
+    }
+
+    public Connection getConnection() {
         return connection;
     }
 
