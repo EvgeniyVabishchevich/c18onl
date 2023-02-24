@@ -7,6 +7,6 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-Hi, ${sessionScope.get("login")}
+Hi, ${sessionScope.get("user_type")}
 </body>
 </html>

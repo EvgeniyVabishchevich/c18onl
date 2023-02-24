@@ -17,7 +17,7 @@ public class AuthFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         String uri = httpRequest.getRequestURI();
 
-        if ((session == null || session.getAttribute("login") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")) {
+        if ((session == null || session.getAttribute("user_type") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")) {
             httpResponse.sendRedirect("login.jsp");
         } else {
             chain.doFilter(request, response);
