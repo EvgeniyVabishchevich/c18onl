@@ -2,10 +2,7 @@ package com.tms.webshop.utilsDB;
 
 import com.tms.webshop.model.Category;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +13,38 @@ public class CategoryDAO {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
+    public void addCategory(String name, String imageName) {
+        try {
+            String sql = "INSERT INTO categories (name, image_name) VALUES (?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, imageName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error, while trying to add new category to database.");
+        }
+    }
+
+    public int getCategoryId(String name) {
+        try {
+            String sql = "SELECT id FROM categories WHERE name = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            return resultSet.getInt("id");
+        } catch (SQLException e) {
+            System.out.println("Error, while trying to get category id from name." + e.getMessage());
+        }
+        return -1;
+    }
+
     public List<Category> getCategories() {
-        ProductsDAO productsDAO = new ProductsDAO();
+        ProductDAO productDAO = new ProductDAO();
         List<Category> categories = new ArrayList<>();
 
         try {
@@ -30,7 +57,7 @@ public class CategoryDAO {
                 category.setId(resultSet.getInt("id"));
                 category.setName(resultSet.getString("name"));
                 category.setImageName(resultSet.getString("image_name"));
-                category.setProductList(productsDAO.findProductsByCategory(category.getId()));
+                category.setProductList(productDAO.findProductsByCategory(category.getId()));
 
                 categories.add(category);
             }

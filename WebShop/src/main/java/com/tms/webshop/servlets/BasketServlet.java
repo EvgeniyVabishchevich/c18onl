@@ -1,6 +1,6 @@
 package com.tms.webshop.servlets;
 
-import com.tms.webshop.utilsDB.ProductsDAO;
+import com.tms.webshop.utilsDB.ProductDAO;
 import com.tms.webshop.model.Product;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -16,10 +16,10 @@ public class BasketServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<Integer, Integer> basketProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("basketProductsMap");
         Map<Product, Integer> productsMap = new HashMap<>();
-        ProductsDAO productsDAO = new ProductsDAO();
+        ProductDAO productDAO = new ProductDAO();
 
         basketProductsMap.keySet().forEach(id -> {
-            productsMap.put(productsDAO.findProduct(id), basketProductsMap.get(id));
+            productsMap.put(productDAO.findProduct(id), basketProductsMap.get(id));
         });
 
         request.setAttribute("productsMap", productsMap);
