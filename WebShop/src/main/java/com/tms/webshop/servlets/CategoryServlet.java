@@ -1,11 +1,13 @@
 package com.tms.webshop.servlets;
 
-import java.io.*;
-
 import com.tms.webshop.utilsDB.CategoryDAO;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 @WebServlet(value = "/categories")
 public class CategoryServlet extends HttpServlet {

@@ -18,7 +18,7 @@ public class AuthFilter implements Filter {
         String uri = httpRequest.getRequestURI();
 
         if ((session == null || session.getAttribute("user_type") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")) {
-            httpResponse.sendRedirect("login.jsp");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
         } else {
             chain.doFilter(request, response);
         }
