@@ -12,7 +12,9 @@
     <c:forEach items="${sessionScope.get('categories')}" var="category">
         <div class="card w-25">
             <div class="card-body">
-                <a href="/products?categoryName=${category.getName()}"><img class="img-fluid" src="images/${category.getImageName()}"></a>
+                <a href="/products?categoryName=${category.getName()}">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/images/${category.getImageName()}">
+                </a>
                 <h5 class="card-title">${category.getName()}</h5>
             </div>
         </div>
