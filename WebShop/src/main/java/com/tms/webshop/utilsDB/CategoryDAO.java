@@ -34,9 +34,7 @@ public class CategoryDAO {
             preparedStatement.setString(1, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-
-            return resultSet.getInt("id");
+            return resultSet.next() ? resultSet.getInt("id") : -1;
         } catch (SQLException e) {
             System.out.println("Error, while trying to get category id from name." + e.getMessage());
         }
