@@ -14,7 +14,7 @@ import java.util.Map;
 public class AddProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<Integer, Integer> basketProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("basketProductsMap");
-        basketProductsMap.merge(Integer.parseInt(request.getParameter("productId")), 1, Integer::sum);
+        Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
+        cartProductsMap.merge(Integer.parseInt(request.getParameter("productId")), 1, Integer::sum);
     }
 }

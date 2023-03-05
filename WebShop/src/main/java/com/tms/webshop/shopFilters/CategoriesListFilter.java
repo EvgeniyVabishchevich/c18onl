@@ -1,6 +1,6 @@
 package com.tms.webshop.shopFilters;
 
-import com.tms.webshop.utilsDB.CategoryDAO;
+import com.tms.webshop.service.CategoryDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 

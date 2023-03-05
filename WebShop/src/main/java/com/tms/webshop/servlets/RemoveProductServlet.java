@@ -14,12 +14,12 @@ import java.util.Map;
 public class RemoveProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<Integer, Integer> basketProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("basketProductsMap");
+        Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         Integer productId = Integer.parseInt(request.getParameter("productId"));
-        if (basketProductsMap.get(productId) > 1) {
-            basketProductsMap.compute(productId, (key, value) -> value - 1);
+        if (cartProductsMap.get(productId) > 1) {
+            cartProductsMap.compute(productId, (key, value) -> value - 1);
         } else {
-            basketProductsMap.remove(productId);
+            cartProductsMap.remove(productId);
         }
     }
 }

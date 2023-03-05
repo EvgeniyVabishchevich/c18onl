@@ -14,8 +14,11 @@
             }
         }
     </script>
+    <jsp:include page="../scriptsLinks.jsp"/>
 </head>
 <body>
+<jsp:include page="../header.jsp"/>
+
 Welcome, admin <br>
 
 <button onclick=hide("categoryForm")>Add category</button>
@@ -72,6 +75,7 @@ Welcome, admin <br>
             contentType: false,
             processData: false,
             success: function () {
+                alert("Category added")
             },
             error: function (data) {
                 console.log(data)
@@ -90,6 +94,7 @@ Welcome, admin <br>
             contentType: false,
             processData: false,
             success: function () {
+                alert("Product added")
             },
             error: function (data) {
                 console.log(data)

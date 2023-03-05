@@ -1,6 +1,6 @@
 package com.tms.webshop.servlets;
 
-import com.tms.webshop.utilsDB.ImageDAO;
+import com.tms.webshop.service.ImageDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

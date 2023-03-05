@@ -23,6 +23,7 @@
 <jsp:include page="header.jsp"/>
 
 <jsp:useBean id="products" scope="request" type="java.util.List"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <c:if test="${products.size() == 0}">
     Products list is empty now. Sorry.
@@ -40,9 +41,8 @@
                 Model : ${product.getName()}<br>
                 Description : ${product.getDescription()}<br>
                 Price : ${product.getPrice()} $<br>
-                <button type="button" class="btn btn-success" value="${product.getId()}"
-                        onclick="addProductId(this.value)">Add to
-                    basket
+                <button type="button" class="btn btn-success" value="${product.getId()}" onclick="addProductId(this.value)">
+                    Add to shopping cart
                 </button>
             </div>
         </div>

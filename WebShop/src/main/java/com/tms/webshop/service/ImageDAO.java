@@ -1,4 +1,4 @@
-package com.tms.webshop.utilsDB;
+package com.tms.webshop.service;
 
 import java.io.InputStream;
 import java.sql.Connection;

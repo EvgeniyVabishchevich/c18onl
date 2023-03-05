@@ -1,6 +1,6 @@
 package com.tms.webshop.servlets.user;
 
-import com.tms.webshop.utilsDB.UserDAO;
+import com.tms.webshop.service.UserDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -16,7 +16,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         UserDAO userDAO = new UserDAO();
         if (userDAO.validateUser(login, password)) {
-            request.getSession().setAttribute("basketProductsMap", new HashMap<Integer, Integer>());
+            request.getSession().setAttribute("cartProductsMap", new HashMap<Integer, Integer>());
             request.getSession().setAttribute("user", userDAO.getUser(login));
             response.sendRedirect("categories.jsp");
         } else {

@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Eror 404</title>
+    <title>Error 404</title>
     <jsp:include page="scriptsLinks.jsp"/>
 </head>
 

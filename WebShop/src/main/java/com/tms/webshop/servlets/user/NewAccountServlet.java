@@ -1,7 +1,7 @@
 package com.tms.webshop.servlets.user;
 
 import com.tms.webshop.model.UserType;
-import com.tms.webshop.utilsDB.UserDAO;
+import com.tms.webshop.service.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

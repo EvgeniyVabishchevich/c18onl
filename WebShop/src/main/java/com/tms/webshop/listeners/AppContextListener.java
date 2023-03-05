@@ -1,6 +1,6 @@
 package com.tms.webshop.listeners;
 
-import com.tms.webshop.utilsDB.DBConnectionContainer;
+import com.tms.webshop.service.DBConnectionContainer;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;

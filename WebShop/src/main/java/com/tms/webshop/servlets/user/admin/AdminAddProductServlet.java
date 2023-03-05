@@ -1,8 +1,8 @@
 package com.tms.webshop.servlets.user.admin;
 
-import com.tms.webshop.utilsDB.CategoryDAO;
-import com.tms.webshop.utilsDB.ImageDAO;
-import com.tms.webshop.utilsDB.ProductDAO;
+import com.tms.webshop.service.CategoryDAO;
+import com.tms.webshop.service.ImageDAO;
+import com.tms.webshop.service.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;

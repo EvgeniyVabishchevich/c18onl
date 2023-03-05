@@ -6,15 +6,15 @@
     <jsp:include page="scriptsLinks.jsp"/>
 </head>
 <body>
-
 <jsp:include page="header.jsp"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <div class="row">
     <c:forEach items="${categories}" var="category">
         <div class="card w-25">
             <div class="card-body">
-                <a href="${pageContext.request.contextPath}/products?categoryName=${category.getName()}">
-                    <img class="img-fluid" src="${pageContext.request.contextPath}/images/${category.getImageName()}">
+                <a href="${contextPath}/products?categoryName=${category.getName()}">
+                    <img class="img-fluid" src="${contextPath}/images/${category.getImageName()}">
                 </a>
                 <h5 class="card-title">${category.getName()}</h5>
             </div>

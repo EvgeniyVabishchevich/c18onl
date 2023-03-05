@@ -1,4 +1,4 @@
-package com.tms.webshop.utilsDB;
+package com.tms.webshop.service;
 
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
