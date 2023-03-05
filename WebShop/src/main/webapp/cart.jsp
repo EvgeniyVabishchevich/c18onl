@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Shopping cart</title>
     <jsp:include page="scriptsLinks.jsp"/>
     <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
 
@@ -44,6 +44,8 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
+
+<jsp:useBean id="productsMap" scope="request" type="java.util.Map"/>
 
 <c:set var="total" value="0"/>
 <c:if test="${productsMap.size() == 0}">

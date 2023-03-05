@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Admin tools</title>
     <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
     <script>
         function hide(formId) {
@@ -38,7 +38,7 @@ Welcome, admin <br>
 <form id="productForm" enctype="multipart/form-data" style="display: none">
     <label for="categorySelection">Category:</label>
     <select name="category" id="categorySelection" form="productForm">
-        <c:forEach var="category" items="${sessionScope.get('categories')}">
+        <c:forEach var="category" items="${categories}">
             <option value="${category.getName()}">${category.getName()}</option>
         </c:forEach>
     </select><br>
@@ -64,7 +64,6 @@ Welcome, admin <br>
     $('#categoryForm').on('submit', (function (e) {
         e.preventDefault();
 
-        alert("category")
         $.ajax({
             url: '/admin/add-category',
             type: 'post',
@@ -73,7 +72,6 @@ Welcome, admin <br>
             contentType: false,
             processData: false,
             success: function () {
-                alert("category success")
             },
             error: function (data) {
                 console.log(data)
@@ -84,7 +82,6 @@ Welcome, admin <br>
     $('#productForm').on('submit', (function (e) {
         e.preventDefault();
 
-        alert("product")
         $.ajax({
             url: '/admin/add-product',
             type: 'post',
@@ -93,7 +90,6 @@ Welcome, admin <br>
             contentType: false,
             processData: false,
             success: function () {
-                alert("product success")
             },
             error: function (data) {
                 console.log(data)

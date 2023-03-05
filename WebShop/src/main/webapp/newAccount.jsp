@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title></title>
+    <title>Registration</title>
     <jsp:include page="scriptsLinks.jsp"/>
     <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
 </head>

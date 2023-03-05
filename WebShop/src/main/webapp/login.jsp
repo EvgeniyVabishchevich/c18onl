@@ -3,6 +3,7 @@
 <html>
 
 <head>
+    <title>Log in</title>
     <jsp:include page="scriptsLinks.jsp"/>
 </head>
 

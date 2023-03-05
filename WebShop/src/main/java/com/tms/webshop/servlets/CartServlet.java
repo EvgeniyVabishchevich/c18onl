@@ -1,17 +1,19 @@
 package com.tms.webshop.servlets;
 
-import com.tms.webshop.utilsDB.ProductDAO;
 import com.tms.webshop.model.Product;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import com.tms.webshop.utilsDB.ProductDAO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "BasketServlet", value = "/show-basket")
-public class BasketServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", value = "/show-cart")
+public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<Integer, Integer> basketProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("basketProductsMap");
@@ -23,6 +25,6 @@ public class BasketServlet extends HttpServlet {
         });
 
         request.setAttribute("productsMap", productsMap);
-        request.getRequestDispatcher("basket.jsp").forward(request, response);
+        request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 }

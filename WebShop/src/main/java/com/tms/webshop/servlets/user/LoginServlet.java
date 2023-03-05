@@ -15,13 +15,10 @@ public class LoginServlet extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         UserDAO userDAO = new UserDAO();
-        System.out.println(login);
-        System.out.println(password);
-        if (userDAO.validateUser(login, password)){
-            System.out.println("hi");
+        if (userDAO.validateUser(login, password)) {
             request.getSession().setAttribute("basketProductsMap", new HashMap<Integer, Integer>());
             request.getSession().setAttribute("user", userDAO.getUser(login));
-            response.sendRedirect("/categories");
+            response.sendRedirect("categories.jsp");
         } else {
             response.sendRedirect("login.jsp");
         }
