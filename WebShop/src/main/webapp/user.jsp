@@ -8,9 +8,9 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-Hi, ${sessionScope.get("user_type")}
+Hi, ${sessionScope.get("user").getName()}
 
-<c:if test="${sessionScope.get(\"user_type\")==\"admin\"}">
+<c:if test="${sessionScope.get(\"user\").getUserType().name()==\"admin\"}">
     <br><label>You have admin privileges, press here to check them.</label>
     <br><a href="admin/admin.jsp">Admin tools</a>
 </c:if>
