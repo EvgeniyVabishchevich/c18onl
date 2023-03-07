@@ -1,23 +1,25 @@
 package com.tms.webshop.servlets;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "RemoveProductServlet", value = "/remove-product")
 public class RemoveProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HashMap<Integer, Integer> basketProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("basketProductsMap");
+        Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         Integer productId = Integer.parseInt(request.getParameter("productId"));
-        if (basketProductsMap.get(productId) > 1) {
-            basketProductsMap.compute(productId, (key, value) -> value - 1);
+        if (cartProductsMap.get(productId) > 1) {
+            cartProductsMap.compute(productId, (key, value) -> value - 1);
         } else {
-            basketProductsMap.remove(productId);
+            cartProductsMap.remove(productId);
         }
     }
 }

@@ -1,14 +1,14 @@
-package com.tms.webshop.Filters;
+package com.tms.webshop.shopFilters;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthFilter")
+@WebFilter(filterName = "AuthFilter", urlPatterns = "/*")
 public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -17,8 +17,9 @@ public class AuthFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         String uri = httpRequest.getRequestURI();
 
-        if ((session == null || session.getAttribute("login") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")) {
-            httpResponse.sendRedirect("login.jsp");
+        if ((session == null || session.getAttribute("user") == null) && !uri.endsWith("login.jsp") && !uri.endsWith("/login")
+                && !uri.endsWith("newAccount.jsp") && !uri.endsWith("create-account")) {
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
         } else {
             chain.doFilter(request, response);
         }

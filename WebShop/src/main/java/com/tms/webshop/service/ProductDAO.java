@@ -1,28 +1,48 @@
-package com.tms.webshop.utilsDB;
+package com.tms.webshop.service;
 
 import com.tms.webshop.model.Product;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsDAO {
+public class ProductDAO {
     private Connection connection;
 
-    public ProductsDAO() {
+    public ProductDAO() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
+    }
+
+    public void addProduct(String name, String description, BigDecimal price, String imageName, int category_id) {
+        try {
+            String sql = "INSERT INTO products (name, description, price, image_name, category_id) VALUES (?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.setBigDecimal(3, price);
+            preparedStatement.setString(4, imageName);
+            preparedStatement.setInt(5, category_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error, while trying to add new product to database.");
+        }
     }
 
     public List<Product> findProductsByCategory(int categoryId) {
         List<Product> products = new ArrayList<>();
 
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM products WHERE category_id = %d", categoryId));
+            String sql = "SELECT * FROM products WHERE category_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, categoryId);
 
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 products.add(getProductFromResult(resultSet));
             }
@@ -35,9 +55,11 @@ public class ProductsDAO {
 
     public Product findProduct(int id) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM products WHERE id = %d", id));
+            String sql = "SELECT * FROM products WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
 
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return getProductFromResult(resultSet);
             } else {

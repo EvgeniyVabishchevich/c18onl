@@ -6,8 +6,16 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <context-param>
+        <param-name>dbUrl</param-name>
+        <param-value>jdbc:postgresql://localhost:5432/webshop</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbUser</param-name>
+        <param-value>postgres</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbPassword</param-name>
+        <param-value>1234qwer</param-value>
+    </context-param>
 </web-app>
