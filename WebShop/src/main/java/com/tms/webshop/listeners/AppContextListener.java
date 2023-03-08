@@ -16,7 +16,8 @@ public class AppContextListener implements ServletContextListener {
         String dbUser = servletContext.getInitParameter("dbUser");
         String dbPassword = servletContext.getInitParameter("dbPassword");
 
-        DBConnectionContainer.INSTANCE.createConnection(dbUrl, dbUser, dbPassword);
+        DBConnectionContainer.INSTANCE.setParams(dbUrl, dbUser, dbPassword);
+        DBConnectionContainer.INSTANCE.getConnection();
     }
 
     @Override
