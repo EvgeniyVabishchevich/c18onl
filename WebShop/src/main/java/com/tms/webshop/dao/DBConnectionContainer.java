@@ -1,4 +1,4 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

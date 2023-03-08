@@ -1,15 +1,19 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao;
 
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class UserDAO {
+public class UserDao {
     Connection connection;
 
-    public UserDAO() {
+    public UserDao() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 

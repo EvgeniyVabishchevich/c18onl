@@ -1,4 +1,4 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -6,10 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageDAO {
+public class ImageDao {
     private Connection connection;
 
-    public ImageDAO() {
+    public ImageDao() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 

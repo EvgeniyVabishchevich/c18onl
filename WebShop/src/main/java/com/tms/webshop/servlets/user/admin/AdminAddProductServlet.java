@@ -1,8 +1,8 @@
 package com.tms.webshop.servlets.user.admin;
 
-import com.tms.webshop.service.CategoryDAO;
-import com.tms.webshop.service.ImageDAO;
-import com.tms.webshop.service.ProductDAO;
+import com.tms.webshop.dao.CategoryDao;
+import com.tms.webshop.dao.ImageDao;
+import com.tms.webshop.dao.ProductDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,15 +25,15 @@ public class AdminAddProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         InputStream fileStream = request.getPart("image").getInputStream();
 
-        ImageDAO imageDAO = new ImageDAO();
+        ImageDao imageDAO = new ImageDao();
         imageDAO.addImage(request.getParameter("imageName"), fileStream);
 
-        ProductDAO productDAO = new ProductDAO();
+        ProductDao productDAO = new ProductDao();
         productDAO.addProduct(
                 request.getParameter("name"),
                 request.getParameter("description"),
                 new BigDecimal(request.getParameter("price")),
                 request.getParameter("imageName"),
-                new CategoryDAO().getCategoryId(request.getParameter("category")));
+                new CategoryDao().getCategoryId(request.getParameter("category")));
     }
 }

@@ -1,4 +1,4 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao;
 
 import com.tms.webshop.model.Product;
 
@@ -10,14 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAO {
+public class ProductDao {
     private Connection connection;
 
-    public ProductDAO() {
+    public ProductDao() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
-    public void addProduct(String name, String description, BigDecimal price, String imageName, int category_id) {
+    public void addProduct(String name, String description, BigDecimal price, String imageName, int categoryId) {
         try {
             String sql = "INSERT INTO products (name, description, price, image_name, category_id) VALUES (?, ?, ?, ?, ?)";
 
@@ -27,7 +27,7 @@ public class ProductDAO {
             preparedStatement.setString(2, description);
             preparedStatement.setBigDecimal(3, price);
             preparedStatement.setString(4, imageName);
-            preparedStatement.setInt(5, category_id);
+            preparedStatement.setInt(5, categoryId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error, while trying to add new product to database.");

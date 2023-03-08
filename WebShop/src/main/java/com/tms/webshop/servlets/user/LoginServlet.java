@@ -1,9 +1,11 @@
 package com.tms.webshop.servlets.user;
 
-import com.tms.webshop.service.UserDAO;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import com.tms.webshop.dao.UserDao;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        UserDAO userDAO = new UserDAO();
+        UserDao userDAO = new UserDao();
         if (userDAO.validateUser(login, password)) {
             request.getSession().setAttribute("cartProductsMap", new HashMap<Integer, Integer>());
             request.getSession().setAttribute("user", userDAO.getUser(login));

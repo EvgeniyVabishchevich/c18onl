@@ -1,7 +1,7 @@
 package com.tms.webshop.servlets.user;
 
 import com.tms.webshop.model.UserType;
-import com.tms.webshop.service.UserDAO;
+import com.tms.webshop.dao.UserDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/create-account")
 public class NewAccountServlet extends HttpServlet {
-    private final LocalDate birthdayBorder = LocalDate.of(1907, 3, 4);
+    private static final LocalDate birthdayBorder = LocalDate.of(1907, 3, 4);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,11 +26,11 @@ public class NewAccountServlet extends HttpServlet {
         String passwordRepeat = request.getParameter("passwordRepeat");
         LocalDate birthday = LocalDate.parse(request.getParameter("birthday"));
 
-        UserDAO userDAO = new UserDAO();
+        UserDao userDAO = new UserDao();
 
         if (isLoginValid(login, userDAO) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
                 password.equals(passwordRepeat) || isBirthdayValid(birthday)) {
-            userDAO.addUser(login, password, UserType.client, name, surname, email, birthday);
+            userDAO.addUser(login, password, UserType.CLIENT, name, surname, email, birthday);
         } else {
             response.setStatus(400);
         }
@@ -48,7 +48,7 @@ public class NewAccountServlet extends HttpServlet {
         return !name.isEmpty() && Pattern.compile("[A-Z][a-z]*").matcher(name).matches();
     }
 
-    public boolean isLoginValid(String login, UserDAO userDAO) {
+    public boolean isLoginValid(String login, UserDao userDAO) {
         return !login.isEmpty() && !userDAO.loginInUse(login);
     }
 }

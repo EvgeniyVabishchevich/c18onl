@@ -1,17 +1,23 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao;
 
 import com.tms.webshop.model.Category;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDAO {
+public class CategoryDao {
     private Connection connection;
 
-    public CategoryDAO() {
+    public CategoryDao() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
+
+    private static final int NOT_FOUND = -1;
 
     public void addCategory(String name, String imageName) {
         try {
@@ -34,15 +40,15 @@ public class CategoryDAO {
             preparedStatement.setString(1, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next() ? resultSet.getInt("id") : -1;
+            return resultSet.next() ? resultSet.getInt("id") : NOT_FOUND;
         } catch (SQLException e) {
             System.out.println("Error, while trying to get category id from name." + e.getMessage());
         }
-        return -1;
+        return NOT_FOUND;
     }
 
     public List<Category> getCategories() {
-        ProductDAO productDAO = new ProductDAO();
+        ProductDao productDAO = new ProductDao();
         List<Category> categories = new ArrayList<>();
 
         try {
