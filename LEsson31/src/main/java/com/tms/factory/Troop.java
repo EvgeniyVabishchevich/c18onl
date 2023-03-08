@@ -1,6 +1,6 @@
 package com.tms.factory;
 
-import com.tms.factory.raceSoldiers.RaceSoldier;
+import com.tms.factory.race_soldiers.RaceSoldier;
 
 public class Troop {
     private RaceSoldier warrior;

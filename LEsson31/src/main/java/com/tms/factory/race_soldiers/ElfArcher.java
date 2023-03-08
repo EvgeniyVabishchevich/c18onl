@@ -1,4 +1,4 @@
-package com.tms.factory.raceSoldiers;
+package com.tms.factory.race_soldiers;
 
 import com.tms.factory.soldiers.Archer;
 

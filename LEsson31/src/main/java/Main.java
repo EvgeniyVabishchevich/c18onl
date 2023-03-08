@@ -2,8 +2,6 @@ import com.tms.factory.Troop;
 import com.tms.factory.factory.ElfTroopFactory;
 import com.tms.factory.factory.HumanTroopFactory;
 import com.tms.factory.factory.OrcTroopFactory;
-import com.tms.factory.factory.TroopsFactory;
-import com.tms.factory.raceSoldiers.RaceSoldier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +17,13 @@ public class Main {
 
         List<Troop> troops = new ArrayList<>();
 
-        loop : while(true){
+        loop:
+        while (true) {
             System.out.println("Select race : " +
                     "\n1. Humans." +
                     "\n2. Orcs." +
                     "\n3. Elves." +
-                    "\n0. Finish.");
+                    "\nAny other. Finish.");
 
             int selected = in.nextInt();
 
@@ -32,7 +31,7 @@ public class Main {
                 case 1 -> troops.add(humanTroopFactory.createTroop());
                 case 2 -> troops.add(orcTroopFactory.createTroop());
                 case 3 -> troops.add(elfTroopFactory.createTroop());
-                case 0 -> {
+                default -> {
                     break loop;
                 }
             }
