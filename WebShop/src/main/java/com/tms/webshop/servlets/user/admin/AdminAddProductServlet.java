@@ -3,6 +3,8 @@ package com.tms.webshop.servlets.user.admin;
 import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.dao.ImageDao;
 import com.tms.webshop.dao.ProductDao;
+import com.tms.webshop.dao.database.ProductDaoDB;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,15 +27,18 @@ public class AdminAddProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         InputStream fileStream = request.getPart("image").getInputStream();
 
-        ImageDao imageDAO = new ImageDao();
-        imageDAO.addImage(request.getParameter("imageName"), fileStream);
+        ServletContext servletContext = request.getServletContext();
 
-        ProductDao productDAO = new ProductDao();
-        productDAO.addProduct(
+        ImageDao imageDao = (ImageDao) servletContext.getAttribute(ImageDao.CONTEXT_NAME);
+        imageDao.addImage(request.getParameter("imageName"), fileStream);
+
+        CategoryDao categoryDao = (CategoryDao) servletContext.getAttribute(CategoryDao.CONTEXT_NAME);
+        ProductDaoDB productDAODB = (ProductDaoDB) servletContext.getAttribute(ProductDao.CONTEXT_NAME);
+        productDAODB.addProduct(
                 request.getParameter("name"),
                 request.getParameter("description"),
                 new BigDecimal(request.getParameter("price")),
                 request.getParameter("imageName"),
-                new CategoryDao().getCategoryId(request.getParameter("category")));
+                categoryDao.getCategoryId(request.getParameter("category")));
     }
 }

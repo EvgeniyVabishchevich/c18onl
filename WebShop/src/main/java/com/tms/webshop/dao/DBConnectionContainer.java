@@ -8,7 +8,9 @@ public enum DBConnectionContainer {
     INSTANCE;
 
     private Connection connection;
-    private String dbUrl, dbUser, dbPassword;
+    private String dbUrl;
+    private String dbUser;
+    private String dbPassword;
 
     public void setParams(String dbUrl, String dbUser, String dbPassword) {
         this.dbUrl = dbUrl;
@@ -16,7 +18,7 @@ public enum DBConnectionContainer {
         this.dbPassword = dbPassword;
     }
 
-    private void createConnection(){
+    private void createConnection() {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -28,7 +30,7 @@ public enum DBConnectionContainer {
     }
 
     public Connection getConnection() {
-        if (connection == null){
+        if (connection == null) {
             createConnection();
         }
         return connection;

@@ -16,10 +16,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        UserDao userDAO = new UserDao();
-        if (userDAO.validateUser(login, password)) {
+        UserDao userDao = (UserDao) request.getServletContext().getAttribute(UserDao.CONTEXT_NAME);
+        if (userDao.validateUser(login, password)) {
             request.getSession().setAttribute("cartProductsMap", new HashMap<Integer, Integer>());
-            request.getSession().setAttribute("user", userDAO.getUser(login));
+            request.getSession().setAttribute("user", userDao.getUser(login));
             response.sendRedirect("categories.jsp");
         } else {
             response.sendRedirect("login.jsp");

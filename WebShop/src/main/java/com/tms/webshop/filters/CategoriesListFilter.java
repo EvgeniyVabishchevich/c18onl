@@ -14,8 +14,8 @@ import java.io.IOException;
 public class CategoriesListFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        CategoryDao categoryDAO = new CategoryDao();
-        request.setAttribute("categories", categoryDAO.getCategories());
+        CategoryDao categoryDao = (CategoryDao) request.getServletContext().getAttribute(CategoryDao.CONTEXT_NAME);
+        request.setAttribute("categories", categoryDao.getCategories());
 
         chain.doFilter(request, response);
     }

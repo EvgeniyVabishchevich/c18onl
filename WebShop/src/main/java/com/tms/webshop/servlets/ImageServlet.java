@@ -11,9 +11,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/images/*")
 public class ImageServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ImageDao imageDAO = new ImageDao();
+        ImageDao imageDao = (ImageDao) request.getServletContext().getAttribute(ImageDao.CONTEXT_NAME);
         String imageName = request.getPathInfo().substring(1);
-        byte[] image = imageDAO.getImageByName(imageName);
+        byte[] image = imageDao.getImageByName(imageName);
 
         response.setContentType(getServletContext().getMimeType(imageName));
         response.setContentLength(image.length);
