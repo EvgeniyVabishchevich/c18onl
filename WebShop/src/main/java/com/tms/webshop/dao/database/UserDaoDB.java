@@ -1,18 +1,25 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao.database;
 
+import com.tms.webshop.dao.DBConnectionContainer;
+import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class UserDAO {
-    Connection connection;
+public class UserDaoDB implements UserDao {
+    private Connection connection;
 
-    public UserDAO() {
+    public UserDaoDB() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
+    @Override
     public void addUser(String login, String password, UserType userType, String name, String surname, String email,
                         LocalDate birthday) {
         try {
@@ -34,6 +41,7 @@ public class UserDAO {
         }
     }
 
+    @Override
     public boolean loginInUse(String newLogin) {
         try {
             String sql = "SELECT * FROM users WHERE login=?";
@@ -50,6 +58,7 @@ public class UserDAO {
         return true;
     }
 
+    @Override
     public User getUser(String login) {
         try {
             String sql = "SELECT user_type, name, surname, email, birthday FROM users WHERE login=?";
@@ -69,6 +78,7 @@ public class UserDAO {
         return null;
     }
 
+    @Override
     public boolean validateUser(String login, String password) {
         try {
             String sql = "SELECT * FROM users WHERE login=? AND password=?";
@@ -86,6 +96,7 @@ public class UserDAO {
         return false;
     }
 
+    @Override
     public UserType getUserType(String login, String password) {
         try {
             String sql = "SELECT user_type FROM users WHERE login=? AND password=?";

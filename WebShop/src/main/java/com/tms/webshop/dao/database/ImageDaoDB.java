@@ -1,4 +1,7 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao.database;
+
+import com.tms.webshop.dao.DBConnectionContainer;
+import com.tms.webshop.dao.ImageDao;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -6,13 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageDAO {
+public class ImageDaoDB implements ImageDao {
     private Connection connection;
 
-    public ImageDAO() {
+    public ImageDaoDB() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
+    @Override
     public void addImage(String imageName, InputStream inputStream) {
         String sql = "INSERT INTO images (name, image) VALUES (?, ?)";
 
@@ -26,6 +30,7 @@ public class ImageDAO {
         }
     }
 
+    @Override
     public byte[] getImageByName(String name) {
         String sql = "SELECT * FROM images WHERE name = ?";
 

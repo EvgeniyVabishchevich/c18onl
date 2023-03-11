@@ -1,4 +1,4 @@
-package com.tms.webshop.service;
+package com.tms.webshop.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,8 +8,17 @@ public enum DBConnectionContainer {
     INSTANCE;
 
     private Connection connection;
+    private String dbUrl;
+    private String dbUser;
+    private String dbPassword;
 
-    public void createConnection(String dbUrl, String dbUser, String dbPassword) {
+    public void setParams(String dbUrl, String dbUser, String dbPassword) {
+        this.dbUrl = dbUrl;
+        this.dbUser = dbUser;
+        this.dbPassword = dbPassword;
+    }
+
+    private void createConnection() {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -21,6 +30,9 @@ public enum DBConnectionContainer {
     }
 
     public Connection getConnection() {
+        if (connection == null) {
+            createConnection();
+        }
         return connection;
     }
 
