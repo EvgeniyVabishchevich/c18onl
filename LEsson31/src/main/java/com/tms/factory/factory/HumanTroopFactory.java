@@ -1,7 +1,9 @@
-package test.factory;
+package com.tms.factory.factory;
 
-import test.Troop;
-import test.raceSoldiers.*;
+import com.tms.factory.Troop;
+import com.tms.factory.race_soldiers.HumanArcher;
+import com.tms.factory.race_soldiers.HumanWarrior;
+import com.tms.factory.race_soldiers.HumanWizard;
 
 public class HumanTroopFactory implements TroopsFactory {
     @Override

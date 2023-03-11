@@ -1,4 +1,4 @@
-package test.Soldiers;
+package com.tms.factory.soldiers;
 
 public class Archer implements Soldier {
     @Override

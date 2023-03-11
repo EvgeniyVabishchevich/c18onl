@@ -1,9 +1,9 @@
-package test.factory;
+package com.tms.factory.factory;
 
-import test.Troop;
-import test.raceSoldiers.ElfArcher;
-import test.raceSoldiers.ElfWarrior;
-import test.raceSoldiers.ElfWizard;
+import com.tms.factory.Troop;
+import com.tms.factory.race_soldiers.ElfArcher;
+import com.tms.factory.race_soldiers.ElfWizard;
+import com.tms.factory.race_soldiers.ElfWarrior;
 
 public class ElfTroopFactory implements TroopsFactory {
     @Override

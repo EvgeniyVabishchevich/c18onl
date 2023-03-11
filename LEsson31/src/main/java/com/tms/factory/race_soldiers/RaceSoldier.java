@@ -1,7 +1,7 @@
-package test.raceSoldiers;
+package com.tms.factory.race_soldiers;
 
-import test.Soldiers.Soldier;
-import test.races.Race;
+import com.tms.factory.soldiers.Soldier;
+import com.tms.factory.races.Race;
 
 public interface RaceSoldier extends Race, Soldier {
     default void printInfo() {

@@ -1,9 +1,9 @@
-package test.factory;
+package com.tms.factory.factory;
 
-import test.Troop;
-import test.raceSoldiers.OrcArcher;
-import test.raceSoldiers.OrcWarrior;
-import test.raceSoldiers.OrcWizard;
+import com.tms.factory.Troop;
+import com.tms.factory.race_soldiers.OrcArcher;
+import com.tms.factory.race_soldiers.OrcWizard;
+import com.tms.factory.race_soldiers.OrcWarrior;
 
 public class OrcTroopFactory implements TroopsFactory {
 
