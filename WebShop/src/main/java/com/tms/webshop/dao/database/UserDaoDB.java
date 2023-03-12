@@ -61,7 +61,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public User getUser(String login) {
         try {
-            String sql = "SELECT user_type, name, surname, email, birthday FROM users WHERE login=?";
+            String sql = "SELECT id, user_type, name, surname, email, birthday FROM users WHERE login=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, login);
@@ -69,9 +69,9 @@ public class UserDaoDB implements UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
 
-            return new User(login, UserType.valueOf(resultSet.getString(1)),
-                    resultSet.getString(2), resultSet.getString(3),
-                    resultSet.getString(4), resultSet.getDate(5).toLocalDate());
+            return new User(resultSet.getInt(1), login, UserType.valueOf(resultSet.getString(2)),
+                    resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+                    resultSet.getDate(6).toLocalDate());
         } catch (SQLException e) {
             System.out.println("Error, while trying to get user from db");
         }

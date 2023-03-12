@@ -49,7 +49,7 @@
 
 <c:set var="total" value="0"/>
 <c:if test="${productsMap.size() == 0}">
-    Products list is empty now. Sorry.
+    Products list is empty now.
 </c:if>
 <c:if test="${productsMap.size() > 0}">
     <c:forEach var="product" items="${productsMap.keySet()}" varStatus="loop">
@@ -77,6 +77,7 @@
             Total price for all selected products : <label id="totalAll">${total}</label> $.
         </div>
     </div>
+    <a href="${pageContext.request.contextPath}/buy" class="btn btn-primary">Buy</a>
 </c:if>
 </body>
 </html>

@@ -3,10 +3,12 @@ package com.tms.webshop.listeners;
 import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.dao.ImageDao;
+import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.dao.database.CategoryDaoDB;
 import com.tms.webshop.dao.database.ImageDaoDB;
+import com.tms.webshop.dao.database.OrderDaoDB;
 import com.tms.webshop.dao.database.ProductDaoDB;
 import com.tms.webshop.dao.database.UserDaoDB;
 import jakarta.servlet.ServletContext;
@@ -38,6 +40,7 @@ public class AppContextListener implements ServletContextListener {
         servletContext.setAttribute(ImageDao.CONTEXT_NAME, new ImageDaoDB());
         servletContext.setAttribute(ProductDao.CONTEXT_NAME, new ProductDaoDB());
         servletContext.setAttribute(CategoryDao.CONTEXT_NAME, new CategoryDaoDB());
+        servletContext.setAttribute(OrderDao.CONTEXT_NAME, new OrderDaoDB());
     }
 
     @Override

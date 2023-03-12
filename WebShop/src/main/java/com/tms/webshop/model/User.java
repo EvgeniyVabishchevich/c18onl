@@ -9,8 +9,10 @@ public class User {
     private String surname;
     private String email;
     private LocalDate birthday;
+    private int id;
 
-    public User(String login, UserType userType, String name, String surname, String email, LocalDate birthday) {
+    public User(int id, String login, UserType userType, String name, String surname, String email, LocalDate birthday) {
+        this.id = id;
         this.userType = userType;
         this.login = login;
         this.name = name;
@@ -41,5 +43,9 @@ public class User {
 
     public LocalDate getBirthday() {
         return birthday;
+    }
+
+    public int getId() {
+        return id;
     }
 }
