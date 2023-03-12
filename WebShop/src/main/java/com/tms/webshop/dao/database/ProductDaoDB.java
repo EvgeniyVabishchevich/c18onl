@@ -76,4 +76,16 @@ public class ProductDaoDB implements ProductDao {
         return null;
     }
 
+    private Product getProductFromResult(ResultSet resultSet) throws SQLException {
+        Product product = new Product();
+
+        product.setId(resultSet.getInt("id"));
+        product.setName(resultSet.getString("name"));
+        product.setDescription(resultSet.getString("description"));
+        product.setPrice(resultSet.getBigDecimal("price"));
+        product.setImageName(resultSet.getString("image_name"));
+
+        return product;
+    }
+
 }
