@@ -1,5 +1,7 @@
 package com.tms.webshop.dao;
 
+import com.tms.webshop.Constants;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,20 +10,10 @@ public enum DBConnectionContainer {
     INSTANCE;
 
     private Connection connection;
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
-
-    public void setParams(String dbUrl, String dbUser, String dbPassword) {
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
-    }
-
     private void createConnection() {
         try {
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = DriverManager.getConnection(Constants.dbUrl, Constants.dbUser, Constants.dbPassword);
         } catch (SQLException e) {
             System.out.println("Connection error");
         } catch (ClassNotFoundException e) {

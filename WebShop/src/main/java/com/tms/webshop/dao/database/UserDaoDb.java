@@ -10,30 +10,28 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
-public class UserDaoDB implements UserDao {
+public class UserDaoDb implements UserDao {
     private Connection connection;
 
-    public UserDaoDB() {
+    public UserDaoDb() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
     @Override
-    public void addUser(String login, String password, UserType userType, String name, String surname, String email,
-                        LocalDate birthday) {
+    public void addUser(User user, String password) {
         try {
             String sql = "INSERT INTO users (login, password, user_type, name, surname, email, birthday) " +
                     "VALUES (?, ?, ?::privelege, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, login);
+            preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, password);
-            preparedStatement.setObject(3, userType.name());
-            preparedStatement.setString(4, name);
-            preparedStatement.setString(5, surname);
-            preparedStatement.setString(6, email);
-            preparedStatement.setDate(7, Date.valueOf(birthday));
+            preparedStatement.setObject(3, user.getUserType().name());
+            preparedStatement.setString(4, user.getName());
+            preparedStatement.setString(5, user.getSurname());
+            preparedStatement.setString(6, user.getEmail());
+            preparedStatement.setDate(7, Date.valueOf(user.getBirthday()));
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

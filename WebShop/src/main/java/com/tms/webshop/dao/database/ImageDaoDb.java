@@ -9,10 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageDaoDB implements ImageDao {
+public class ImageDaoDb implements ImageDao {
     private Connection connection;
 
-    public ImageDaoDB() {
+    public ImageDaoDb() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 

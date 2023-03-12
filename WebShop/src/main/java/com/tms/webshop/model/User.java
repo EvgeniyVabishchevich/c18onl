@@ -21,6 +21,15 @@ public class User {
         this.birthday = birthday;
     }
 
+    public User(UserType userType, String login, String name, String surname, String email, LocalDate birthday) {
+        this.userType = userType;
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.birthday = birthday;
+    }
+
     public UserType getUserType() {
         return userType;
     }

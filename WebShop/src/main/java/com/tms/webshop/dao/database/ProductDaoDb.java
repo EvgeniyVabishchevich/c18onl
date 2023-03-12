@@ -12,10 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDaoDB implements ProductDao {
+public class ProductDaoDb implements ProductDao {
     private Connection connection;
 
-    public ProductDaoDB() {
+    public ProductDaoDb() {
         connection = DBConnectionContainer.INSTANCE.getConnection();
     }
 
