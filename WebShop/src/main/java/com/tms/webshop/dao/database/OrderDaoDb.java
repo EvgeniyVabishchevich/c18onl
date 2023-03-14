@@ -1,6 +1,5 @@
 package com.tms.webshop.dao.database;
 
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
@@ -11,13 +10,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class OrderDaoDb implements OrderDao {
     private Connection connection;
 
-    public OrderDaoDb() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public OrderDaoDb(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

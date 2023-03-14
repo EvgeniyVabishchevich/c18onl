@@ -1,6 +1,5 @@
 package com.tms.webshop.dao.database;
 
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
@@ -14,8 +13,8 @@ import java.sql.SQLException;
 public class UserDaoDb implements UserDao {
     private Connection connection;
 
-    public UserDaoDb() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public UserDaoDb(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

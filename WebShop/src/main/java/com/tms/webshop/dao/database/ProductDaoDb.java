@@ -1,6 +1,5 @@
 package com.tms.webshop.dao.database;
 
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.model.Product;
 
@@ -15,8 +14,8 @@ import java.util.List;
 public class ProductDaoDb implements ProductDao {
     private Connection connection;
 
-    public ProductDaoDb() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public ProductDaoDb(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

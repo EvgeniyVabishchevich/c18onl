@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.model.Category;
 
 import java.sql.Connection;
@@ -15,8 +14,8 @@ import java.util.List;
 public class CategoryDaoDb implements CategoryDao {
     private Connection connection;
 
-    public CategoryDaoDb() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public CategoryDaoDb(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -52,7 +51,7 @@ public class CategoryDaoDb implements CategoryDao {
 
     @Override
     public List<Category> getCategories() {
-        ProductDaoDb productDAODB = new ProductDaoDb();
+        ProductDaoDb productDAODB = new ProductDaoDb(connection);
         List<Category> categories = new ArrayList<>();
 
         try {
