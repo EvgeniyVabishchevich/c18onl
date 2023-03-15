@@ -12,15 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoDb implements ProductDao {
-    private Connection connection;
-
-    public ProductDaoDb(Connection connection) {
-        this.connection = connection;
+    public ProductDaoDb() {
     }
 
     @Override
     public void addProduct(String name, String description, BigDecimal price, String imageName, int categoryId) {
         try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
+
             String sql = "INSERT INTO products (name, description, price, image_name, category_id) VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -31,8 +30,12 @@ public class ProductDaoDb implements ProductDao {
             preparedStatement.setString(4, imageName);
             preparedStatement.setInt(5, categoryId);
             preparedStatement.executeUpdate();
+
+            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             System.out.println("Error, while trying to add new product to database.");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
         }
     }
 
@@ -41,6 +44,8 @@ public class ProductDaoDb implements ProductDao {
         List<Product> products = new ArrayList<>();
 
         try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
+
             String sql = "SELECT * FROM products WHERE category_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
@@ -49,8 +54,12 @@ public class ProductDaoDb implements ProductDao {
             while (resultSet.next()) {
                 products.add(getProductFromResult(resultSet));
             }
+
+            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             System.out.println("SQL exception, while trying to find products by category.");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
         }
 
         return products;
@@ -59,11 +68,16 @@ public class ProductDaoDb implements ProductDao {
     @Override
     public Product findProduct(int id) {
         try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
+
             String sql = "SELECT * FROM products WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            ConnectionPool.getInstance().closeConnection(connection);
+
             if (resultSet.next()) {
                 return getProductFromResult(resultSet);
             } else {
@@ -71,6 +85,8 @@ public class ProductDaoDb implements ProductDao {
             }
         } catch (SQLException e) {
             System.out.println("SQL exception, while trying to find product by id.");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
         }
         return null;
     }

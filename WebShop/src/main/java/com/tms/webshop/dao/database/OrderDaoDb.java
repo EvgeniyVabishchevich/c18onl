@@ -17,10 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderDaoDb implements OrderDao {
-    private Connection connection;
-
-    public OrderDaoDb(Connection connection) {
-        this.connection = connection;
+    public OrderDaoDb() {
     }
 
     @Override
@@ -28,6 +25,8 @@ public class OrderDaoDb implements OrderDao {
         List<Order> orders = new ArrayList<>();
 
         try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
+
             String getOrdersSql = "SELECT * FROM orders WHERE user_id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(getOrdersSql);
@@ -51,19 +50,27 @@ public class OrderDaoDb implements OrderDao {
                 orders.add(order);
             }
 
+            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             System.out.println("Error, while trying to get user orders from database");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
         }
         return orders;
     }
 
     private Product getProduct(int productId) {
         try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
+
             String sql = "SELECT * FROM products WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            ConnectionPool.getInstance().closeConnection(connection);
+
             if (resultSet.next()) {
                 return getProductFromResult(resultSet);
             } else {
@@ -71,6 +78,8 @@ public class OrderDaoDb implements OrderDao {
             }
         } catch (SQLException e) {
             System.out.println("SQL exception, while trying to find product by id.");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
         }
         return null;
     }
@@ -89,43 +98,59 @@ public class OrderDaoDb implements OrderDao {
 
     @Override
     public void addOrder(int userId, LocalDate orderDate, HashMap<Product, Integer> products) {
-        try {
-            saveOrder(userId, orderDate, products);
-            saveProducts(products.keySet());
-        } catch (SQLException e) {
-            System.out.println("Error, while trying to add new order");
-        }
+        saveOrder(userId, orderDate, products);
+        saveProducts(products.keySet());
     }
 
-    public void saveOrder(int userId, LocalDate orderDate, HashMap<Product, Integer> products) throws SQLException {
+    public void saveOrder(int userId, LocalDate orderDate, HashMap<Product, Integer> products) {
         HashMap<String, String> productsHstore = new HashMap<>();
         products.keySet().forEach(product -> {
             productsHstore.put(String.valueOf(product.getId()), String.valueOf(products.get(product)));
         });
 
-        String addOrderSql = "INSERT INTO orders (user_id, date, products) VALUES (?, ?, ?)";
+        try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
 
-        PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql);
-        preparedStatement.setInt(1, userId);
-        preparedStatement.setDate(2, Date.valueOf(orderDate));
-        preparedStatement.setObject(3, productsHstore);
+            String addOrderSql = "INSERT INTO orders (user_id, date, products) VALUES (?, ?, ?)";
 
-        preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setDate(2, Date.valueOf(orderDate));
+            preparedStatement.setObject(3, productsHstore);
+
+            preparedStatement.executeUpdate();
+
+            ConnectionPool.getInstance().closeConnection(connection);
+        } catch (SQLException e) {
+            System.out.println("Error, while trying to save order.");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
+        }
     }
 
-    public void saveProducts(Set<Product> products) throws SQLException {
-        String addProductsRecordsSql = "INSERT INTO products_records (id, name, description, price, image_name) " +
-                "VALUES (?, ?, ?, ?, ?) ON CONFLICT DO NOTHING";
+    public void saveProducts(Set<Product> products) {
+        try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
 
-        PreparedStatement preparedStatement = connection.prepareStatement(addProductsRecordsSql);
+            String addProductsRecordsSql = "INSERT INTO products_records (id, name, description, price, image_name) " +
+                    "VALUES (?, ?, ?, ?, ?) ON CONFLICT DO NOTHING";
 
-        for (Product product : products) {
-            preparedStatement.setInt(1, product.getId());
-            preparedStatement.setString(2, product.getName());
-            preparedStatement.setString(3, product.getDescription());
-            preparedStatement.setBigDecimal(4, product.getPrice());
-            preparedStatement.setString(5, product.getImageName());
-            preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(addProductsRecordsSql);
+
+            for (Product product : products) {
+                preparedStatement.setInt(1, product.getId());
+                preparedStatement.setString(2, product.getName());
+                preparedStatement.setString(3, product.getDescription());
+                preparedStatement.setBigDecimal(4, product.getPrice());
+                preparedStatement.setString(5, product.getImageName());
+                preparedStatement.executeUpdate();
+            }
+
+            ConnectionPool.getInstance().closeConnection(connection);
+        } catch (SQLException e) {
+            System.out.println("Error, while trying to save products records.");
+        } catch (Exception e) {
+            System.out.println("Error, while trying to get or close connection.");
         }
     }
 }
