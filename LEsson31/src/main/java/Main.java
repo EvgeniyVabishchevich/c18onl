@@ -17,8 +17,8 @@ public class Main {
 
         List<Troop> troops = new ArrayList<>();
 
-        loop:
-        while (true) {
+        boolean flag = true;
+        while (flag) {
             System.out.println("Select race : " +
                     "\n1. Humans." +
                     "\n2. Orcs." +
@@ -31,9 +31,7 @@ public class Main {
                 case 1 -> troops.add(humanTroopFactory.createTroop());
                 case 2 -> troops.add(orcTroopFactory.createTroop());
                 case 3 -> troops.add(elfTroopFactory.createTroop());
-                default -> {
-                    break loop;
-                }
+                default -> flag = false;
             }
         }
 
