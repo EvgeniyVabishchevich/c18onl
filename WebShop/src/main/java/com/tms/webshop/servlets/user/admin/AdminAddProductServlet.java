@@ -3,7 +3,7 @@ package com.tms.webshop.servlets.user.admin;
 import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.dao.ImageDao;
 import com.tms.webshop.dao.ProductDao;
-import com.tms.webshop.dao.database.ProductDaoDB;
+import com.tms.webshop.dao.database.ProductDaoDb;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -33,7 +33,7 @@ public class AdminAddProductServlet extends HttpServlet {
         imageDao.addImage(request.getParameter("imageName"), fileStream);
 
         CategoryDao categoryDao = (CategoryDao) servletContext.getAttribute(CategoryDao.CONTEXT_NAME);
-        ProductDaoDB productDAODB = (ProductDaoDB) servletContext.getAttribute(ProductDao.CONTEXT_NAME);
+        ProductDaoDb productDAODB = (ProductDaoDb) servletContext.getAttribute(ProductDao.CONTEXT_NAME);
         productDAODB.addProduct(
                 request.getParameter("name"),
                 request.getParameter("description"),

@@ -1,6 +1,5 @@
 package com.tms.webshop.dao.database;
 
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.dao.ImageDao;
 
 import java.io.InputStream;
@@ -9,11 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageDaoDB implements ImageDao {
+public class ImageDaoDb implements ImageDao {
     private Connection connection;
 
-    public ImageDaoDB() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public ImageDaoDb(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

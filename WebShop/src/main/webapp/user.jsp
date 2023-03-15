@@ -8,11 +8,31 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-Hi, ${sessionScope.get("user").getName()}
+<label>Name : ${user.getName()}</label><br>
+<label>Surname : ${user.getSurname()}</label><br>
+<label>Email : ${user.getEmail()}</label><br>
+<label>Birthday : ${user.getBirthday()}</label><br>
 
-<c:if test="${sessionScope.get(\"user\").getUserType().name()==\"admin\"}">
-    <br><label>You have admin privileges, press here to check them.</label>
-    <br><a href="admin/admin.jsp">Admin tools</a>
+<c:if test="${sessionScope.get(\"user\").getUserType().name()==\"ADMIN\"}">
+    <label>You have admin privileges, press link to check them.</label><br>
+    <a href="admin/admin.jsp">Admin tools</a><br>
 </c:if>
+
+<hr>
+<c:set var="orders" value="${orders}" scope="request"/>
+<c:forEach var="order" items="${orders}">
+    <label>Order №${order.getId()} / Date : ${order.getDate()}. </label><br>
+    <c:forEach var="product" items="${order.getProducts().keySet()}">
+        <br>
+        <label>Product ${product.getName()}</label><br>
+        <label>Description : ${product.getDescription()}</label><br>
+        <label>Price : ${product.getPrice()}</label><br>
+        <label>Amount : ${order.getProducts().get(product)}</label><br>
+    </c:forEach>
+    <hr>
+</c:forEach>
+
+
+
 </body>
 </html>

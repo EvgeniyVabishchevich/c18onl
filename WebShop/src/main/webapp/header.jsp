@@ -8,7 +8,7 @@
         </div>
         <div class="col d-flex flex-row-reverse">
             <a class="btn btn-warning" href="${contextPath}/show-cart">Purchase</a>
-            <a class="btn btn-info" href="${contextPath}/user.jsp">User</a>
+            <a class="btn btn-info" href="${contextPath}/user">User</a>
         </div>
     </div>
 </div>

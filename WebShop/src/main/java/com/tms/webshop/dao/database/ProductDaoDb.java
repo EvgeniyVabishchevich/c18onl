@@ -1,6 +1,5 @@
 package com.tms.webshop.dao.database;
 
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.model.Product;
 
@@ -12,11 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDaoDB implements ProductDao {
+public class ProductDaoDb implements ProductDao {
     private Connection connection;
 
-    public ProductDaoDB() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public ProductDaoDb(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -74,6 +73,18 @@ public class ProductDaoDB implements ProductDao {
             System.out.println("SQL exception, while trying to find product by id.");
         }
         return null;
+    }
+
+    private Product getProductFromResult(ResultSet resultSet) throws SQLException {
+        Product product = new Product();
+
+        product.setId(resultSet.getInt("id"));
+        product.setName(resultSet.getString("name"));
+        product.setDescription(resultSet.getString("description"));
+        product.setPrice(resultSet.getBigDecimal("price"));
+        product.setImageName(resultSet.getString("image_name"));
+
+        return product;
     }
 
 }

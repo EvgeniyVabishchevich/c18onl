@@ -1,6 +1,7 @@
 package com.tms.webshop.servlets.user;
 
 import com.tms.webshop.dao.UserDao;
+import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,7 +31,8 @@ public class NewAccountServlet extends HttpServlet {
 
         if (isLoginValid(login, userDao) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
                 password.equals(passwordRepeat) || isBirthdayValid(birthday)) {
-            userDao.addUser(login, password, UserType.CLIENT, name, surname, email, birthday);
+            User newUser = new User(UserType.CLIENT, login, name, surname, email, birthday);
+            userDao.addUser(newUser, password);
         } else {
             response.setStatus(400);
         }

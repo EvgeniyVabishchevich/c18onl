@@ -3,12 +3,9 @@ package com.tms.webshop.dao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 
-import java.time.LocalDate;
-
 public interface UserDao {
     String CONTEXT_NAME = "userDao";
-    void addUser(String login, String password, UserType userType, String name, String surname, String email,
-                 LocalDate birthday);
+    void addUser(User user, String password);
 
     boolean loginInUse(String newLogin);
 

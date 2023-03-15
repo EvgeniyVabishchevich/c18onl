@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.DBConnectionContainer;
 import com.tms.webshop.model.Category;
 
 import java.sql.Connection;
@@ -12,14 +11,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDaoDB implements CategoryDao {
+public class CategoryDaoDb implements CategoryDao {
     private Connection connection;
 
-    public CategoryDaoDB() {
-        connection = DBConnectionContainer.INSTANCE.getConnection();
+    public CategoryDaoDb(Connection connection) {
+        this.connection = connection;
     }
-
-    private static final int NOT_FOUND = -1;
 
     @Override
     public void addCategory(String name, String imageName) {
@@ -44,16 +41,17 @@ public class CategoryDaoDB implements CategoryDao {
             preparedStatement.setString(1, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next() ? resultSet.getInt("id") : NOT_FOUND;
+            resultSet.next();
+            return resultSet.getInt("id");
         } catch (SQLException e) {
             System.out.println("Error, while trying to get category id from name." + e.getMessage());
         }
-        return NOT_FOUND;
+        throw new RuntimeException("Wrong category name");
     }
 
     @Override
     public List<Category> getCategories() {
-        ProductDaoDB productDAODB = new ProductDaoDB();
+        ProductDaoDb productDAODB = new ProductDaoDb(connection);
         List<Category> categories = new ArrayList<>();
 
         try {
