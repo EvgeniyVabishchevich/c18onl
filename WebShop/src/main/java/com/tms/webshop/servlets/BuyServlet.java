@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-@WebServlet(name = "BuyServlet", value = "/buy")
+@WebServlet(value = "/buy")
 public class BuyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

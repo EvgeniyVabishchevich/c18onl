@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @MultipartConfig
-@WebServlet(name = "AdminAddCategoryServlet", value = "/admin/add-category")
+@WebServlet(value = "/admin/add-category")
 public class AdminAddCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

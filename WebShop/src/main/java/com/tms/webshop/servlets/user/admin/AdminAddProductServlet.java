@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 @MultipartConfig
-@WebServlet(name = "AdminAddProductServlet", value = "/admin/add-product")
+@WebServlet(value = "/admin/add-product")
 public class AdminAddProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
