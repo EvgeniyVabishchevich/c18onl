@@ -20,8 +20,6 @@ public class UserServlet extends HttpServlet {
 
         request.setAttribute("orders", orderDao.getOrders(user.getId()));
 
-        System.out.println(orderDao.getOrders(user.getId()).size());
-
         request.getRequestDispatcher("user.jsp").forward(request, response);
     }
 }
