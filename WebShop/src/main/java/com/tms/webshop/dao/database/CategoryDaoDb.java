@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDaoDb implements CategoryDao {
-
-    public CategoryDaoDb() {
-    }
-
     @Override
     public void addCategory(String name, String imageName) {
         try {

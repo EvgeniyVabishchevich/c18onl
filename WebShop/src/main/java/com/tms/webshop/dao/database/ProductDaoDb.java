@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoDb implements ProductDao {
-    public ProductDaoDb() {
-    }
-
     @Override
     public void addProduct(String name, String description, BigDecimal price, String imageName, int categoryId) {
         try {

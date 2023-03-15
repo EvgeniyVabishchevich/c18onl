@@ -17,9 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderDaoDb implements OrderDao {
-    public OrderDaoDb() {
-    }
-
     @Override
     public List<Order> getOrders(int userId) {
         List<Order> orders = new ArrayList<>();

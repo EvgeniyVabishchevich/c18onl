@@ -9,9 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ImageDaoDb implements ImageDao {
-    public ImageDaoDb() {
-    }
-
     @Override
     public void addImage(String imageName, InputStream inputStream) {
         try {

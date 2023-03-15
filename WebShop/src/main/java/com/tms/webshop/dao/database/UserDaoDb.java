@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDaoDb implements UserDao {
-    public UserDaoDb() {
-    }
-
     @Override
     public void addUser(User user, String password) {
         try {
