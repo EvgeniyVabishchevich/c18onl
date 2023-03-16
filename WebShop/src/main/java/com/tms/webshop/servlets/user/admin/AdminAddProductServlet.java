@@ -28,20 +28,21 @@ public class AdminAddProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        InputStream fileStream = request.getPart("image").getInputStream();
+        try (InputStream fileStream = request.getPart("image").getInputStream()) {
 
-        ServletContext servletContext = request.getServletContext();
+            ServletContext servletContext = request.getServletContext();
 
-        ImageService imageService = (ImageService) servletContext.getAttribute(ImageServiceAware.CONTEXT_NAME);
-        imageService.addImage(request.getParameter("imageName"), fileStream);
+            ImageService imageService = (ImageService) servletContext.getAttribute(ImageServiceAware.CONTEXT_NAME);
+            imageService.addImage(request.getParameter("imageName"), fileStream);
 
-        CategoryService categoryService = (CategoryService) servletContext.getAttribute(CategoryServiceAware.CONTEXT_NAME);
-        ProductService productService = (ProductService) servletContext.getAttribute(ProductServiceAware.CONTEXT_NAME);
+            CategoryService categoryService = (CategoryService) servletContext.getAttribute(CategoryServiceAware.CONTEXT_NAME);
+            ProductService productService = (ProductService) servletContext.getAttribute(ProductServiceAware.CONTEXT_NAME);
 
-        Product product = new Product(request.getParameter("name"), request.getParameter("description"),
-                new BigDecimal(request.getParameter("price")), request.getParameter("imageName"),
-                categoryService.getCategoryId(request.getParameter("category")));
+            Product product = new Product(request.getParameter("name"), request.getParameter("description"),
+                    new BigDecimal(request.getParameter("price")), request.getParameter("imageName"),
+                    categoryService.getCategoryId(request.getParameter("category")));
 
-        productService.addProduct(product);
+            productService.addProduct(product);
+        }
     }
 }

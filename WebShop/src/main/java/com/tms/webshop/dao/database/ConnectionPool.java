@@ -41,18 +41,18 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            InputStream input = classloader.getResourceAsStream(DB_PROPERTY_FILE);
-            Properties properties = new Properties();
-            properties.load(input);
-            input.close();
+            try (InputStream inputStream = classloader.getResourceAsStream(DB_PROPERTY_FILE)) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
 
-            dbUrl = properties.getProperty(DB_URL);
-            dbUser = properties.getProperty(DB_USER);
-            dbPassword = properties.getProperty(DB_PWD);
+                dbUrl = properties.getProperty(DB_URL);
+                dbUser = properties.getProperty(DB_USER);
+                dbPassword = properties.getProperty(DB_PWD);
 
-            Class.forName("org.postgresql.Driver");
-            for (int i = 0; i < MIN_CONNECTION_COUNT; i++) {
-                pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+                Class.forName("org.postgresql.Driver");
+                for (int i = 0; i < MIN_CONNECTION_COUNT; i++) {
+                    pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+                }
             }
         } catch (ClassNotFoundException e) {
             System.out.println("Can't find postgresql driver.");
