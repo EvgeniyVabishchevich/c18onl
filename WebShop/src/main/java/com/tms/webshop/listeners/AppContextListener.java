@@ -10,6 +10,16 @@ import com.tms.webshop.dao.database.ImageDaoDb;
 import com.tms.webshop.dao.database.OrderDaoDb;
 import com.tms.webshop.dao.database.ProductDaoDb;
 import com.tms.webshop.dao.database.UserDaoDb;
+import com.tms.webshop.service.CategoryService;
+import com.tms.webshop.service.CategoryServiceAware;
+import com.tms.webshop.service.ImageService;
+import com.tms.webshop.service.ImageServiceAware;
+import com.tms.webshop.service.OrderService;
+import com.tms.webshop.service.OrderServiceAware;
+import com.tms.webshop.service.ProductService;
+import com.tms.webshop.service.ProductServiceAware;
+import com.tms.webshop.service.UserService;
+import com.tms.webshop.service.UserServiceAware;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -21,15 +31,15 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
 
-        setDao(servletContext);
+        setServices(servletContext);
     }
 
-    public void setDao(ServletContext servletContext) {
-        servletContext.setAttribute(UserDao.CONTEXT_NAME, new UserDaoDb());
-        servletContext.setAttribute(ImageDao.CONTEXT_NAME, new ImageDaoDb());
-        servletContext.setAttribute(ProductDao.CONTEXT_NAME, new ProductDaoDb());
-        servletContext.setAttribute(CategoryDao.CONTEXT_NAME, new CategoryDaoDb());
-        servletContext.setAttribute(OrderDao.CONTEXT_NAME, new OrderDaoDb());
+    public void setServices(ServletContext servletContext) {
+        servletContext.setAttribute(UserServiceAware.CONTEXT_NAME, new UserService(new UserDaoDb()));
+        servletContext.setAttribute(ImageServiceAware.CONTEXT_NAME, new ImageService(new ImageDaoDb()));
+        servletContext.setAttribute(ProductServiceAware.CONTEXT_NAME, new ProductService(new ProductDaoDb()));
+        servletContext.setAttribute(CategoryServiceAware.CONTEXT_NAME, new CategoryService(new CategoryDaoDb()));
+        servletContext.setAttribute(OrderServiceAware.CONTEXT_NAME, new OrderService(new OrderDaoDb()));
     }
 
     @Override

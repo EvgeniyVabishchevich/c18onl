@@ -39,30 +39,7 @@ public class UserDaoDb implements UserDao {
     }
 
     @Override
-    public boolean loginInUse(String newLogin) {
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
-            String sql = "SELECT * FROM users WHERE login=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setString(1, newLogin);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            ConnectionPool.getInstance().closeConnection(connection);
-
-            return resultSet.next();
-        } catch (SQLException e) {
-            System.out.println("Error, while trying to check login match");
-        } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
-        }
-        return true;
-    }
-
-    @Override
-    public User getUser(String login) {
+    public User getUserByLogin(String login) {
         try {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
@@ -72,13 +49,14 @@ public class UserDaoDb implements UserDao {
             preparedStatement.setString(1, login);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
 
             ConnectionPool.getInstance().closeConnection(connection);
 
-            return new User(resultSet.getInt(1), login, UserType.valueOf(resultSet.getString(2)),
-                    resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
-                    resultSet.getDate(6).toLocalDate());
+            if (resultSet.next()) {
+                return new User(resultSet.getInt(1), login, UserType.valueOf(resultSet.getString(2)),
+                        resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getDate(6).toLocalDate());
+            }
         } catch (SQLException e) {
             System.out.println("Error, while trying to get user from db");
         } catch (Exception e) {
@@ -88,11 +66,11 @@ public class UserDaoDb implements UserDao {
     }
 
     @Override
-    public boolean validateUser(String login, String password) {
+    public User getUserByLoginAndPwd(String login, String password) {
         try {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
-            String sql = "SELECT * FROM users WHERE login=? AND password=?";
+            String sql = "SELECT id, user_type, name, surname, email, birthday FROM users WHERE login=? AND password=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, login);
@@ -102,13 +80,17 @@ public class UserDaoDb implements UserDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
 
-            return resultSet.next();
+            if (resultSet.next()) {
+                return new User(resultSet.getInt(1), login, UserType.valueOf(resultSet.getString(2)),
+                        resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+                        resultSet.getDate(6).toLocalDate());
+            }
         } catch (SQLException e) {
             System.out.println("SQL exception, while trying to validate user.");
         } catch (Exception e) {
             System.out.println("Error, while trying to get or close connection.");
         }
-        return false;
+        return null;
     }
 
     @Override

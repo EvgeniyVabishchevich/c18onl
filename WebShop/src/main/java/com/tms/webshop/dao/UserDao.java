@@ -4,14 +4,10 @@ import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 
 public interface UserDao {
-    String CONTEXT_NAME = "userDao";
     void addUser(User user, String password);
+    User getUserByLogin(String login);
 
-    boolean loginInUse(String newLogin);
-
-    User getUser(String login);
-
-    boolean validateUser(String login, String password);
+    User getUserByLoginAndPwd(String login, String password);
 
     UserType getUserType(String login, String password);
 }

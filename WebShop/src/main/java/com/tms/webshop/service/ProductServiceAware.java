@@ -1,11 +1,11 @@
-package com.tms.webshop.dao;
+package com.tms.webshop.service;
 
 import com.tms.webshop.model.Product;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public interface ProductDao {
+public interface ProductServiceAware {
+    String CONTEXT_NAME = "productService";
     void addProduct(Product product);
 
     List<Product> getProductsByCategoryId(int categoryId);

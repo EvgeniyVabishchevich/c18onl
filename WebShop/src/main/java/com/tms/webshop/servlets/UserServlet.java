@@ -2,6 +2,8 @@ package com.tms.webshop.servlets;
 
 import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.model.User;
+import com.tms.webshop.service.OrderService;
+import com.tms.webshop.service.OrderServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,11 +16,11 @@ import java.io.IOException;
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        OrderDao orderDao = (OrderDao) request.getServletContext().getAttribute(OrderDao.CONTEXT_NAME);
+        OrderService orderService = (OrderService) request.getServletContext().getAttribute(OrderServiceAware.CONTEXT_NAME);
 
         User user = (User) request.getSession().getAttribute("user");
 
-        request.setAttribute("orders", orderDao.getOrders(user.getId()));
+        request.setAttribute("orders", orderService.getOrdersByUserId(user.getId()));
 
         request.getRequestDispatcher("user.jsp").forward(request, response);
     }

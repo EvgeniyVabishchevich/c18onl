@@ -2,6 +2,10 @@ package com.tms.webshop.servlets.user.admin;
 
 import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.dao.ImageDao;
+import com.tms.webshop.service.CategoryService;
+import com.tms.webshop.service.CategoryServiceAware;
+import com.tms.webshop.service.ImageService;
+import com.tms.webshop.service.ImageServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,10 +27,10 @@ public class AdminAddCategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         InputStream fileStream = request.getPart("image").getInputStream();
 
-        ImageDao imageDao = (ImageDao) request.getServletContext().getAttribute(ImageDao.CONTEXT_NAME);
-        imageDao.addImage(request.getParameter("imageName"), fileStream);
+        ImageService imageService = (ImageService) request.getServletContext().getAttribute(ImageServiceAware.CONTEXT_NAME);
+        imageService.addImage(request.getParameter("imageName"), fileStream);
 
-        CategoryDao categoryDao = (CategoryDao) request.getServletContext().getAttribute(CategoryDao.CONTEXT_NAME);
-        categoryDao.addCategory(request.getParameter("name"), request.getParameter("imageName"));
+        CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
+        categoryService.addCategory(request.getParameter("name"), request.getParameter("imageName"));
     }
 }

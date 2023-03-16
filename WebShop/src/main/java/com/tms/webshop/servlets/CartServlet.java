@@ -2,6 +2,8 @@ package com.tms.webshop.servlets;
 
 import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.model.Product;
+import com.tms.webshop.service.ProductService;
+import com.tms.webshop.service.ProductServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,10 +20,10 @@ public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         Map<Product, Integer> productsMap = new HashMap<>();
-        ProductDao productDAODB = (ProductDao) request.getServletContext().getAttribute(ProductDao.CONTEXT_NAME);
+        ProductService productService = (ProductService) request.getServletContext().getAttribute(ProductServiceAware.CONTEXT_NAME);
 
         cartProductsMap.keySet().forEach(id -> {
-            productsMap.put(productDAODB.findProduct(id), cartProductsMap.get(id));
+            productsMap.put(productService.getProductById(id), cartProductsMap.get(id));
         });
 
         request.setAttribute("productsMap", productsMap);

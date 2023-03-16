@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class ImageDaoDb implements ImageDao {
     @Override
-    public void addImage(String imageName, InputStream inputStream) {
+    public void addImage(String imageName, InputStream imageStream) {
         try {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
@@ -18,7 +18,7 @@ public class ImageDaoDb implements ImageDao {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, imageName);
-            preparedStatement.setBinaryStream(2, inputStream);
+            preparedStatement.setBinaryStream(2, imageStream);
             preparedStatement.executeUpdate();
 
             ConnectionPool.getInstance().closeConnection(connection);

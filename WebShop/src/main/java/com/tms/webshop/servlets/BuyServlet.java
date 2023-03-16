@@ -2,8 +2,13 @@ package com.tms.webshop.servlets;
 
 import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.dao.ProductDao;
+import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
 import com.tms.webshop.model.User;
+import com.tms.webshop.service.OrderService;
+import com.tms.webshop.service.OrderServiceAware;
+import com.tms.webshop.service.ProductService;
+import com.tms.webshop.service.ProductServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,13 +27,14 @@ public class BuyServlet extends HttpServlet {
 
         int userId = ((User) request.getSession().getAttribute("user")).getId();
 
-        OrderDao orderDao = (OrderDao) request.getServletContext().getAttribute(OrderDao.CONTEXT_NAME);
-        ProductDao productDao = (ProductDao) request.getServletContext().getAttribute(ProductDao.CONTEXT_NAME);
+        OrderService orderService = (OrderService) request.getServletContext().getAttribute(OrderServiceAware.CONTEXT_NAME);
+        ProductService productService = (ProductService) request.getServletContext().getAttribute(ProductServiceAware.CONTEXT_NAME);
 
         HashMap<Product, Integer> products = new HashMap<>();
-        basketProducts.keySet().forEach(id -> products.put(productDao.findProduct(id), basketProducts.get(id)));
+        basketProducts.keySet().forEach(id -> products.put(productService.getProductById(id), basketProducts.get(id)));
 
-        orderDao.addOrder(userId, LocalDate.now(), products);
+        Order order = new Order(LocalDate.now(), products);
+        orderService.addOrder(userId, order);
 
         basketProducts.clear();
 

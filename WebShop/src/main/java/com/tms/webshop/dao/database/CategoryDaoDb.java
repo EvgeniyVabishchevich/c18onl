@@ -73,7 +73,7 @@ public class CategoryDaoDb implements CategoryDao {
                 category.setId(resultSet.getInt("id"));
                 category.setName(resultSet.getString("name"));
                 category.setImageName(resultSet.getString("image_name"));
-                category.setProductList(productDAODB.findProductsByCategory(category.getId()));
+                category.setProductList(productDAODB.getProductsByCategoryId(category.getId()));
 
                 categories.add(category);
             }
