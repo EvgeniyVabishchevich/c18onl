@@ -1,6 +1,5 @@
 package com.tms.webshop.servlets.user;
 
-import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 import com.tms.webshop.service.UserService;

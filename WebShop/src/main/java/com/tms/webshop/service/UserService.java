@@ -3,7 +3,7 @@ package com.tms.webshop.service;
 import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 
-public class UserService implements UserServiceAware{
+public class UserService implements UserServiceAware {
     private final UserDao userDao;
 
     public UserService(UserDao userDao) {

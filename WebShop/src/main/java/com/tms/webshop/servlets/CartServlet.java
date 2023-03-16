@@ -1,6 +1,5 @@
 package com.tms.webshop.servlets;
 
-import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.model.Product;
 import com.tms.webshop.service.ProductService;
 import com.tms.webshop.service.ProductServiceAware;

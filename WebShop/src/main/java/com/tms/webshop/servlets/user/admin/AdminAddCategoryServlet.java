@@ -1,7 +1,5 @@
 package com.tms.webshop.servlets.user.admin;
 
-import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.ImageDao;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.ImageService;

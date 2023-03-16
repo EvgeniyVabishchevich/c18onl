@@ -97,14 +97,23 @@ public class ConnectionPool {
                 } catch (SQLException e) {
                     System.out.println("Error, while trying to close connection.");
                 }
-            }
-            else {
+            } else {
                 try {
                     pool.put(connection);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     throw new Exception("Connection wasn't returned into pool properly");
                 }
+            }
+        }
+    }
+
+    public void closeAllConnections() {
+        for (Connection connection : pool) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("Error, while trying to close all connections");
             }
         }
     }

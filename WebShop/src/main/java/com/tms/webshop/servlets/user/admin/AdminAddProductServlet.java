@@ -1,9 +1,5 @@
 package com.tms.webshop.servlets.user.admin;
 
-import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.ImageDao;
-import com.tms.webshop.dao.ProductDao;
-import com.tms.webshop.dao.database.ProductDaoDb;
 import com.tms.webshop.model.Product;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;

@@ -5,7 +5,7 @@ import com.tms.webshop.model.Order;
 
 import java.util.List;
 
-public class OrderService implements OrderServiceAware{
+public class OrderService implements OrderServiceAware {
     private final OrderDao orderDao;
 
     public OrderService(OrderDao orderDao) {

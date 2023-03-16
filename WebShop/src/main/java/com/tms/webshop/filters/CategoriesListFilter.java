@@ -1,6 +1,5 @@
 package com.tms.webshop.filters;
 
-import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import jakarta.servlet.Filter;

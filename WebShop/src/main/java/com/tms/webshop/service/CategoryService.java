@@ -1,7 +1,6 @@
 package com.tms.webshop.service;
 
 import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.database.CategoryDaoDb;
 import com.tms.webshop.model.Category;
 
 import java.util.List;
@@ -12,6 +11,7 @@ public class CategoryService implements CategoryServiceAware {
     public CategoryService(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
+
     @Override
     public void addCategory(String name, String imageName) {
         categoryDao.addCategory(name, imageName);

@@ -1,6 +1,5 @@
 package com.tms.webshop.servlets;
 
-import com.tms.webshop.dao.ImageDao;
 import com.tms.webshop.service.ImageService;
 import com.tms.webshop.service.ImageServiceAware;
 import jakarta.servlet.annotation.WebServlet;

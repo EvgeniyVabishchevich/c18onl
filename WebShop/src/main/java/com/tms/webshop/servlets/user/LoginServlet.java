@@ -1,6 +1,5 @@
 package com.tms.webshop.servlets.user;
 
-import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.service.UserService;
 import com.tms.webshop.service.UserServiceAware;
 import jakarta.servlet.ServletException;

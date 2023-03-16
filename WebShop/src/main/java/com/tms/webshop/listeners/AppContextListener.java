@@ -1,11 +1,7 @@
 package com.tms.webshop.listeners;
 
-import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.ImageDao;
-import com.tms.webshop.dao.OrderDao;
-import com.tms.webshop.dao.ProductDao;
-import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.dao.database.CategoryDaoDb;
+import com.tms.webshop.dao.database.ConnectionPool;
 import com.tms.webshop.dao.database.ImageDaoDb;
 import com.tms.webshop.dao.database.OrderDaoDb;
 import com.tms.webshop.dao.database.ProductDaoDb;
@@ -44,5 +40,6 @@ public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        ConnectionPool.getInstance().closeAllConnections();
     }
 }
