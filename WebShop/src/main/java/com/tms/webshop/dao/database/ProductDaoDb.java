@@ -23,14 +23,15 @@ public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
 
             String sql = "INSERT INTO products (name, description, price, image_name, category_id) VALUES (?, ?, ?, ?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setBigDecimal(3, product.getPrice());
-            preparedStatement.setString(4, product.getImageName());
-            preparedStatement.setInt(5, product.getCategoryId());
-            preparedStatement.executeUpdate();
+                preparedStatement.setString(1, product.getName());
+                preparedStatement.setString(2, product.getDescription());
+                preparedStatement.setBigDecimal(3, product.getPrice());
+                preparedStatement.setString(4, product.getImageName());
+                preparedStatement.setInt(5, product.getCategoryId());
+                preparedStatement.executeUpdate();
+            }
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {

@@ -16,10 +16,11 @@ public class ImageDaoDb implements ImageDao {
 
             String sql = "INSERT INTO images (name, image) VALUES (?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, imageName);
-            preparedStatement.setBinaryStream(2, imageStream);
-            preparedStatement.executeUpdate();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, imageName);
+                preparedStatement.setBinaryStream(2, imageStream);
+                preparedStatement.executeUpdate();
+            }
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
@@ -36,14 +37,16 @@ public class ImageDaoDb implements ImageDao {
 
             String sql = "SELECT * FROM images WHERE name = ?";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, name);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, name);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            ConnectionPool.getInstance().closeConnection(connection);
+                    ConnectionPool.getInstance().closeConnection(connection);
 
-            return resultSet.next() ? resultSet.getBytes("image") : null;
+                    return resultSet.next() ? resultSet.getBytes("image") : null;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Error, while trying to load image from db.");
         } catch (Exception e) {

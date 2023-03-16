@@ -39,15 +39,17 @@ public class CategoryDaoDb implements CategoryDao {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
             String sql = "SELECT id FROM categories WHERE name = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, name);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, name);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    resultSet.next();
 
-            ConnectionPool.getInstance().closeConnection(connection);
+                    ConnectionPool.getInstance().closeConnection(connection);
 
-            return resultSet.getInt("id");
+                    return resultSet.getInt("id");
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Error, while trying to get category id from name." + e.getMessage());
         } catch (Exception e) {
@@ -64,18 +66,20 @@ public class CategoryDaoDb implements CategoryDao {
         try {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM categories");
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery("SELECT * FROM categories")) {
 
-            while (resultSet.next()) {
-                Category category = new Category();
+                    while (resultSet.next()) {
+                        Category category = new Category();
 
-                category.setId(resultSet.getInt("id"));
-                category.setName(resultSet.getString("name"));
-                category.setImageName(resultSet.getString("image_name"));
-                category.setProductList(productDAODB.getProductsByCategoryId(category.getId()));
+                        category.setId(resultSet.getInt("id"));
+                        category.setName(resultSet.getString("name"));
+                        category.setImageName(resultSet.getString("image_name"));
+                        category.setProductList(productDAODB.getProductsByCategoryId(category.getId()));
 
-                categories.add(category);
+                        categories.add(category);
+                    }
+                }
             }
 
             ConnectionPool.getInstance().closeConnection(connection);

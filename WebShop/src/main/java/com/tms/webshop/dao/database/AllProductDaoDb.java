@@ -19,17 +19,19 @@ public class AllProductDaoDb {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
             String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, productId);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, productId);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            ConnectionPool.getInstance().closeConnection(connection);
+                    ConnectionPool.getInstance().closeConnection(connection);
 
-            if (resultSet.next()) {
-                return getProductFromResult(resultSet);
-            } else {
-                throw new SQLException("There is no product with id - " + productId);
+                    if (resultSet.next()) {
+                        return getProductFromResult(resultSet);
+                    } else {
+                        throw new SQLException("There is no product with id - " + productId);
+                    }
+                }
             }
         } catch (SQLException e) {
             System.out.println("SQL exception, while trying to find product by id." + e.getMessage());
