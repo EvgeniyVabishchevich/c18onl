@@ -68,9 +68,9 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
     }
 
     public void saveOrder(int userId, Order order) {
-        HashMap<String, String> productsHstore = new HashMap<>();
+        HashMap<String, String> orderProductsMap = new HashMap<>();
         order.getProducts().keySet().forEach(product -> {
-            productsHstore.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
+            orderProductsMap.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
         });
 
         try {
@@ -81,7 +81,7 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
             try (PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql)) {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setDate(2, Date.valueOf(order.getDate()));
-                preparedStatement.setObject(3, productsHstore);
+                preparedStatement.setObject(3, orderProductsMap);
 
                 preparedStatement.executeUpdate();
             }
