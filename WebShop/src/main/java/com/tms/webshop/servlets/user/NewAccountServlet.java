@@ -1,8 +1,9 @@
 package com.tms.webshop.servlets.user;
 
-import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
+import com.tms.webshop.service.UserService;
+import com.tms.webshop.service.UserServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,12 +28,12 @@ public class NewAccountServlet extends HttpServlet {
         String passwordRepeat = request.getParameter("passwordRepeat");
         LocalDate birthday = LocalDate.parse(request.getParameter("birthday"));
 
-        UserDao userDao = (UserDao) request.getServletContext().getAttribute(UserDao.CONTEXT_NAME);
+        UserService userService = (UserService) request.getServletContext().getAttribute(UserServiceAware.CONTEXT_NAME);
 
-        if (isLoginValid(login, userDao) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
+        if (isLoginValid(login, userService) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
                 password.equals(passwordRepeat) || isBirthdayValid(birthday)) {
             User newUser = new User(UserType.CLIENT, login, name, surname, email, birthday);
-            userDao.addUser(newUser, password);
+            userService.addUser(newUser, password);
         } else {
             response.setStatus(400);
         }
@@ -50,7 +51,7 @@ public class NewAccountServlet extends HttpServlet {
         return !name.isEmpty() && Pattern.compile("[A-Z][a-z]*").matcher(name).matches();
     }
 
-    public boolean isLoginValid(String login, UserDao userDao) {
-        return !login.isEmpty() && !userDao.loginInUse(login);
+    public boolean isLoginValid(String login, UserService userService) {
+        return !login.isEmpty() && !userService.loginInUse(login);
     }
 }

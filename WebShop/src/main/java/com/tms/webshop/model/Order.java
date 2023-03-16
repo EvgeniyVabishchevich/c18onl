@@ -8,6 +8,11 @@ public class Order {
     private int id;
     private Map<Product, Integer> products;
 
+    public Order(LocalDate date, Map<Product, Integer> products) {
+        this.date = date;
+        this.products = products;
+    }
+
     public Order() {}
 
     public LocalDate getDate() {

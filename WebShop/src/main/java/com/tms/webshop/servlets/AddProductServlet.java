@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "AddProductServlet", value = "/add-product")
+@WebServlet(value = "/add-product")
 public class AddProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

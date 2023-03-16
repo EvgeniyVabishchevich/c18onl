@@ -1,6 +1,7 @@
 package com.tms.webshop.filters;
 
-import com.tms.webshop.dao.CategoryDao;
+import com.tms.webshop.service.CategoryService;
+import com.tms.webshop.service.CategoryServiceAware;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,8 +15,8 @@ import java.io.IOException;
 public class CategoriesListFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        CategoryDao categoryDao = (CategoryDao) request.getServletContext().getAttribute(CategoryDao.CONTEXT_NAME);
-        request.setAttribute("categories", categoryDao.getCategories());
+        CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
+        request.setAttribute("categories", categoryService.getCategories());
 
         chain.doFilter(request, response);
     }
