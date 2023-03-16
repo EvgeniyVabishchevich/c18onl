@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
+import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
+
 @WebServlet(urlPatterns = "/create-account")
 public class NewAccountServlet extends HttpServlet {
     private static final LocalDate birthdayBorder = LocalDate.of(1907, 3, 4);
@@ -28,7 +30,7 @@ public class NewAccountServlet extends HttpServlet {
         String passwordRepeat = request.getParameter("passwordRepeat");
         LocalDate birthday = LocalDate.parse(request.getParameter("birthday"));
 
-        UserService userService = (UserService) request.getServletContext().getAttribute(UserServiceAware.CONTEXT_NAME);
+        UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
 
         if (isLoginValid(login, userService) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
                 password.equals(passwordRepeat) || isBirthdayValid(birthday)) {
