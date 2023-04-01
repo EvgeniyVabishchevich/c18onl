@@ -1,7 +1,6 @@
 package com.tms.webshop.servlets;
 
 import com.tms.webshop.service.ImageService;
-import com.tms.webshop.service.ImageServiceAware;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

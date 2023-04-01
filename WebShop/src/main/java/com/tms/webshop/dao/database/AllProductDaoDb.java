@@ -1,6 +1,8 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.model.Product;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AllProductDaoDb {
+    private static final Logger logger = LogManager.getLogger(AllProductDaoDb.class);
+
     private final String tableName;
 
     public AllProductDaoDb(String tableName) {
@@ -34,9 +38,9 @@ public class AllProductDaoDb {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("SQL exception, while trying to find product by id." + e.getMessage());
+            logger.error("SQL exception, while trying to find product by id.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }

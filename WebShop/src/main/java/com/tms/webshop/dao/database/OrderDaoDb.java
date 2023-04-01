@@ -3,6 +3,8 @@ package com.tms.webshop.dao.database;
 import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -16,6 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
+    private static final Logger logger = LogManager.getLogger(OrderDaoDb.class);
+
     public OrderDaoDb() {
         super("products_records");
     }
@@ -54,9 +58,9 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to get user orders from database");
+            logger.error("Error, while trying to get user orders from database", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return orders;
     }
@@ -88,9 +92,9 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to save order.");
+            logger.error("Error, while trying to save order.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -115,9 +119,9 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to save products records.");
+            logger.error("Error, while trying to save products records.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 }

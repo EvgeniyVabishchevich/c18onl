@@ -3,7 +3,6 @@ package com.tms.webshop.servlets.user;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 import com.tms.webshop.service.UserService;
-import com.tms.webshop.service.UserServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

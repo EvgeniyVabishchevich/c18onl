@@ -2,6 +2,8 @@ package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.model.Category;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDaoDb implements CategoryDao {
+    private static final Logger logger = LogManager.getLogger(CategoryDaoDb.class);
+
     @Override
     public void addCategory(String name, String imageName) {
         try {
@@ -27,9 +31,9 @@ public class CategoryDaoDb implements CategoryDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to add new category to database.");
+            logger.error("Error, while trying to add new category to database.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -51,9 +55,9 @@ public class CategoryDaoDb implements CategoryDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error, while trying to get category id from name." + e.getMessage());
+            logger.error("Error, while trying to get category id from name.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         throw new RuntimeException("Wrong category name");
     }
@@ -84,9 +88,9 @@ public class CategoryDaoDb implements CategoryDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("SQL exception" + e.getMessage());
+            logger.error("SQL exception", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return categories;
     }

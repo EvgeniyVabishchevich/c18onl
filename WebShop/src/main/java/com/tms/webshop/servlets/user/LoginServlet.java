@@ -1,7 +1,6 @@
 package com.tms.webshop.servlets.user;
 
 import com.tms.webshop.service.UserService;
-import com.tms.webshop.service.UserServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static com.tms.webshop.service.UserServiceAware.*;
+import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 
 @WebServlet(value = "/login")
 public class LoginServlet extends HttpServlet {

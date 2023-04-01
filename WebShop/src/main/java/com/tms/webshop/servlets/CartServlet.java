@@ -2,7 +2,6 @@ package com.tms.webshop.servlets;
 
 import com.tms.webshop.model.Product;
 import com.tms.webshop.service.ProductService;
-import com.tms.webshop.service.ProductServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
