@@ -1,6 +1,8 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.ImageDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -9,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ImageDaoDb implements ImageDao {
+    private static final Logger logger = LogManager.getLogger(ImageDaoDb.class);
+
     @Override
     public void addImage(String imageName, InputStream imageStream) {
         try {
@@ -16,16 +20,17 @@ public class ImageDaoDb implements ImageDao {
 
             String sql = "INSERT INTO images (name, image) VALUES (?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, imageName);
-            preparedStatement.setBinaryStream(2, imageStream);
-            preparedStatement.executeUpdate();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, imageName);
+                preparedStatement.setBinaryStream(2, imageStream);
+                preparedStatement.executeUpdate();
+            }
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to add new image in db.");
+            logger.error("Error, while trying to add new image in db.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -36,18 +41,20 @@ public class ImageDaoDb implements ImageDao {
 
             String sql = "SELECT * FROM images WHERE name = ?";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, name);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, name);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            ConnectionPool.getInstance().closeConnection(connection);
+                    ConnectionPool.getInstance().closeConnection(connection);
 
-            return resultSet.next() ? resultSet.getBytes("image") : null;
+                    return resultSet.next() ? resultSet.getBytes("image") : null;
+                }
+            }
         } catch (SQLException e) {
-            System.out.println("Error, while trying to load image from db.");
+            logger.error("Error, while trying to load image from db.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }

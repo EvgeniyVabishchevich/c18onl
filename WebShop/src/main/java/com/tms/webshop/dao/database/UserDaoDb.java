@@ -3,6 +3,8 @@ package com.tms.webshop.dao.database;
 import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDaoDb implements UserDao {
+    private static final Logger logger = LogManager.getLogger(UserDaoDb.class);
+
     @Override
     public void addUser(User user, String password) {
         try {
@@ -32,9 +36,9 @@ public class UserDaoDb implements UserDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to add new user to db." + e.getMessage());
+            logger.error("Error, while trying to add new user to db.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -43,24 +47,24 @@ public class UserDaoDb implements UserDao {
         try {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
-            String sql = "SELECT id, user_type, name, surname, email, birthday FROM users WHERE login=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            String sql = "SELECT * FROM users WHERE login=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, login);
+                preparedStatement.setString(1, login);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            ConnectionPool.getInstance().closeConnection(connection);
+                    ConnectionPool.getInstance().closeConnection(connection);
 
-            if (resultSet.next()) {
-                return new User(resultSet.getInt(1), login, UserType.valueOf(resultSet.getString(2)),
-                        resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
-                        resultSet.getDate(6).toLocalDate());
+                    if (resultSet.next()) {
+                        return getUserFromResult(resultSet);
+                    }
+                }
             }
         } catch (SQLException e) {
-            System.out.println("Error, while trying to get user from db");
+            logger.error("Error, while trying to get user from db", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }
@@ -70,25 +74,25 @@ public class UserDaoDb implements UserDao {
         try {
             Connection connection = ConnectionPool.getInstance().getConnection();
 
-            String sql = "SELECT id, user_type, name, surname, email, birthday FROM users WHERE login=? AND password=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            String sql = "SELECT * FROM users WHERE login=? AND password=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
+                preparedStatement.setString(1, login);
+                preparedStatement.setString(2, password);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            ConnectionPool.getInstance().closeConnection(connection);
+                    ConnectionPool.getInstance().closeConnection(connection);
 
-            if (resultSet.next()) {
-                return new User(resultSet.getInt(1), login, UserType.valueOf(resultSet.getString(2)),
-                        resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
-                        resultSet.getDate(6).toLocalDate());
+                    if (resultSet.next()) {
+                        return getUserFromResult(resultSet);
+                    }
+                }
             }
         } catch (SQLException e) {
-            System.out.println("SQL exception, while trying to validate user.");
+            logger.error("SQL exception, while trying to validate user.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }
@@ -112,10 +116,17 @@ public class UserDaoDb implements UserDao {
 
             return UserType.valueOf(resultSet.getString("user_type"));
         } catch (SQLException e) {
-            System.out.println("SQL exception, while trying to find user type.");
+            logger.error("SQL exception, while trying to find user type.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return null;
+    }
+
+    private User getUserFromResult(ResultSet resultSet) throws SQLException {
+        return new User(resultSet.getInt("id"), resultSet.getString("login"),
+                UserType.valueOf(resultSet.getString("user_type")), resultSet.getString("name"),
+                resultSet.getString("surname"), resultSet.getString("email"),
+                resultSet.getDate("birthday").toLocalDate());
     }
 }

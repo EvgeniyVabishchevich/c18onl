@@ -1,7 +1,6 @@
 package com.tms.webshop.servlets;
 
 import com.tms.webshop.service.ImageService;
-import com.tms.webshop.service.ImageServiceAware;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.tms.webshop.service.ImageServiceAware.CONTEXT_NAME;
+
 @WebServlet(urlPatterns = "/images/*")
 public class ImageServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ImageService imageService = (ImageService) request.getServletContext().getAttribute(ImageServiceAware.CONTEXT_NAME);
+        ImageService imageService = (ImageService) request.getServletContext().getAttribute(CONTEXT_NAME);
         String imageName = request.getPathInfo().substring(1);
         byte[] image = imageService.getImageByName(imageName);
 

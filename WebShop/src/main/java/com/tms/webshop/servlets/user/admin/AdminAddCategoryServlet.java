@@ -23,12 +23,12 @@ public class AdminAddCategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        InputStream fileStream = request.getPart("image").getInputStream();
+        try (InputStream fileStream = request.getPart("image").getInputStream()) {
+            ImageService imageService = (ImageService) request.getServletContext().getAttribute(ImageServiceAware.CONTEXT_NAME);
+            imageService.addImage(request.getParameter("imageName"), fileStream);
 
-        ImageService imageService = (ImageService) request.getServletContext().getAttribute(ImageServiceAware.CONTEXT_NAME);
-        imageService.addImage(request.getParameter("imageName"), fileStream);
-
-        CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
-        categoryService.addCategory(request.getParameter("name"), request.getParameter("imageName"));
+            CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
+            categoryService.addCategory(request.getParameter("name"), request.getParameter("imageName"));
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.tms.webshop.servlets;
 
 import com.tms.webshop.model.User;
 import com.tms.webshop.service.OrderService;
-import com.tms.webshop.service.OrderServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,11 +10,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.tms.webshop.service.OrderServiceAware.CONTEXT_NAME;
+
 @WebServlet(value = "/user")
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        OrderService orderService = (OrderService) request.getServletContext().getAttribute(OrderServiceAware.CONTEXT_NAME);
+        OrderService orderService = (OrderService) request.getServletContext().getAttribute(CONTEXT_NAME);
 
         User user = (User) request.getSession().getAttribute("user");
 

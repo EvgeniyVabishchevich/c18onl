@@ -3,7 +3,6 @@ package com.tms.webshop.servlets.user;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 import com.tms.webshop.service.UserService;
-import com.tms.webshop.service.UserServiceAware;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
+
+import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 
 @WebServlet(urlPatterns = "/create-account")
 public class NewAccountServlet extends HttpServlet {
@@ -28,7 +29,7 @@ public class NewAccountServlet extends HttpServlet {
         String passwordRepeat = request.getParameter("passwordRepeat");
         LocalDate birthday = LocalDate.parse(request.getParameter("birthday"));
 
-        UserService userService = (UserService) request.getServletContext().getAttribute(UserServiceAware.CONTEXT_NAME);
+        UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
 
         if (isLoginValid(login, userService) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
                 password.equals(passwordRepeat) || isBirthdayValid(birthday)) {

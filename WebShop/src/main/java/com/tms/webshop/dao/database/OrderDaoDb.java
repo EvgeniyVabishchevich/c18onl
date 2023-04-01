@@ -3,6 +3,8 @@ package com.tms.webshop.dao.database;
 import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -16,6 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
+    private static final Logger logger = LogManager.getLogger(OrderDaoDb.class);
+
     public OrderDaoDb() {
         super("products_records");
     }
@@ -29,32 +33,34 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
 
             String getOrdersSql = "SELECT * FROM orders WHERE user_id = ?";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(getOrdersSql);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(getOrdersSql)) {
 
-            preparedStatement.setInt(1, userId);
+                preparedStatement.setInt(1, userId);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (resultSet.next()) {
-                Order order = new Order();
-                order.setId(resultSet.getInt(1));
-                order.setDate(resultSet.getDate(3).toLocalDate());
+                    while (resultSet.next()) {
+                        Order order = new Order();
+                        order.setId(resultSet.getInt(1));
+                        order.setDate(resultSet.getDate(3).toLocalDate());
 
-                Map<String, String> productsMap = (Map<String, String>) resultSet.getObject(4);
-                Map<Product, Integer> products = new HashMap<>();
-                for (String id : productsMap.keySet()) {
-                    products.put(getProductById(Integer.parseInt(id)), Integer.parseInt(productsMap.get(id)));
+                        Map<String, String> productsMap = (Map<String, String>) resultSet.getObject(4);
+                        Map<Product, Integer> products = new HashMap<>();
+                        for (String id : productsMap.keySet()) {
+                            products.put(getProductById(Integer.parseInt(id)), Integer.parseInt(productsMap.get(id)));
+                        }
+                        order.setProducts(products);
+
+                        orders.add(order);
+                    }
                 }
-                order.setProducts(products);
-
-                orders.add(order);
             }
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to get user orders from database");
+            logger.error("Error, while trying to get user orders from database", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
         return orders;
     }
@@ -66,9 +72,9 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
     }
 
     public void saveOrder(int userId, Order order) {
-        HashMap<String, String> productsHstore = new HashMap<>();
+        HashMap<String, String> orderProductsMap = new HashMap<>();
         order.getProducts().keySet().forEach(product -> {
-            productsHstore.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
+            orderProductsMap.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
         });
 
         try {
@@ -76,18 +82,19 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
 
             String addOrderSql = "INSERT INTO orders (user_id, date, products) VALUES (?, ?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql);
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setDate(2, Date.valueOf(order.getDate()));
-            preparedStatement.setObject(3, productsHstore);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql)) {
+                preparedStatement.setInt(1, userId);
+                preparedStatement.setDate(2, Date.valueOf(order.getDate()));
+                preparedStatement.setObject(3, orderProductsMap);
 
-            preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();
+            }
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to save order.");
+            logger.error("Error, while trying to save order.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -98,22 +105,23 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
             String addProductsRecordsSql = "INSERT INTO products_records (id, name, description, price, image_name) " +
                     "VALUES (?, ?, ?, ?, ?) ON CONFLICT DO NOTHING";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(addProductsRecordsSql);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(addProductsRecordsSql)) {
 
-            for (Product product : products) {
-                preparedStatement.setInt(1, product.getId());
-                preparedStatement.setString(2, product.getName());
-                preparedStatement.setString(3, product.getDescription());
-                preparedStatement.setBigDecimal(4, product.getPrice());
-                preparedStatement.setString(5, product.getImageName());
-                preparedStatement.executeUpdate();
+                for (Product product : products) {
+                    preparedStatement.setInt(1, product.getId());
+                    preparedStatement.setString(2, product.getName());
+                    preparedStatement.setString(3, product.getDescription());
+                    preparedStatement.setBigDecimal(4, product.getPrice());
+                    preparedStatement.setString(5, product.getImageName());
+                    preparedStatement.executeUpdate();
+                }
             }
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to save products records.");
+            logger.error("Error, while trying to save products records.", e);
         } catch (Exception e) {
-            System.out.println("Error, while trying to get or close connection.");
+            logger.error("Error, while trying to get or close connection.", e);
         }
     }
 }

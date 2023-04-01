@@ -1,5 +1,8 @@
 package com.tms.webshop.dao.database;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConnectionPool {
+    private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static volatile ConnectionPool INSTANCE;
     private static final String DB_PROPERTY_FILE = "application.properties";
     private static final int MAX_CONNECTION_COUNT = 10;
@@ -41,27 +45,27 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            InputStream input = classloader.getResourceAsStream(DB_PROPERTY_FILE);
-            Properties properties = new Properties();
-            properties.load(input);
-            input.close();
+            try (InputStream inputStream = classloader.getResourceAsStream(DB_PROPERTY_FILE)) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
 
-            dbUrl = properties.getProperty(DB_URL);
-            dbUser = properties.getProperty(DB_USER);
-            dbPassword = properties.getProperty(DB_PWD);
+                dbUrl = properties.getProperty(DB_URL);
+                dbUser = properties.getProperty(DB_USER);
+                dbPassword = properties.getProperty(DB_PWD);
 
-            Class.forName("org.postgresql.Driver");
-            for (int i = 0; i < MIN_CONNECTION_COUNT; i++) {
-                pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+                Class.forName("org.postgresql.Driver");
+                for (int i = 0; i < MIN_CONNECTION_COUNT; i++) {
+                    pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+                }
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("Can't find postgresql driver.");
+            logger.error("Can't find postgresql driver.", e);
         } catch (FileNotFoundException e) {
-            System.out.println("Error, while trying to load database properties file");
+            logger.error("Error, while trying to load database properties file", e);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to create connection");
+            logger.error("Error, while trying to create connection", e);
         } catch (IOException e) {
-            System.out.println("Error, while working with properties inputStream");
+            logger.error("Error, while working with properties inputStream", e);
         }
     }
 
@@ -70,7 +74,7 @@ public class ConnectionPool {
             pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
             currentConnectionNumber.addAndGet(1);
         } catch (SQLException e) {
-            System.out.println("Error, while trying to create connection");
+            logger.error("Error, while trying to create connection", e);
         }
     }
 
@@ -95,14 +99,14 @@ public class ConnectionPool {
                     connection.close();
                     currentConnectionNumber.decrementAndGet();
                 } catch (SQLException e) {
-                    System.out.println("Error, while trying to close connection.");
+                    logger.error("Error, while trying to close connection.", e);
                 }
             } else {
                 try {
                     pool.put(connection);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    throw new Exception("Connection wasn't returned into pool properly");
+                    throw new Exception("Connection wasn't returned into pool properly", e);
                 }
             }
         }
@@ -113,7 +117,7 @@ public class ConnectionPool {
             try {
                 connection.close();
             } catch (SQLException e) {
-                System.out.println("Error, while trying to close all connections");
+                logger.error("Error, while trying to close all connections", e);
             }
         }
     }

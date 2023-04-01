@@ -25,6 +25,7 @@ import jakarta.servlet.annotation.WebListener;
 public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+
         ServletContext servletContext = sce.getServletContext();
 
         setServices(servletContext);
