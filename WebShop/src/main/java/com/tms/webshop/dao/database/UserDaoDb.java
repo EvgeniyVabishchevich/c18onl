@@ -3,8 +3,7 @@ package com.tms.webshop.dao.database;
 import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -12,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Log4j2
 public class UserDaoDb implements UserDao {
-    private static final Logger logger = LogManager.getLogger(UserDaoDb.class);
 
     @Override
     public void addUser(User user, String password) {
@@ -36,9 +35,9 @@ public class UserDaoDb implements UserDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("Error, while trying to add new user to db.", e);
+            log.error("Error, while trying to add new user to db.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -62,9 +61,9 @@ public class UserDaoDb implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error, while trying to get user from db", e);
+            log.error("Error, while trying to get user from db", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }
@@ -90,9 +89,9 @@ public class UserDaoDb implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            logger.error("SQL exception, while trying to validate user.", e);
+            log.error("SQL exception, while trying to validate user.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }
@@ -116,9 +115,9 @@ public class UserDaoDb implements UserDao {
 
             return UserType.valueOf(resultSet.getString("user_type"));
         } catch (SQLException e) {
-            logger.error("SQL exception, while trying to find user type.", e);
+            log.error("SQL exception, while trying to find user type.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
         return null;
     }

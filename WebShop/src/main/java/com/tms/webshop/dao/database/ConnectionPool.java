@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,8 +13,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Log4j2
 public class ConnectionPool {
-    private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static volatile ConnectionPool INSTANCE;
     private static final String DB_PROPERTY_FILE = "application.properties";
     private static final int MAX_CONNECTION_COUNT = 10;
@@ -59,13 +58,13 @@ public class ConnectionPool {
                 }
             }
         } catch (ClassNotFoundException e) {
-            logger.error("Can't find postgresql driver.", e);
+            log.error("Can't find postgresql driver.", e);
         } catch (FileNotFoundException e) {
-            logger.error("Error, while trying to load database properties file", e);
+            log.error("Error, while trying to load database properties file", e);
         } catch (SQLException e) {
-            logger.error("Error, while trying to create connection", e);
+            log.error("Error, while trying to create connection", e);
         } catch (IOException e) {
-            logger.error("Error, while working with properties inputStream", e);
+            log.error("Error, while working with properties inputStream", e);
         }
     }
 
@@ -74,7 +73,7 @@ public class ConnectionPool {
             pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
             currentConnectionNumber.addAndGet(1);
         } catch (SQLException e) {
-            logger.error("Error, while trying to create connection", e);
+            log.error("Error, while trying to create connection", e);
         }
     }
 
@@ -99,7 +98,7 @@ public class ConnectionPool {
                     connection.close();
                     currentConnectionNumber.decrementAndGet();
                 } catch (SQLException e) {
-                    logger.error("Error, while trying to close connection.", e);
+                    log.error("Error, while trying to close connection.", e);
                 }
             } else {
                 try {
@@ -117,7 +116,7 @@ public class ConnectionPool {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("Error, while trying to close all connections", e);
+                log.error("Error, while trying to close all connections", e);
             }
         }
     }

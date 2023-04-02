@@ -20,14 +20,14 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import org.apache.logging.log4j.ThreadContext;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-
         ServletContext servletContext = sce.getServletContext();
-
         setServices(servletContext);
     }
 
@@ -41,6 +41,7 @@ public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        ThreadContext.remove("conversationId");
         ConnectionPool.getInstance().closeAllConnections();
     }
 }

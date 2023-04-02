@@ -2,8 +2,7 @@ package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.model.Product;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
-    private static final Logger logger = LogManager.getLogger(ProductDaoDb.class);
 
     public ProductDaoDb() {
         super("products");
@@ -38,9 +37,9 @@ public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("Error, while trying to add new product to database.", e);
+            log.error("Error, while trying to add new product to database.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -62,9 +61,9 @@ public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
 
             ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("SQL exception, while trying to find products by category.", e);
+            log.error("SQL exception, while trying to find products by category.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
 
         return products;
