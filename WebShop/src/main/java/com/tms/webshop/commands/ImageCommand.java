@@ -14,7 +14,6 @@ import static com.tms.webshop.service.ImageServiceAware.CONTEXT_NAME;
 public class ImageCommand implements BaseCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("hi");
         ImageService imageService = (ImageService) request.getServletContext().getAttribute(CONTEXT_NAME);
         String imageName = request.getParameter(RequestParams.IMAGE.getValue());
         byte[] image = imageService.getImageByName(imageName);
