@@ -1,6 +1,7 @@
 package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Category;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +16,11 @@ public class ProductsCommand implements BaseCommand {
 
         if (category == null) {
             request.setAttribute("errorMsg", "No such category.");
-            return "error404.jsp";
+            return Pages.ERROR404.getValue();
         } else {
             request.setAttribute("categoryName", categoryName);
             request.setAttribute("products", category.getProductList());
-            return "products.jsp";
+            return Pages.PRODUCTS.getValue();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Product;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,6 @@ public class CartCommand implements BaseCommand{
         });
 
         request.setAttribute("productsMap", productsMap);
-        return "cart.jsp";
+        return Pages.CART.getValue();
     }
 }

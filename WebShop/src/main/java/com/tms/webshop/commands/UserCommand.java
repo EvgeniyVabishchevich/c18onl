@@ -1,6 +1,7 @@
 package com.tms.webshop.commands;
 
 import com.tms.webshop.model.User;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +17,6 @@ public class UserCommand implements BaseCommand{
 
         request.setAttribute("orders", orderService.getOrdersByUserId(user.getId()));
 
-        return "user.jsp";
+        return Pages.USER.getValue();
     }
 }

@@ -1,5 +1,6 @@
 package com.tms.webshop.commands;
 
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.UserService;
@@ -26,9 +27,9 @@ public class SignInCommand implements BaseCommand {
 
             CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
             request.setAttribute("categories", categoryService.getCategories());
-            return "/categories.jsp";
+            return Pages.CATEGORIES.getValue();
         } else {
-            return "/login.jsp";
+            return Pages.LOGIN.getValue();
         }
     }
 }

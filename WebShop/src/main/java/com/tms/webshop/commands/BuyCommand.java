@@ -3,6 +3,7 @@ package com.tms.webshop.commands;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
 import com.tms.webshop.model.User;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.service.OrderService;
 import com.tms.webshop.service.OrderServiceAware;
 import com.tms.webshop.service.ProductService;
@@ -31,6 +32,6 @@ public class BuyCommand implements BaseCommand{
 
         basketProducts.clear();
 
-        return "buy.jsp";
+        return Pages.BUY.getValue();
     }
 }
