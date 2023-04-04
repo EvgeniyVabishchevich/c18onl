@@ -1,7 +1,7 @@
 package com.tms.webshop.listeners;
 
 import com.tms.webshop.dao.database.CategoryDaoDb;
-import com.tms.webshop.dao.database.ConnectionPool;
+import com.tms.webshop.dao.utils.ConnectionPool;
 import com.tms.webshop.dao.database.ImageDaoDb;
 import com.tms.webshop.dao.database.OrderDaoDb;
 import com.tms.webshop.dao.database.ProductDaoDb;

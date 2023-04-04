@@ -1,11 +1,12 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.OrderDao;
+import com.tms.webshop.dao.utils.ConnectionPool;
+import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
 import lombok.extern.log4j.Log4j2;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,12 +23,10 @@ public class OrderDaoDb implements OrderDao {
         List<Order> orders = new ArrayList<>();
         ProductDaoDb productDaoDb = new ProductDaoDb();
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
             String getOrdersSql = "SELECT * FROM orders WHERE user_id = ?";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(getOrdersSql)) {
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(getOrdersSql)) {
 
                 preparedStatement.setInt(1, userId);
 
@@ -49,8 +48,6 @@ public class OrderDaoDb implements OrderDao {
                     }
                 }
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             log.error("Error, while trying to get user orders from database", e);
         } catch (Exception e) {
@@ -70,20 +67,16 @@ public class OrderDaoDb implements OrderDao {
             orderProductsMap.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
         });
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
             String addOrderSql = "INSERT INTO orders (user_id, date, products) VALUES (?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql)) {
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(addOrderSql)) {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setDate(2, Date.valueOf(order.getDate()));
                 preparedStatement.setObject(3, orderProductsMap);
 
                 preparedStatement.executeUpdate();
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             log.error("Error, while trying to save order.", e);
         } catch (Exception e) {

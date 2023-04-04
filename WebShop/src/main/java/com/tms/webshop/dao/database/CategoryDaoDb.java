@@ -1,10 +1,11 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.CategoryDao;
+import com.tms.webshop.dao.utils.ConnectionPool;
+import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Category;
 import lombok.extern.log4j.Log4j2;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,18 +18,14 @@ public class CategoryDaoDb implements CategoryDao {
 
     @Override
     public void addCategory(String name, String imageName) {
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
             String sql = "INSERT INTO categories (name, image_name) VALUES (?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql);
 
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, imageName);
             preparedStatement.executeUpdate();
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             log.error("Error, while trying to add new category to database.", e);
         } catch (Exception e) {
@@ -41,10 +38,8 @@ public class CategoryDaoDb implements CategoryDao {
         ProductDaoDb productDaoDb = new ProductDaoDb();
         List<Category> categories = new ArrayList<>();
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
-            try (Statement statement = connection.createStatement()) {
+        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+            try (Statement statement = connectionWrapper.getConnection().createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery("SELECT * FROM categories")) {
 
                     while (resultSet.next()) {
@@ -59,8 +54,6 @@ public class CategoryDaoDb implements CategoryDao {
                     }
                 }
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
             log.error("SQL exception", e);
         } catch (Exception e) {
@@ -73,11 +66,9 @@ public class CategoryDaoDb implements CategoryDao {
     public Category getCategoryByName(String name) {
         ProductDaoDb productDaoDb = new ProductDaoDb();
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM categories WHERE name = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
                 preparedStatement.setString(1, name);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -88,8 +79,6 @@ public class CategoryDaoDb implements CategoryDao {
                         category.setName(resultSet.getString("name"));
                         category.setImageName(resultSet.getString("image_name"));
                         category.setProductList(productDaoDb.getProductsByCategoryId(category.getId()));
-
-                        ConnectionPool.getInstance().closeConnection(connection);
 
                         return category;
                     }

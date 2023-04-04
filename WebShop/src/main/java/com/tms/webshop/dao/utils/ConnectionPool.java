@@ -1,11 +1,10 @@
-package com.tms.webshop.dao.database;
+package com.tms.webshop.dao.utils;
 
 import lombok.extern.log4j.Log4j2;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -28,7 +27,7 @@ public class ConnectionPool {
     private String dbPassword;
 
     private final AtomicInteger currentConnectionNumber = new AtomicInteger(MIN_CONNECTION_COUNT);
-    private final BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(MAX_CONNECTION_COUNT, true);
+    private final BlockingQueue<ConnectionWrapper> pool = new ArrayBlockingQueue<>(MAX_CONNECTION_COUNT, true);
 
     public static ConnectionPool getInstance() {
         if (INSTANCE == null) {
@@ -54,7 +53,7 @@ public class ConnectionPool {
 
                 Class.forName("org.postgresql.Driver");
                 for (int i = 0; i < MIN_CONNECTION_COUNT; i++) {
-                    pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+                    pool.add(new ConnectionWrapper(this, DriverManager.getConnection(dbUrl, dbUser, dbPassword)));
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -70,39 +69,39 @@ public class ConnectionPool {
 
     public void openAdditionalConnection() {
         try {
-            pool.add(DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+            pool.add(new ConnectionWrapper(this, DriverManager.getConnection(dbUrl, dbUser, dbPassword)));
             currentConnectionNumber.addAndGet(1);
         } catch (SQLException e) {
             log.error("Error, while trying to create connection", e);
         }
     }
 
-    public Connection getConnection() throws Exception {
-        Connection connection;
+    public ConnectionWrapper getConnection() throws Exception {
+        ConnectionWrapper connectionWrapper;
         try {
             if (pool.isEmpty() && currentConnectionNumber.get() < MAX_CONNECTION_COUNT) {
                 openAdditionalConnection();
             }
-            connection = pool.take();
+            connectionWrapper = pool.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new Exception("Connection limit reached!!!");
         }
-        return connection;
+        return connectionWrapper;
     }
 
-    public void closeConnection(Connection connection) throws Exception {
-        if (connection != null) {
+    public void closeConnection(ConnectionWrapper connectionWrapper) throws Exception {
+        if (connectionWrapper != null) {
             if (currentConnectionNumber.get() > MIN_CONNECTION_COUNT) {
                 try {
-                    connection.close();
+                    connectionWrapper.getConnection().close();
                     currentConnectionNumber.decrementAndGet();
                 } catch (SQLException e) {
                     log.error("Error, while trying to close connection.", e);
                 }
             } else {
                 try {
-                    pool.put(connection);
+                    pool.put(connectionWrapper);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     throw new Exception("Connection wasn't returned into pool properly", e);
@@ -112,9 +111,9 @@ public class ConnectionPool {
     }
 
     public void closeAllConnections() {
-        for (Connection connection : pool) {
+        for (ConnectionWrapper connectionWrapper : pool) {
             try {
-                connection.close();
+                connectionWrapper.getConnection().close();
             } catch (SQLException e) {
                 log.error("Error, while trying to close all connections", e);
             }
