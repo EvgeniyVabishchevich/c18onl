@@ -9,7 +9,7 @@
         function addProductId(productId) {
             $.ajax
             ({
-                url: '/add-product',
+                url: '/eshop?command=add-product-cart',
                 data: {productId: productId},
                 type: 'post',
                 success: function () {
@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col">
                 <div class="container-sm">
-                    <img class="img-fluid" src="${pageContext.request.contextPath}/images/${product.getImageName()}">
+                    <img class="img-fluid" src="${contextPath}/eshop?command=image&image=${product.getImageName()}">
                 </div>
             </div>
             <div class="col-10">

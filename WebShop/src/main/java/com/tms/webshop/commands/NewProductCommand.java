@@ -1,4 +1,4 @@
-package com.tms.webshop.servlets.user.admin;
+package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Product;
 import com.tms.webshop.service.CategoryService;
@@ -9,27 +9,19 @@ import com.tms.webshop.service.ProductService;
 import com.tms.webshop.service.ProductServiceAware;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
-@MultipartConfig
-@WebServlet(value = "/admin/add-product")
-public class AdminAddProductServlet extends HttpServlet {
+@Log4j2
+public class NewProductCommand implements BaseCommand{
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         try (InputStream fileStream = request.getPart("image").getInputStream()) {
-
             ServletContext servletContext = request.getServletContext();
 
             ImageService imageService = (ImageService) servletContext.getAttribute(ImageServiceAware.CONTEXT_NAME);
@@ -43,6 +35,9 @@ public class AdminAddProductServlet extends HttpServlet {
                     categoryService.getCategoryId(request.getParameter("category")));
 
             productService.addProduct(product);
+        } catch (ServletException | IOException e) {
+            log.error("Error, while getting image from request", e);
         }
+        return null;
     }
 }

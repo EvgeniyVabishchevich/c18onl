@@ -1,23 +1,21 @@
-package com.tms.webshop.servlets.user;
+package com.tms.webshop.commands;
 
+import com.tms.webshop.service.CategoryService;
+import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.ThreadContext;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
 import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 
-@WebServlet(value = "/login")
-public class LoginServlet extends HttpServlet {
+public class SignInCommand implements BaseCommand {
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
@@ -25,9 +23,12 @@ public class LoginServlet extends HttpServlet {
             ThreadContext.put("conversationId", UUID.randomUUID().toString());
             request.getSession().setAttribute("cartProductsMap", new HashMap<Integer, Integer>());
             request.getSession().setAttribute("user", userService.getUserByLogin(login));
-            response.sendRedirect("categories.jsp");
+
+            CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
+            request.setAttribute("categories", categoryService.getCategories());
+            return "/categories.jsp";
         } else {
-            response.sendRedirect("login.jsp");
+            return "/login.jsp";
         }
     }
 }

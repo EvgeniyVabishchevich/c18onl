@@ -12,7 +12,7 @@
 <jsp:include page="header.jsp"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<form action="${contextPath}/login" method="post">
+<form action="${contextPath}/eshop?command=sign-in" method="post">
     <div class="mb-3">
         <label for="login" class="form-label">Login</label>
         <input name="login" type="text" class="form-control" id="login" value="admin">

@@ -1,4 +1,4 @@
-package com.tms.webshop.servlets;
+package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
@@ -7,20 +7,15 @@ import com.tms.webshop.service.OrderService;
 import com.tms.webshop.service.OrderServiceAware;
 import com.tms.webshop.service.ProductService;
 import com.tms.webshop.service.ProductServiceAware;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-@WebServlet(value = "/buy")
-public class BuyServlet extends HttpServlet {
+public class BuyCommand implements BaseCommand{
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         HashMap<Integer, Integer> basketProducts = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
 
         int userId = ((User) request.getSession().getAttribute("user")).getId();
@@ -36,6 +31,6 @@ public class BuyServlet extends HttpServlet {
 
         basketProducts.clear();
 
-        request.getRequestDispatcher("buy.jsp").forward(request, response);
+        return "buy.jsp";
     }
 }

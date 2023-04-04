@@ -68,7 +68,7 @@ Welcome, admin <br>
         e.preventDefault();
 
         $.ajax({
-            url: '/admin/add-category',
+            url: '/eshop?command=new-category',
             type: 'post',
             data: new FormData(this),
             cache: false,

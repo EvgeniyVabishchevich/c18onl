@@ -9,7 +9,7 @@
     <script>
         function removeProduct(productId, elementId) {
             $.ajax({
-                url: '/remove-product',
+                url: '/eshop?command=remove-from-cart',
                 data: {'productId': productId},
                 type: 'post',
                 success: recalculateDisplayedInfo(elementId)
@@ -47,7 +47,9 @@
 
 <jsp:useBean id="productsMap" scope="request" type="java.util.Map"/>
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="total" value="0"/>
+
 <c:if test="${productsMap.size() == 0}">
     Products list is empty now.
 </c:if>
@@ -57,7 +59,7 @@
         <div class="row mb-3" id="row_${loop.count}">
             <div class="col">
                 <div class="container-sm">
-                    <img class="img-fluid" src="images/${product.getImageName()}">
+                    <img class="img-fluid" src="${contextPath}/eshop?command=image&image=${product.getImageName()}">
                 </div>
             </div>
             <div class="col-10">
@@ -77,7 +79,7 @@
             Total price for all selected products : <label id="totalAll">${total}</label> $.
         </div>
     </div>
-    <a href="${pageContext.request.contextPath}/buy" class="btn btn-primary">Buy</a>
+    <a href="${pageContext.request.contextPath}/eshop?command=buy" class="btn btn-primary">Buy</a>
 </c:if>
 </body>
 </html>

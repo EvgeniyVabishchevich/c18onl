@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -10,8 +11,9 @@
 
 <body>
 <jsp:include page="header.jsp"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<form id="userForm" method="post">
+<form method="post" action="${contextPath}/eshop?command=register">
     <div class="mb-3">
         <label for="login" class="form-label">Login</label>
         <input name="login" type="text" class="form-control" id="login">
@@ -43,26 +45,7 @@
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-<script>
-    $('#userForm').on('submit', (function (e) {
-        e.preventDefault();
+<br>${mistake}
 
-        const form = $(this);
-
-        $.ajax({
-            url: '/create-account',
-            type: 'post',
-            data: form.serialize(),
-            success: function () {
-                alert("Register success");
-                location.href = "login.jsp";
-            },
-            error: function (data) {
-                alert("Register fail")
-                console.log(data)
-            }
-        })
-    }));
-</script>
 </body>
 </html>

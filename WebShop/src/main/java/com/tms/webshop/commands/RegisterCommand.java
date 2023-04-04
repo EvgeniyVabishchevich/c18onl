@@ -1,47 +1,44 @@
-package com.tms.webshop.servlets.user;
+package com.tms.webshop.commands;
 
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 import com.tms.webshop.service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 
-@WebServlet(urlPatterns = "/create-account")
-public class NewAccountServlet extends HttpServlet {
+public class RegisterCommand implements BaseCommand {
     private static final LocalDate birthdayBorder = LocalDate.of(1907, 3, 4);
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("passwordRepeat");
-        LocalDate birthday = LocalDate.parse(request.getParameter("birthday"));
+        String birthday = request.getParameter("birthday");
 
         UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
 
-        if (isLoginValid(login, userService) || isNameValid(name) || isNameValid(surname) || isEmailValid(email) ||
-                password.equals(passwordRepeat) || isBirthdayValid(birthday)) {
-            User newUser = new User(UserType.CLIENT, login, name, surname, email, birthday);
+        if (isLoginValid(login, userService) && isNameValid(name) && isNameValid(surname) && isEmailValid(email) &&
+                password.equals(passwordRepeat) && isBirthdayValid(birthday)) {
+            User newUser = new User(UserType.CLIENT, login, name, surname, email, LocalDate.parse(birthday));
             userService.addUser(newUser, password);
         } else {
-            response.setStatus(400);
+            request.setAttribute("mistake", "Wrong parameters!!!");
+            return "newAccount.jsp";
         }
+        return "login.jsp";
     }
 
-    public boolean isBirthdayValid(LocalDate birthday) {
-        return birthday.isAfter(birthdayBorder);
+    public boolean isBirthdayValid(String birthday) {
+        return birthday != null && !birthday.isEmpty() && LocalDate.parse(birthday).isAfter(birthdayBorder);
     }
 
     public boolean isEmailValid(String email) {
