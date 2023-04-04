@@ -1,6 +1,7 @@
 package com.tms.webshop.commands;
 
 import com.tms.webshop.model.enums.Pages;
+import com.tms.webshop.model.enums.RequestParams;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.UserService;
@@ -17,8 +18,8 @@ public class SignInCommand implements BaseCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        String login = request.getParameter(RequestParams.LOGIN.getValue());
+        String password = request.getParameter(RequestParams.PASSWORD.getValue());
         UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
         if (userService.validateUser(login, password)) {
             ThreadContext.put("conversationId", UUID.randomUUID().toString());

@@ -1,6 +1,7 @@
 package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Product;
+import com.tms.webshop.model.enums.RequestParams;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.ImageService;
@@ -18,21 +19,23 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 @Log4j2
-public class NewProductCommand implements BaseCommand{
+public class NewProductCommand implements BaseCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         try (InputStream fileStream = request.getPart("image").getInputStream()) {
             ServletContext servletContext = request.getServletContext();
 
             ImageService imageService = (ImageService) servletContext.getAttribute(ImageServiceAware.CONTEXT_NAME);
-            imageService.addImage(request.getParameter("imageName"), fileStream);
+            imageService.addImage(request.getParameter(RequestParams.IMAGE_NAME.getValue()), fileStream);
 
             CategoryService categoryService = (CategoryService) servletContext.getAttribute(CategoryServiceAware.CONTEXT_NAME);
             ProductService productService = (ProductService) servletContext.getAttribute(ProductServiceAware.CONTEXT_NAME);
 
-            Product product = new Product(request.getParameter("name"), request.getParameter("description"),
-                    new BigDecimal(request.getParameter("price")), request.getParameter("imageName"),
-                    categoryService.getCategoryId(request.getParameter("category")));
+            Product product = new Product(request.getParameter(RequestParams.NAME.getValue()),
+                    request.getParameter(RequestParams.DESCRIPTION.getValue()),
+                    new BigDecimal(request.getParameter(RequestParams.Price.getValue())),
+                    request.getParameter(RequestParams.IMAGE_NAME.getValue()),
+                    categoryService.getCategoryId(request.getParameter(RequestParams.CATEGORY.getValue())));
 
             productService.addProduct(product);
         } catch (ServletException | IOException e) {

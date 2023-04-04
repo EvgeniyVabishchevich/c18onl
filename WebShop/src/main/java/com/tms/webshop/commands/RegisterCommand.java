@@ -3,6 +3,7 @@ package com.tms.webshop.commands;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
 import com.tms.webshop.model.enums.Pages;
+import com.tms.webshop.model.enums.RequestParams;
 import com.tms.webshop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,13 +18,13 @@ public class RegisterCommand implements BaseCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter("login");
-        String name = request.getParameter("name");
-        String surname = request.getParameter("surname");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String passwordRepeat = request.getParameter("passwordRepeat");
-        String birthday = request.getParameter("birthday");
+        String login = request.getParameter(RequestParams.LOGIN.getValue());
+        String name = request.getParameter(RequestParams.NAME.getValue());
+        String surname = request.getParameter(RequestParams.SURNAME.getValue());
+        String email = request.getParameter(RequestParams.EMAIL.getValue());
+        String password = request.getParameter(RequestParams.PASSWORD.getValue());
+        String passwordRepeat = request.getParameter(RequestParams.PASSWORD_REPEAT.getValue());
+        String birthday = request.getParameter(RequestParams.BIRTHDAY.getValue());
 
         UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
 
