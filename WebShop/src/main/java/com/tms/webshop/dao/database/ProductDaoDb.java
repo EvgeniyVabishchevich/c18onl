@@ -12,11 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
-
-    public ProductDaoDb() {
-        super("products");
-    }
+public class ProductDaoDb implements ProductDao {
 
     @Override
     public void addProduct(Product product) {
@@ -67,5 +63,44 @@ public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
         }
 
         return products;
+    }
+
+    public Product getProductById(int productId) {
+        try {
+            Connection connection = ConnectionPool.getInstance().getConnection();
+
+            String sql = "SELECT * FROM products WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, productId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    ConnectionPool.getInstance().closeConnection(connection);
+
+                    if (resultSet.next()) {
+                        return getProductFromResult(resultSet);
+                    } else {
+                        throw new SQLException("There is no product with id - " + productId);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            log.error("SQL exception, while trying to find product by id.", e);
+        } catch (Exception e) {
+            log.error("Error, while trying to get or close connection.", e);
+        }
+        return null;
+    }
+
+    protected Product getProductFromResult(ResultSet resultSet) throws SQLException {
+        Product product = new Product();
+
+        product.setId(resultSet.getInt("id"));
+        product.setName(resultSet.getString("name"));
+        product.setDescription(resultSet.getString("description"));
+        product.setPrice(resultSet.getBigDecimal("price"));
+        product.setImageName(resultSet.getString("image_name"));
+
+        return product;
     }
 }
