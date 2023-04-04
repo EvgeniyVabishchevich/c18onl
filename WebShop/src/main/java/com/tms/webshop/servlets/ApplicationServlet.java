@@ -1,7 +1,9 @@
 package com.tms.webshop.servlets;
 
-import com.tms.webshop.commands.BaseCommand;
-import com.tms.webshop.commands.CommandFactory;
+import com.tms.webshop.commands.BaseCommandController;
+import com.tms.webshop.commands.CommandControllerFactory;
+import com.tms.webshop.model.enums.Command;
+import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -28,10 +30,16 @@ public class ApplicationServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        BaseCommand baseCommand = CommandFactory.defineCommand(request);
+        String commandKey = request.getParameter(RequestParams.COMMAND.getValue());
+        if (commandKey == null || commandKey.isEmpty()) {
+            commandKey = Command.SIGN_IN.getCommand();
+        }
+
+        BaseCommandController baseCommandController = CommandControllerFactory.defineCommand(Command.fromString(commandKey));
+
         String path;
         try {
-            path = baseCommand.execute(request, response);
+            path = baseCommandController.execute(request, response);
             if (path != null) {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
                 requestDispatcher.forward(request, response);

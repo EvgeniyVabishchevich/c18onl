@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 @Log4j2
-public class NewProductCommand implements BaseCommand {
+public class NewProductController implements BaseCommandController {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         try (InputStream fileStream = request.getPart("image").getInputStream()) {

@@ -1,6 +1,6 @@
 package com.tms.webshop.filters;
 
-import com.tms.webshop.model.enums.Commands;
+import com.tms.webshop.model.enums.Command;
 import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -26,8 +26,8 @@ public class AuthFilter implements Filter {
         String command = request.getParameter(RequestParams.COMMAND.getValue());
 
         if ((session == null || session.getAttribute("user") == null) && !uri.endsWith("login.jsp") &&
-                !uri.endsWith("newAccount.jsp") && (command == null || !command.equals(Commands.SIGN_IN.getCommand()))
-                && (command == null || !command.equals(Commands.REGISTER.getCommand()))
+                !uri.endsWith("newAccount.jsp") && (command == null || !command.equals(Command.SIGN_IN.getCommand()))
+                && (command == null || !command.equals(Command.REGISTER.getCommand()))
         ) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
         } else {

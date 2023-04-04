@@ -8,7 +8,7 @@ import com.tms.webshop.service.CategoryServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ProductsCommand implements BaseCommand {
+public class ProductsController implements BaseCommandController {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static com.tms.webshop.service.ProductServiceAware.CONTEXT_NAME;
 
-public class CartCommand implements BaseCommand {
+public class CartController implements BaseCommandController {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");

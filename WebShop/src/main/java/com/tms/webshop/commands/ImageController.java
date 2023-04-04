@@ -11,7 +11,7 @@ import java.io.IOException;
 import static com.tms.webshop.service.ImageServiceAware.CONTEXT_NAME;
 
 @Log4j2
-public class ImageCommand implements BaseCommand {
+public class ImageController implements BaseCommandController {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         ImageService imageService = (ImageService) request.getServletContext().getAttribute(CONTEXT_NAME);

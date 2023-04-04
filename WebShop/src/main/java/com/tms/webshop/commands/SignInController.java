@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 
-public class SignInCommand implements BaseCommand {
+public class SignInController implements BaseCommandController {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

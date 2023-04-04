@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Log4j2
-public class NewCategoryCommand implements BaseCommand {
+public class NewCategoryController implements BaseCommandController {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         try (InputStream fileStream = request.getPart("image").getInputStream()) {

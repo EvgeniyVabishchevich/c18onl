@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 
-public class RegisterCommand implements BaseCommand {
+public class RegisterController implements BaseCommandController {
     private static final LocalDate birthdayBorder = LocalDate.of(1907, 3, 4);
 
     @Override
