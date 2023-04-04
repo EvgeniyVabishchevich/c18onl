@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-public class BuyCommand implements BaseCommand{
+public class BuyCommand implements BaseCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HashMap<Integer, Integer> basketProducts = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");

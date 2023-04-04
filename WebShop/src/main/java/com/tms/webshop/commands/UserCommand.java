@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import static com.tms.webshop.service.OrderServiceAware.CONTEXT_NAME;
 
-public class UserCommand implements BaseCommand{
+public class UserCommand implements BaseCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         OrderService orderService = (OrderService) request.getServletContext().getAttribute(CONTEXT_NAME);

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 public class CommandFactory {
-    private final static HashMap<String, BaseCommand> commandsMap = new HashMap<>();
+    private static final HashMap<String, BaseCommand> commandsMap = new HashMap<>();
 
     static {
         commandsMap.put(Commands.SIGN_IN.getCommand(), new SignInCommand());
