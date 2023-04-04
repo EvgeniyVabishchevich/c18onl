@@ -1,7 +1,6 @@
 package com.tms.webshop.listeners;
 
 import com.tms.webshop.dao.database.CategoryDaoDb;
-import com.tms.webshop.dao.utils.ConnectionPool;
 import com.tms.webshop.dao.database.ImageDaoDb;
 import com.tms.webshop.dao.database.OrderDaoDb;
 import com.tms.webshop.dao.database.ProductDaoDb;
@@ -21,6 +20,8 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import org.apache.logging.log4j.ThreadContext;
+
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
@@ -42,6 +43,6 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ThreadContext.remove("conversationId");
-        ConnectionPool.getInstance().closeAllConnections();
+        CONNECTION_POOL.closeAllConnections();
     }
 }

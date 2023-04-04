@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.OrderDao;
-import com.tms.webshop.dao.utils.ConnectionPool;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
@@ -16,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
+
 @Log4j2
 public class OrderDaoDb implements OrderDao {
     @Override
@@ -23,7 +24,7 @@ public class OrderDaoDb implements OrderDao {
         List<Order> orders = new ArrayList<>();
         ProductDaoDb productDaoDb = new ProductDaoDb();
 
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String getOrdersSql = "SELECT * FROM orders WHERE user_id = ?";
 
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(getOrdersSql)) {
@@ -67,7 +68,7 @@ public class OrderDaoDb implements OrderDao {
             orderProductsMap.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
         });
 
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String addOrderSql = "INSERT INTO orders (user_id, date, products) VALUES (?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(addOrderSql)) {

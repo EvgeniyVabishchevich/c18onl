@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.UserDao;
-import com.tms.webshop.dao.utils.ConnectionPool;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
@@ -12,12 +11,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
+
 @Log4j2
 public class UserDaoDb implements UserDao {
 
     @Override
     public void addUser(User user, String password) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "INSERT INTO users (login, password, user_type, name, surname, email, birthday) " +
                     "VALUES (?, ?, ?::privelege, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
@@ -40,7 +41,7 @@ public class UserDaoDb implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM users WHERE login=?";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
 
@@ -62,7 +63,7 @@ public class UserDaoDb implements UserDao {
 
     @Override
     public User getUserByLoginAndPwd(String login, String password) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM users WHERE login=? AND password=?";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
 
@@ -85,7 +86,7 @@ public class UserDaoDb implements UserDao {
 
     @Override
     public UserType getUserType(String login, String password) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT user_type FROM users WHERE login=? AND password=?";
             PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql);
 

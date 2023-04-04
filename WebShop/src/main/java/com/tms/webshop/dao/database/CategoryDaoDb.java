@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.CategoryDao;
-import com.tms.webshop.dao.utils.ConnectionPool;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Category;
 import lombok.extern.log4j.Log4j2;
@@ -13,12 +12,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
+
 @Log4j2
 public class CategoryDaoDb implements CategoryDao {
 
     @Override
     public void addCategory(String name, String imageName) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "INSERT INTO categories (name, image_name) VALUES (?, ?)";
 
             PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql);
@@ -38,7 +39,7 @@ public class CategoryDaoDb implements CategoryDao {
         ProductDaoDb productDaoDb = new ProductDaoDb();
         List<Category> categories = new ArrayList<>();
 
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             try (Statement statement = connectionWrapper.getConnection().createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery("SELECT * FROM categories")) {
 
@@ -66,7 +67,7 @@ public class CategoryDaoDb implements CategoryDao {
     public Category getCategoryByName(String name) {
         ProductDaoDb productDaoDb = new ProductDaoDb();
 
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM categories WHERE name = ?";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
                 preparedStatement.setString(1, name);

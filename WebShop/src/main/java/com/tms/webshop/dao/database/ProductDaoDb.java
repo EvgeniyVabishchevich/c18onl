@@ -1,7 +1,6 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.ProductDao;
-import com.tms.webshop.dao.utils.ConnectionPool;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Product;
 import lombok.extern.log4j.Log4j2;
@@ -12,12 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
+
 @Log4j2
 public class ProductDaoDb implements ProductDao {
 
     @Override
     public void addProduct(Product product) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "INSERT INTO products (name, description, price, image_name, category_id) VALUES (?, ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
@@ -40,7 +41,7 @@ public class ProductDaoDb implements ProductDao {
     public List<Product> getProductsByCategoryId(int categoryId) {
         List<Product> products = new ArrayList<>();
 
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM products WHERE category_id = ?";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
                 preparedStatement.setInt(1, categoryId);
@@ -60,7 +61,7 @@ public class ProductDaoDb implements ProductDao {
     }
 
     public Product getProductById(int productId) {
-        try (ConnectionWrapper connectionWrapper = ConnectionPool.getInstance().getConnection()) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM products WHERE id = ?";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
                 preparedStatement.setInt(1, productId);
