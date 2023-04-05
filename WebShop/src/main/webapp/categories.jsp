@@ -13,8 +13,8 @@
     <c:forEach items="${categories}" var="category">
         <div class="card w-25">
             <div class="card-body">
-                <a href="${contextPath}/products?categoryName=${category.getName()}">
-                    <img class="img-fluid" src="${contextPath}/images/${category.getImageName()}">
+                <a href="${contextPath}/eshop?command=products&categoryName=${category.getName()}">
+                    <img class="img-fluid" src="${contextPath}/eshop?command=image&image=${category.getImageName()}">
                 </a>
                 <h5 class="card-title">${category.getName()}</h5>
             </div>

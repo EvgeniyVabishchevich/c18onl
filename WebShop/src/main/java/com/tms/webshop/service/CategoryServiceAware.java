@@ -11,4 +11,6 @@ public interface CategoryServiceAware {
     int getCategoryId(String name);
 
     List<Category> getCategories();
+
+    Category getCategoryByName(String name);
 }

@@ -1,23 +1,19 @@
-package com.tms.webshop.servlets;
+package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Product;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.service.ProductService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.tms.webshop.service.ProductServiceAware.CONTEXT_NAME;
 
-@WebServlet(value = "/show-cart")
-public class CartServlet extends HttpServlet {
+public class CartController implements BaseCommandController {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         Map<Product, Integer> productsMap = new HashMap<>();
         ProductService productService = (ProductService) request.getServletContext().getAttribute(CONTEXT_NAME);
@@ -27,6 +23,6 @@ public class CartServlet extends HttpServlet {
         });
 
         request.setAttribute("productsMap", productsMap);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        return Pages.CART.getValue();
     }
 }

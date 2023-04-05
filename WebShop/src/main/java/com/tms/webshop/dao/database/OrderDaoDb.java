@@ -1,12 +1,11 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.OrderDao;
+import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,25 +14,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
-    private static final Logger logger = LogManager.getLogger(OrderDaoDb.class);
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
-    public OrderDaoDb() {
-        super("products_records");
-    }
-
+@Log4j2
+public class OrderDaoDb implements OrderDao {
     @Override
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
+        ProductDaoDb productDaoDb = new ProductDaoDb();
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String getOrdersSql = "SELECT * FROM orders WHERE user_id = ?";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(getOrdersSql)) {
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(getOrdersSql)) {
 
                 preparedStatement.setInt(1, userId);
 
@@ -47,7 +41,7 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
                         Map<String, String> productsMap = (Map<String, String>) resultSet.getObject(4);
                         Map<Product, Integer> products = new HashMap<>();
                         for (String id : productsMap.keySet()) {
-                            products.put(getProductById(Integer.parseInt(id)), Integer.parseInt(productsMap.get(id)));
+                            products.put(productDaoDb.getProductById(Integer.parseInt(id)), Integer.parseInt(productsMap.get(id)));
                         }
                         order.setProducts(products);
 
@@ -55,12 +49,10 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
                     }
                 }
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("Error, while trying to get user orders from database", e);
+            log.error("Error, while trying to get user orders from database", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
         return orders;
     }
@@ -68,7 +60,6 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
     @Override
     public void addOrder(int userId, Order order) {
         saveOrder(userId, order);
-        saveProducts(order.getProducts().keySet());
     }
 
     public void saveOrder(int userId, Order order) {
@@ -77,51 +68,20 @@ public class OrderDaoDb extends AllProductDaoDb implements OrderDao {
             orderProductsMap.put(String.valueOf(product.getId()), String.valueOf(order.getProducts().get(product)));
         });
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String addOrderSql = "INSERT INTO orders (user_id, date, products) VALUES (?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(addOrderSql)) {
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(addOrderSql)) {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setDate(2, Date.valueOf(order.getDate()));
                 preparedStatement.setObject(3, orderProductsMap);
 
                 preparedStatement.executeUpdate();
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("Error, while trying to save order.", e);
+            log.error("Error, while trying to save order.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
-        }
-    }
-
-    public void saveProducts(Set<Product> products) {
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
-            String addProductsRecordsSql = "INSERT INTO products_records (id, name, description, price, image_name) " +
-                    "VALUES (?, ?, ?, ?, ?) ON CONFLICT DO NOTHING";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(addProductsRecordsSql)) {
-
-                for (Product product : products) {
-                    preparedStatement.setInt(1, product.getId());
-                    preparedStatement.setString(2, product.getName());
-                    preparedStatement.setString(3, product.getDescription());
-                    preparedStatement.setBigDecimal(4, product.getPrice());
-                    preparedStatement.setString(5, product.getImageName());
-                    preparedStatement.executeUpdate();
-                }
-            }
-
-            ConnectionPool.getInstance().closeConnection(connection);
-        } catch (SQLException e) {
-            logger.error("Error, while trying to save products records.", e);
-        } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
     }
 }

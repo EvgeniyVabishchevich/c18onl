@@ -11,7 +11,7 @@ import jakarta.servlet.annotation.WebFilter;
 
 import java.io.IOException;
 
-@WebFilter (urlPatterns = {"/categories.jsp", "/admin/admin.jsp", "/products"})
+@WebFilter (urlPatterns = {"/categories.jsp", "/admin/admin.jsp"})
 public class CategoriesListFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

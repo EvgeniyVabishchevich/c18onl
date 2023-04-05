@@ -1,32 +1,27 @@
 package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.ProductDao;
+import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Product;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
-    private static final Logger logger = LogManager.getLogger(ProductDaoDb.class);
+import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
-    public ProductDaoDb() {
-        super("products");
-    }
+@Log4j2
+public class ProductDaoDb implements ProductDao {
 
     @Override
     public void addProduct(Product product) {
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "INSERT INTO products (name, description, price, image_name, category_id) VALUES (?, ?, ?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
 
                 preparedStatement.setString(1, product.getName());
                 preparedStatement.setString(2, product.getDescription());
@@ -35,12 +30,10 @@ public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
                 preparedStatement.setInt(5, product.getCategoryId());
                 preparedStatement.executeUpdate();
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("Error, while trying to add new product to database.", e);
+            log.error("Error, while trying to add new product to database.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
     }
 
@@ -48,25 +41,56 @@ public class ProductDaoDb extends AllProductDaoDb implements ProductDao {
     public List<Product> getProductsByCategoryId(int categoryId) {
         List<Product> products = new ArrayList<>();
 
-        try {
-            Connection connection = ConnectionPool.getInstance().getConnection();
-
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM products WHERE category_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, categoryId);
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
+                preparedStatement.setInt(1, categoryId);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                products.add(getProductFromResult(resultSet));
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    products.add(getProductFromResult(resultSet));
+                }
             }
-
-            ConnectionPool.getInstance().closeConnection(connection);
         } catch (SQLException e) {
-            logger.error("SQL exception, while trying to find products by category.", e);
+            log.error("SQL exception, while trying to find products by category.", e);
         } catch (Exception e) {
-            logger.error("Error, while trying to get or close connection.", e);
+            log.error("Error, while trying to get or close connection.", e);
         }
 
         return products;
+    }
+
+    public Product getProductById(int productId) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
+            String sql = "SELECT * FROM products WHERE id = ?";
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
+                preparedStatement.setInt(1, productId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return getProductFromResult(resultSet);
+                    } else {
+                        throw new SQLException("There is no product with id - " + productId);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            log.error("SQL exception, while trying to find product by id.", e);
+        } catch (Exception e) {
+            log.error("Error, while trying to get or close connection.", e);
+        }
+        return null;
+    }
+
+    protected Product getProductFromResult(ResultSet resultSet) throws SQLException {
+        Product product = new Product();
+
+        product.setId(resultSet.getInt("id"));
+        product.setName(resultSet.getString("name"));
+        product.setDescription(resultSet.getString("description"));
+        product.setPrice(resultSet.getBigDecimal("price"));
+        product.setImageName(resultSet.getString("image_name"));
+
+        return product;
     }
 }

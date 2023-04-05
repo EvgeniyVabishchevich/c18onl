@@ -19,11 +19,16 @@ public class CategoryService implements CategoryServiceAware {
 
     @Override
     public int getCategoryId(String name) {
-        return categoryDao.getCategoryId(name);
+        return categoryDao.getCategoryByName(name).getId();
     }
 
     @Override
     public List<Category> getCategories() {
         return categoryDao.getCategories();
+    }
+
+    @Override
+    public Category getCategoryByName(String name) {
+        return categoryDao.getCategoryByName(name);
     }
 }

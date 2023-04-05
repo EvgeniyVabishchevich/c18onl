@@ -1,25 +1,22 @@
-package com.tms.webshop.servlets;
+package com.tms.webshop.commands;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
+import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/remove-product")
-public class RemoveProductServlet extends HttpServlet {
+public class RemoveFromCartController implements BaseCommandController {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
-        Integer productId = Integer.parseInt(request.getParameter("productId"));
+        Integer productId = Integer.parseInt(request.getParameter(RequestParams.PRODUCT_ID.getValue()));
         if (cartProductsMap.get(productId) > 1) {
             cartProductsMap.compute(productId, (key, value) -> value - 1);
         } else {
             cartProductsMap.remove(productId);
         }
+        return null;
     }
 }
