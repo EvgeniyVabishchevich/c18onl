@@ -1,6 +1,6 @@
 package com.tms.webshop.dao.utils;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Log4j2
+@Slf4j
 public class ConnectionPool {
     private static volatile ConnectionPool INSTANCE;
     private static final String DB_PROPERTY_FILE = "application.properties";

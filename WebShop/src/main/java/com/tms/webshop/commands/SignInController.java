@@ -17,7 +17,7 @@ import static com.tms.webshop.service.UserServiceAware.CONTEXT_NAME;
 public class SignInController implements BaseCommandController {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter(RequestParams.LOGIN.getValue());
         String password = request.getParameter(RequestParams.PASSWORD.getValue());
         UserService userService = (UserService) request.getServletContext().getAttribute(CONTEXT_NAME);
@@ -28,9 +28,9 @@ public class SignInController implements BaseCommandController {
 
             CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
             request.setAttribute("categories", categoryService.getCategories());
-            return Pages.CATEGORIES.getValue();
+            return Pages.CATEGORIES;
         } else {
-            return Pages.LOGIN.getValue();
+            return Pages.LOGIN;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.tms.webshop.commands;
 
 import com.tms.webshop.model.Product;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.model.enums.RequestParams;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
@@ -12,16 +13,16 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
-@Log4j2
+@Slf4j
 public class NewProductController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         try (InputStream fileStream = request.getPart("image").getInputStream()) {
             ServletContext servletContext = request.getServletContext();
 
@@ -41,6 +42,6 @@ public class NewProductController implements BaseCommandController {
         } catch (ServletException | IOException e) {
             log.error("Error, while getting image from request", e);
         }
-        return null;
+        return Pages.CURRENT;
     }
 }

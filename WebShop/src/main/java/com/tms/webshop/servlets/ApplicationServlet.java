@@ -3,6 +3,7 @@ package com.tms.webshop.servlets;
 import com.tms.webshop.commands.BaseCommandController;
 import com.tms.webshop.commands.CommandControllerFactory;
 import com.tms.webshop.model.enums.Command;
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -11,11 +12,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-@Log4j2
+@Slf4j
 @MultipartConfig
 @WebServlet(value = "/eshop")
 public class ApplicationServlet extends HttpServlet {
@@ -37,15 +38,14 @@ public class ApplicationServlet extends HttpServlet {
 
         BaseCommandController baseCommandController = CommandControllerFactory.defineCommand(Command.fromString(commandKey));
 
-        String path;
-        try {
-            path = baseCommandController.execute(request, response);
-            if (path != null) {
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        Pages nextPage = baseCommandController.execute(request, response);
+        if (nextPage != Pages.CURRENT) {
+            try {
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(nextPage.getValue());
                 requestDispatcher.forward(request, response);
+            } catch (ServletException | IOException e) {
+                log.error("Error, while trying to forward to the next page", e);
             }
-        } catch (ServletException | IOException e) {
-            log.error("Error, while trying to forward to the next page", e);
         }
     }
 }

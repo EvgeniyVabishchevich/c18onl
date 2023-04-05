@@ -10,13 +10,13 @@ import static com.tms.webshop.service.OrderServiceAware.CONTEXT_NAME;
 
 public class UserController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         OrderService orderService = (OrderService) request.getServletContext().getAttribute(CONTEXT_NAME);
 
         User user = (User) request.getSession().getAttribute("user");
 
         request.setAttribute("orders", orderService.getOrdersByUserId(user.getId()));
 
-        return Pages.USER.getValue();
+        return Pages.USER;
     }
 }

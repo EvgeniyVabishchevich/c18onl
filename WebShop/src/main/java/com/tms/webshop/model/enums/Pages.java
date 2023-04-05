@@ -9,7 +9,8 @@ public enum Pages {
     LOGIN("login.jsp"),
     REGISTER("newAccount.jsp"),
     PRODUCTS("products.jsp"),
-    USER("user.jsp");
+    USER("user.jsp"),
+    CURRENT("");
 
     private final String value;
 

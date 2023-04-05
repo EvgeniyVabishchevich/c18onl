@@ -19,15 +19,19 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
 
 import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
+@Slf4j
 @WebListener
 public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        log.info("Application started");
+
         ServletContext servletContext = sce.getServletContext();
         setServices(servletContext);
     }

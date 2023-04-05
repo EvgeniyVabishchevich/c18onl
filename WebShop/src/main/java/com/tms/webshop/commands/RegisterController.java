@@ -17,7 +17,7 @@ public class RegisterController implements BaseCommandController {
     private static final LocalDate birthdayBorder = LocalDate.of(1907, 3, 4);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter(RequestParams.LOGIN.getValue());
         String name = request.getParameter(RequestParams.NAME.getValue());
         String surname = request.getParameter(RequestParams.SURNAME.getValue());
@@ -34,9 +34,9 @@ public class RegisterController implements BaseCommandController {
             userService.addUser(newUser, password);
         } else {
             request.setAttribute("mistake", "Wrong parameters!!!");
-            return Pages.REGISTER.getValue();
+            return Pages.REGISTER;
         }
-        return Pages.LOGIN.getValue();
+        return Pages.LOGIN;
     }
 
     public boolean isBirthdayValid(String birthday) {

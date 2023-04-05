@@ -10,18 +10,18 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ProductsController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         CategoryService categoryService = (CategoryService) request.getServletContext().getAttribute(CategoryServiceAware.CONTEXT_NAME);
         String categoryName = request.getParameter(RequestParams.CATEGORY_NAME.getValue());
         Category category = categoryService.getCategoryByName(categoryName);
 
         if (category == null) {
             request.setAttribute("errorMsg", "No such category.");
-            return Pages.ERROR404.getValue();
+            return Pages.ERROR404;
         } else {
             request.setAttribute("categoryName", categoryName);
             request.setAttribute("products", category.getProductList());
-            return Pages.PRODUCTS.getValue();
+            return Pages.PRODUCTS;
         }
     }
 }

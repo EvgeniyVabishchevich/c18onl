@@ -1,5 +1,6 @@
 package com.tms.webshop.commands;
 
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class RemoveFromCartController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         Integer productId = Integer.parseInt(request.getParameter(RequestParams.PRODUCT_ID.getValue()));
         if (cartProductsMap.get(productId) > 1) {
@@ -17,6 +18,6 @@ public class RemoveFromCartController implements BaseCommandController {
         } else {
             cartProductsMap.remove(productId);
         }
-        return null;
+        return Pages.CURRENT;
     }
 }

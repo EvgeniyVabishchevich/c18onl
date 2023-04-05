@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class BuyController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         HashMap<Integer, Integer> basketProducts = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
 
         int userId = ((User) request.getSession().getAttribute("user")).getId();
@@ -32,6 +32,6 @@ public class BuyController implements BaseCommandController {
 
         basketProducts.clear();
 
-        return Pages.BUY.getValue();
+        return Pages.BUY;
     }
 }

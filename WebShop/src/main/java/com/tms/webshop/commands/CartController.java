@@ -13,7 +13,7 @@ import static com.tms.webshop.service.ProductServiceAware.CONTEXT_NAME;
 
 public class CartController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         Map<Product, Integer> productsMap = new HashMap<>();
         ProductService productService = (ProductService) request.getServletContext().getAttribute(CONTEXT_NAME);
@@ -23,6 +23,6 @@ public class CartController implements BaseCommandController {
         });
 
         request.setAttribute("productsMap", productsMap);
-        return Pages.CART.getValue();
+        return Pages.CART;
     }
 }

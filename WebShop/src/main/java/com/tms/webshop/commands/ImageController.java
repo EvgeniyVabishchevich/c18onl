@@ -1,19 +1,20 @@
 package com.tms.webshop.commands;
 
+import com.tms.webshop.model.enums.Pages;
 import com.tms.webshop.model.enums.RequestParams;
 import com.tms.webshop.service.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 import static com.tms.webshop.service.ImageServiceAware.CONTEXT_NAME;
 
-@Log4j2
+@Slf4j
 public class ImageController implements BaseCommandController {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
         ImageService imageService = (ImageService) request.getServletContext().getAttribute(CONTEXT_NAME);
         String imageName = request.getParameter(RequestParams.IMAGE.getValue());
         byte[] image = imageService.getImageByName(imageName);
@@ -25,6 +26,7 @@ public class ImageController implements BaseCommandController {
         } catch (IOException e) {
             log.error("Error, while trying to write stream in response", e);
         }
-        return null;
+        log.info(request.getRequestURI());
+        return Pages.CURRENT;
     }
 }

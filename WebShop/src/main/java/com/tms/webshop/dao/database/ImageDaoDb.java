@@ -2,7 +2,7 @@ package com.tms.webshop.dao.database;
 
 import com.tms.webshop.dao.ImageDao;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
-@Log4j2
+@Slf4j
 public class ImageDaoDb implements ImageDao {
 
     @Override
