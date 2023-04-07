@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row bg-dark">
         <div class="col">
-            <a class="btn btn-success" href="${contextPath}/categories.jsp">Main page</a>
+            <a class="btn btn-success" href="${contextPath}/eshop?command=categories&page=categories.jsp">Main page</a>
         </div>
         <div class="col d-flex flex-row-reverse">
             <a class="btn btn-warning" href="${contextPath}/eshop?command=cart">Purchase</a>

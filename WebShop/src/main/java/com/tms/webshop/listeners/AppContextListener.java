@@ -1,10 +1,5 @@
 package com.tms.webshop.listeners;
 
-import com.tms.webshop.dao.database.CategoryDaoDb;
-import com.tms.webshop.dao.database.ImageDaoDb;
-import com.tms.webshop.dao.database.OrderDaoDb;
-import com.tms.webshop.dao.database.ProductDaoDb;
-import com.tms.webshop.dao.database.UserDaoDb;
 import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.ImageService;
@@ -37,11 +32,11 @@ public class AppContextListener implements ServletContextListener {
     }
 
     public void setServices(ServletContext servletContext) {
-        servletContext.setAttribute(UserServiceAware.CONTEXT_NAME, new UserService(new UserDaoDb()));
-        servletContext.setAttribute(ImageServiceAware.CONTEXT_NAME, new ImageService(new ImageDaoDb()));
-        servletContext.setAttribute(ProductServiceAware.CONTEXT_NAME, new ProductService(new ProductDaoDb()));
-        servletContext.setAttribute(CategoryServiceAware.CONTEXT_NAME, new CategoryService(new CategoryDaoDb()));
-        servletContext.setAttribute(OrderServiceAware.CONTEXT_NAME, new OrderService(new OrderDaoDb()));
+        servletContext.setAttribute(UserServiceAware.CONTEXT_NAME, new UserService());
+        servletContext.setAttribute(ImageServiceAware.CONTEXT_NAME, new ImageService());
+        servletContext.setAttribute(ProductServiceAware.CONTEXT_NAME, new ProductService());
+        servletContext.setAttribute(CategoryServiceAware.CONTEXT_NAME, new CategoryService());
+        servletContext.setAttribute(OrderServiceAware.CONTEXT_NAME, new OrderService());
     }
 
     @Override

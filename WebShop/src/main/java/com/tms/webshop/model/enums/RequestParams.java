@@ -8,6 +8,7 @@ public enum RequestParams {
     NAME("name"),
     Price("price"),
     CATEGORY("category"),
+    CATEGORIES("categories"),
     CATEGORY_NAME("categoryName"),
     PASSWORD("password"),
     LOGIN("login"),
@@ -15,7 +16,8 @@ public enum RequestParams {
     PASSWORD_REPEAT("passwordRepeat"),
     EMAIL("email"),
     SURNAME("surname"),
-    DESCRIPTION("description");
+    DESCRIPTION("description"),
+    PAGE("page");
 
 
     private final String value;

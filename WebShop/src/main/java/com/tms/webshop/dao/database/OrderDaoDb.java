@@ -4,7 +4,6 @@ import com.tms.webshop.dao.OrderDao;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Order;
 import com.tms.webshop.model.Product;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;

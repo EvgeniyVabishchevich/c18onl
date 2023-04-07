@@ -1,15 +1,12 @@
 package com.tms.webshop.commands;
 
+import com.tms.webshop.model.Inject;
 import com.tms.webshop.model.Product;
-import com.tms.webshop.model.enums.Pages;
+import com.tms.webshop.model.enums.Page;
 import com.tms.webshop.model.enums.RequestParams;
-import com.tms.webshop.service.CategoryService;
 import com.tms.webshop.service.CategoryServiceAware;
-import com.tms.webshop.service.ImageService;
 import com.tms.webshop.service.ImageServiceAware;
-import com.tms.webshop.service.ProductService;
 import com.tms.webshop.service.ProductServiceAware;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,16 +18,20 @@ import java.math.BigDecimal;
 
 @Slf4j
 public class NewProductController implements BaseCommandController {
+
+    @Inject
+    private ImageServiceAware imageService;
+
+    @Inject
+    private CategoryServiceAware categoryService;
+
+    @Inject
+    private ProductServiceAware productService;
+
     @Override
-    public Pages execute(HttpServletRequest request, HttpServletResponse response) {
+    public Page execute(HttpServletRequest request, HttpServletResponse response) {
         try (InputStream fileStream = request.getPart("image").getInputStream()) {
-            ServletContext servletContext = request.getServletContext();
-
-            ImageService imageService = (ImageService) servletContext.getAttribute(ImageServiceAware.CONTEXT_NAME);
             imageService.addImage(request.getParameter(RequestParams.IMAGE_NAME.getValue()), fileStream);
-
-            CategoryService categoryService = (CategoryService) servletContext.getAttribute(CategoryServiceAware.CONTEXT_NAME);
-            ProductService productService = (ProductService) servletContext.getAttribute(ProductServiceAware.CONTEXT_NAME);
 
             Product product = new Product(request.getParameter(RequestParams.NAME.getValue()),
                     request.getParameter(RequestParams.DESCRIPTION.getValue()),
@@ -42,6 +43,18 @@ public class NewProductController implements BaseCommandController {
         } catch (ServletException | IOException e) {
             log.error("Error, while getting image from request", e);
         }
-        return Pages.CURRENT;
+        return Page.CURRENT;
+    }
+
+    public void setImageService(ImageServiceAware imageService) {
+        this.imageService = imageService;
+    }
+
+    public void setCategoryService(CategoryServiceAware categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    public void setProductService(ProductServiceAware productService) {
+        this.productService = productService;
     }
 }

@@ -1,16 +1,14 @@
 package com.tms.webshop.service;
 
 import com.tms.webshop.dao.OrderDao;
+import com.tms.webshop.model.Inject;
 import com.tms.webshop.model.Order;
 
 import java.util.List;
 
 public class OrderService implements OrderServiceAware {
-    private final OrderDao orderDao;
-
-    public OrderService(OrderDao orderDao) {
-        this.orderDao = orderDao;
-    }
+    @Inject
+    private OrderDao orderDao;
 
     @Override
     public List<Order> getOrdersByUserId(int userId) {
@@ -20,5 +18,9 @@ public class OrderService implements OrderServiceAware {
     @Override
     public void addOrder(int userId, Order order) {
         orderDao.addOrder(userId, order);
+    }
+
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
     }
 }

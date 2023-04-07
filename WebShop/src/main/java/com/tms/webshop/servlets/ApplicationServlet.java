@@ -3,7 +3,7 @@ package com.tms.webshop.servlets;
 import com.tms.webshop.commands.BaseCommandController;
 import com.tms.webshop.commands.CommandControllerFactory;
 import com.tms.webshop.model.enums.Command;
-import com.tms.webshop.model.enums.Pages;
+import com.tms.webshop.model.enums.Page;
 import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -38,8 +38,8 @@ public class ApplicationServlet extends HttpServlet {
 
         BaseCommandController baseCommandController = CommandControllerFactory.defineCommand(Command.fromString(commandKey));
 
-        Pages nextPage = baseCommandController.execute(request, response);
-        if (nextPage != Pages.CURRENT) {
+        Page nextPage = baseCommandController.execute(request, response);
+        if (nextPage != Page.CURRENT) {
             try {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(nextPage.getValue());
                 requestDispatcher.forward(request, response);
