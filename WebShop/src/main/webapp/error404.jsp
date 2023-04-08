@@ -20,7 +20,7 @@
                 The page you’re looking for doesn’t exist.
             </p>
         </c:if>
-        <a href="categories.jsp" class="btn btn-primary">Go Home</a>
+        <a href="/eshop?command=categories&page=categories.jsp" class="btn btn-primary">Go Home</a>
     </div>
 </div>
 </body>

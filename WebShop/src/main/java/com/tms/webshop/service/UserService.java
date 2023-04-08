@@ -1,14 +1,12 @@
 package com.tms.webshop.service;
 
 import com.tms.webshop.dao.UserDao;
+import com.tms.webshop.model.Inject;
 import com.tms.webshop.model.User;
 
 public class UserService implements UserServiceAware {
-    private final UserDao userDao;
-
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    @Inject
+    private UserDao userDao;
 
     @Override
     public void addUser(User user, String password) {
@@ -28,5 +26,9 @@ public class UserService implements UserServiceAware {
     @Override
     public boolean validateUser(String login, String password) {
         return userDao.getUserByLoginAndPwd(login, password) != null;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

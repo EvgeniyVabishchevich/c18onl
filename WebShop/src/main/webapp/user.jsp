@@ -15,7 +15,7 @@
 
 <c:if test="${sessionScope.get(\"user\").getUserType().name()==\"ADMIN\"}">
     <label>You have admin privileges, press link to check them.</label><br>
-    <a href="admin/admin.jsp">Admin tools</a><br>
+    <a href="${pageContext.request.contextPath}/eshop?command=categories&page=admin/admin.jsp">Admin tools</a><br>
 </c:if>
 
 <hr>
@@ -31,8 +31,6 @@
     </c:forEach>
     <hr>
 </c:forEach>
-
-
 
 </body>
 </html>

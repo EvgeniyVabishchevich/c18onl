@@ -2,15 +2,13 @@ package com.tms.webshop.service;
 
 import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.model.Category;
+import com.tms.webshop.model.Inject;
 
 import java.util.List;
 
 public class CategoryService implements CategoryServiceAware {
-    private final CategoryDao categoryDao;
-
-    public CategoryService(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
-    }
+    @Inject
+    private CategoryDao categoryDao;
 
     @Override
     public void addCategory(String name, String imageName) {
@@ -30,5 +28,9 @@ public class CategoryService implements CategoryServiceAware {
     @Override
     public Category getCategoryByName(String name) {
         return categoryDao.getCategoryByName(name);
+    }
+
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
     }
 }

@@ -3,7 +3,7 @@ package com.tms.webshop.dao.database;
 import com.tms.webshop.dao.ProductDao;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.Product;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
-@Log4j2
+@Slf4j
 public class ProductDaoDb implements ProductDao {
 
     @Override

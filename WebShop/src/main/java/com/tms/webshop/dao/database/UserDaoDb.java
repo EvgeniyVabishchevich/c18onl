@@ -4,7 +4,7 @@ import com.tms.webshop.dao.UserDao;
 import com.tms.webshop.dao.utils.ConnectionWrapper;
 import com.tms.webshop.model.User;
 import com.tms.webshop.model.UserType;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
 
-@Log4j2
+@Slf4j
 public class UserDaoDb implements UserDao {
 
     @Override

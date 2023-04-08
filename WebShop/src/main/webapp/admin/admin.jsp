@@ -87,7 +87,7 @@ Welcome, admin <br>
         e.preventDefault();
 
         $.ajax({
-            url: '/admin/add-product',
+            url: '/admin/eshop?command=new-product',
             type: 'post',
             data: new FormData(this),
             cache: false,

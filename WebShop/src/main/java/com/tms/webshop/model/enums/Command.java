@@ -14,7 +14,8 @@ public enum Command {
     USER("user"),
     REMOVE_FROM_CART("remove-from-cart"),
     NEW_CATEGORY("new-category"),
-    NEW_PRODUCT("new-product");
+    NEW_PRODUCT("new-product"),
+    ADD_CATEGORY_LIST("categories");
 
     private static final HashMap<String, Command> commandMap = new HashMap<>();
 
