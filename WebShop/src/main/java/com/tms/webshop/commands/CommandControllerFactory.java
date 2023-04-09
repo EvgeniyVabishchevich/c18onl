@@ -29,6 +29,7 @@ public class CommandControllerFactory {
             case NEW_CATEGORY -> NewCategoryController::new;
             case NEW_PRODUCT -> NewProductController::new;
             case ADD_CATEGORY_LIST -> CategoryListController::new;
+            case SEARCH -> SearchController::new;
         };
     }
 

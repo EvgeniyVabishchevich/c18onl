@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tms.webshop.model.enums.Page.*;
+
 public class RemoveFromCartController implements BaseCommandController {
     @Override
     public Page execute(HttpServletRequest request, HttpServletResponse response) {
@@ -18,6 +20,6 @@ public class RemoveFromCartController implements BaseCommandController {
         } else {
             cartProductsMap.remove(productId);
         }
-        return Page.CURRENT;
+        return CURRENT;
     }
 }

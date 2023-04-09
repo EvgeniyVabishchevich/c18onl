@@ -25,6 +25,11 @@ public class ProductService implements ProductServiceAware {
         return productDao.getProductById(id);
     }
 
+    @Override
+    public List<Product> getProductsByTextInNameAndDescription(String searchRequest) {
+        return productDao.getProductsByTextInNameAndDescription(searchRequest);
+    }
+
     public void setProductDao(ProductDao productDao) {
         this.productDao = productDao;
     }

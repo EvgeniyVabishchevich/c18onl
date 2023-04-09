@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.tms.webshop.model.enums.Page.*;
+
 @Slf4j
 public class NewCategoryController implements BaseCommandController {
     @Inject
@@ -30,7 +32,7 @@ public class NewCategoryController implements BaseCommandController {
         } catch (ServletException | IOException e) {
             log.error("Error, while getting image from request", e);
         }
-        return Page.CURRENT;
+        return CURRENT;
     }
 
     public void setImageService(ImageServiceAware imageService) {

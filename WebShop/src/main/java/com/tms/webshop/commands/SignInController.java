@@ -12,6 +12,8 @@ import org.apache.logging.log4j.ThreadContext;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static com.tms.webshop.model.enums.Page.*;
+
 public class SignInController implements BaseCommandController {
 
     @Inject
@@ -30,9 +32,9 @@ public class SignInController implements BaseCommandController {
             request.getSession().setAttribute("user", userService.getUserByLogin(login));
 
             request.setAttribute("categories", categoryService.getCategories());
-            return Page.CATEGORIES;
+            return CATEGORIES;
         } else {
-            return Page.LOGIN;
+            return LOGIN;
         }
     }
 

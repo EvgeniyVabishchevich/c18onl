@@ -3,31 +3,25 @@ package com.tms.webshop.commands;
 import com.tms.webshop.model.Inject;
 import com.tms.webshop.model.Product;
 import com.tms.webshop.model.enums.Page;
+import com.tms.webshop.model.enums.RequestParams;
 import com.tms.webshop.service.ProductServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static com.tms.webshop.model.enums.Page.*;
 
-public class CartController implements BaseCommandController {
-
+public class SearchController implements BaseCommandController {
     @Inject
     private ProductServiceAware productService;
 
     @Override
     public Page execute(HttpServletRequest request, HttpServletResponse response) {
-        Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
-        Map<Product, Integer> productsMap = new HashMap<>();
-
-        cartProductsMap.keySet().forEach(id -> {
-            productsMap.put(productService.getProductById(id), cartProductsMap.get(id));
-        });
-
-        request.setAttribute("productsMap", productsMap);
-        return CART;
+        String searchRequest = request.getParameter(RequestParams.SEARCH_REQUEST.getValue());
+        List<Product> searchResult = productService.getProductsByTextInNameAndDescription(searchRequest);
+        request.setAttribute(RequestParams.PRODUCTS.getValue(), searchResult);
+        return SEARCH_RESULT;
     }
 
     public void setProductService(ProductServiceAware productService) {

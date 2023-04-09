@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
+import static com.tms.webshop.model.enums.Page.*;
+
 @Slf4j
 public class NewProductController implements BaseCommandController {
 
@@ -35,7 +37,7 @@ public class NewProductController implements BaseCommandController {
 
             Product product = new Product(request.getParameter(RequestParams.NAME.getValue()),
                     request.getParameter(RequestParams.DESCRIPTION.getValue()),
-                    new BigDecimal(request.getParameter(RequestParams.Price.getValue())),
+                    new BigDecimal(request.getParameter(RequestParams.PRICE.getValue())),
                     request.getParameter(RequestParams.IMAGE_NAME.getValue()),
                     categoryService.getCategoryId(request.getParameter(RequestParams.CATEGORY.getValue())));
 
@@ -43,7 +45,7 @@ public class NewProductController implements BaseCommandController {
         } catch (ServletException | IOException e) {
             log.error("Error, while getting image from request", e);
         }
-        return Page.CURRENT;
+        return CURRENT;
     }
 
     public void setImageService(ImageServiceAware imageService) {
