@@ -30,6 +30,11 @@ public class CategoryService implements CategoryServiceAware {
         return categoryDao.getCategoryByName(name);
     }
 
+    @Override
+    public String getCategoryNameById(int id) {
+        return categoryDao.getCategoryById(id).getName();
+    }
+
     public void setCategoryDao(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }

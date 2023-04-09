@@ -116,6 +116,7 @@ public class ProductDaoDb implements ProductDao {
         product.setDescription(resultSet.getString("description"));
         product.setPrice(resultSet.getBigDecimal("price"));
         product.setImageName(resultSet.getString("image_name"));
+        product.setCategoryId(resultSet.getInt("category_id"));
 
         return product;
     }
