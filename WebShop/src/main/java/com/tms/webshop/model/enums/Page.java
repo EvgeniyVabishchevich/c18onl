@@ -15,6 +15,7 @@ public enum Page {
     PRODUCTS("products.jsp"),
     USER("user.jsp"),
     SEARCH_RESULT("searchResult.jsp"),
+    SEARCH("search.jsp"),
     CURRENT("");
 
     private static final Map<String, Page> pagesMap = new ConcurrentHashMap<>();

@@ -27,7 +27,7 @@ public enum Command {
     }
 
     public static Command fromString(String type) {
-        return Optional.ofNullable(commandMap.get(type)).orElseThrow(() -> new IllegalStateException("No such command."));
+        return Optional.ofNullable(commandMap.get(type)).orElseThrow(() -> new IllegalStateException("No such command - " + type));
     }
 
     private final String command;

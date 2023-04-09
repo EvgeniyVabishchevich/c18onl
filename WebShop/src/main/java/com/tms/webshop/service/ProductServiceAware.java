@@ -5,7 +5,6 @@ import com.tms.webshop.model.Product;
 import java.util.List;
 
 public interface ProductServiceAware {
-    String CONTEXT_NAME = "productService";
 
     void addProduct(Product product);
 

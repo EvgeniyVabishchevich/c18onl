@@ -5,7 +5,7 @@ import com.tms.webshop.model.Category;
 import java.util.List;
 
 public interface CategoryServiceAware {
-    String CONTEXT_NAME = "categoryService";
+
     void addCategory(String name, String imageName);
 
     int getCategoryId(String name);
@@ -13,5 +13,6 @@ public interface CategoryServiceAware {
     List<Category> getCategories();
 
     Category getCategoryByName(String name);
+
     String getCategoryNameById(int id);
 }

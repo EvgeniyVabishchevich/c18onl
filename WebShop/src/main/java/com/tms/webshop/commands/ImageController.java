@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.CURRENT;
 
 @Slf4j
 public class ImageController implements BaseCommandController {

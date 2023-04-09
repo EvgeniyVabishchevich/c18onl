@@ -10,5 +10,6 @@ public interface CategoryDao {
     List<Category> getCategories();
 
     Category getCategoryByName(String name);
+
     Category getCategoryById(int id);
 }

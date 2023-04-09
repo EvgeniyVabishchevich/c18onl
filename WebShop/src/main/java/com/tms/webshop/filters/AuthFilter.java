@@ -1,6 +1,5 @@
 package com.tms.webshop.filters;
 
-import com.tms.webshop.model.enums.Command;
 import com.tms.webshop.model.enums.RequestParams;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

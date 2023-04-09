@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.CURRENT;
 
 @Slf4j
 public class NewProductController implements BaseCommandController {

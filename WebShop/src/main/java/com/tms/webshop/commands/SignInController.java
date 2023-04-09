@@ -12,7 +12,8 @@ import org.apache.logging.log4j.ThreadContext;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.CATEGORIES;
+import static com.tms.webshop.model.enums.Page.LOGIN;
 
 public class SignInController implements BaseCommandController {
 

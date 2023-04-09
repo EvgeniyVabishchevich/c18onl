@@ -7,7 +7,7 @@ import com.tms.webshop.service.OrderServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.USER;
 
 public class UserController implements BaseCommandController {
     @Inject

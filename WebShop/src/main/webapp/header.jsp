@@ -9,7 +9,7 @@
         <div class="col d-flex flex-row-reverse">
             <a class="btn btn-warning" href="${contextPath}/eshop?command=cart">Purchase</a>
             <a class="btn btn-info" href="${contextPath}/eshop?command=user">User</a>
-            <a class="btn btn-info" href="${contextPath}/search.jsp">Search</a>
+            <a class="btn btn-info" href="${contextPath}/eshop?command=categories&page=search.jsp">Search</a>
         </div>
     </div>
 </div>

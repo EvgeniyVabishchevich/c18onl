@@ -19,8 +19,9 @@ public enum RequestParams {
     DESCRIPTION("description"),
     PAGE("page"),
     SEARCH_REQUEST("searchRequest"),
+    TO_PRICE("toPrice"),
+    FROM_PRICE("fromPrice"),
     PRODUCTS("products");
-
 
 
     private final String value;

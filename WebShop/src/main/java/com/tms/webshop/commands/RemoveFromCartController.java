@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.CURRENT;
 
 public class RemoveFromCartController implements BaseCommandController {
     @Override

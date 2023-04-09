@@ -12,7 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.LOGIN;
+import static com.tms.webshop.model.enums.Page.REGISTER;
 
 public class RegisterController implements BaseCommandController {
     @Inject

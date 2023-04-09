@@ -8,7 +8,8 @@ import com.tms.webshop.service.CategoryServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.ERROR404;
+import static com.tms.webshop.model.enums.Page.PRODUCTS;
 
 public class ProductsController implements BaseCommandController {
     @Inject
