@@ -53,9 +53,8 @@ public class InjectObjectsFactory {
     private static <T> Method findInjectMethod(Object object, Class<T> clazz) {
         for (Method declaredMethod : object.getClass().getDeclaredMethods()) {
             boolean allMatch = Arrays.stream(declaredMethod.getParameterTypes())
-                    .allMatch(parameterType -> parameterType == clazz
-                            && declaredMethod.getReturnType() == Void.TYPE
-                            && declaredMethod.getName().startsWith("set"));
+                    .allMatch(parameterType -> parameterType == clazz) && declaredMethod.getReturnType() == Void.TYPE
+                    && declaredMethod.getName().startsWith("set");
             if (allMatch) {
                 return declaredMethod;
             }

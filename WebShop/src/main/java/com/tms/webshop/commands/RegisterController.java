@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
+import static com.tms.webshop.model.enums.Page.LOGIN;
+import static com.tms.webshop.model.enums.Page.REGISTER;
+
 public class RegisterController implements BaseCommandController {
     @Inject
     private UserServiceAware userService;
@@ -33,9 +36,9 @@ public class RegisterController implements BaseCommandController {
             userService.addUser(newUser, password);
         } else {
             request.setAttribute("mistake", "Wrong parameters!!!");
-            return Page.REGISTER;
+            return REGISTER;
         }
-        return Page.LOGIN;
+        return LOGIN;
     }
 
     public boolean isBirthdayValid(String birthday) {

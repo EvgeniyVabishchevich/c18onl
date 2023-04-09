@@ -8,11 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tms.webshop.model.enums.Page.CURRENT;
+
 public class AddProductCartController implements BaseCommandController {
     @Override
     public Page execute(HttpServletRequest request, HttpServletResponse response) {
         Map<Integer, Integer> cartProductsMap = (HashMap<Integer, Integer>) request.getSession().getAttribute("cartProductsMap");
         cartProductsMap.merge(Integer.parseInt(request.getParameter(RequestParams.PRODUCT_ID.getValue())), 1, Integer::sum);
-        return Page.CURRENT;
+        return CURRENT;
     }
 }

@@ -8,6 +8,9 @@ import com.tms.webshop.service.CategoryServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.tms.webshop.model.enums.Page.ERROR404;
+import static com.tms.webshop.model.enums.Page.PRODUCTS;
+
 public class ProductsController implements BaseCommandController {
     @Inject
     private CategoryServiceAware categoryService;
@@ -19,11 +22,11 @@ public class ProductsController implements BaseCommandController {
 
         if (category == null) {
             request.setAttribute("errorMsg", "No such category.");
-            return Page.ERROR404;
+            return ERROR404;
         } else {
             request.setAttribute("categoryName", categoryName);
             request.setAttribute("products", category.getProductList());
-            return Page.PRODUCTS;
+            return PRODUCTS;
         }
     }
 

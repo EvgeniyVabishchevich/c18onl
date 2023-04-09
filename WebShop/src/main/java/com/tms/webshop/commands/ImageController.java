@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+import static com.tms.webshop.model.enums.Page.CURRENT;
+
 @Slf4j
 public class ImageController implements BaseCommandController {
 
@@ -28,7 +30,7 @@ public class ImageController implements BaseCommandController {
         } catch (IOException e) {
             log.error("Error, while trying to write stream in response", e);
         }
-        return Page.CURRENT;
+        return CURRENT;
     }
 
     public void setImageService(ImageServiceAware imageService) {

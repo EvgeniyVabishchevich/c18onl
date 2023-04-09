@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tms.webshop.model.enums.Page.CART;
+
 public class CartController implements BaseCommandController {
 
     @Inject
@@ -25,7 +27,7 @@ public class CartController implements BaseCommandController {
         });
 
         request.setAttribute("productsMap", productsMap);
-        return Page.CART;
+        return CART;
     }
 
     public void setProductService(ProductServiceAware productService) {

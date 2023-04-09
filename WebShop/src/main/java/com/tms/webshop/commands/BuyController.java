@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import static com.tms.webshop.model.enums.Page.BUY;
+
 public class BuyController implements BaseCommandController {
     @Inject
     private OrderServiceAware orderService;
@@ -34,7 +36,7 @@ public class BuyController implements BaseCommandController {
 
         basketProducts.clear();
 
-        return Page.BUY;
+        return BUY;
     }
 
     public void setOrderService(OrderServiceAware orderService) {

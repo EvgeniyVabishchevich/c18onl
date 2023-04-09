@@ -46,9 +46,10 @@ public class ProductDaoDb implements ProductDao {
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
                 preparedStatement.setInt(1, categoryId);
 
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    products.add(getProductFromResult(resultSet));
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        products.add(getProductFromResult(resultSet));
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -82,6 +83,31 @@ public class ProductDaoDb implements ProductDao {
         return null;
     }
 
+    @Override
+    public List<Product> getProductsByTextInNameAndDescription(String searchRequest) {
+        List<Product> products = new ArrayList<>();
+
+        String searchPattern = "%" + searchRequest + "%";
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
+            String sql = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?";
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
+                preparedStatement.setString(1, searchPattern);
+                preparedStatement.setString(2, searchPattern);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        products.add(getProductFromResult(resultSet));
+                    }
+                }
+            } catch (SQLException e) {
+                log.error("Error, while trying to search products in database.", e);
+            }
+        } catch (Exception e) {
+            log.error("Error, while trying to get or close connection.", e);
+        }
+        return products;
+    }
+
     protected Product getProductFromResult(ResultSet resultSet) throws SQLException {
         Product product = new Product();
 
@@ -90,6 +116,7 @@ public class ProductDaoDb implements ProductDao {
         product.setDescription(resultSet.getString("description"));
         product.setPrice(resultSet.getBigDecimal("price"));
         product.setImageName(resultSet.getString("image_name"));
+        product.setCategoryId(resultSet.getInt("category_id"));
 
         return product;
     }

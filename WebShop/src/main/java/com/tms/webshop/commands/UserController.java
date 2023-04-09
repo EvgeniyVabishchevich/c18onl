@@ -7,6 +7,8 @@ import com.tms.webshop.service.OrderServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.tms.webshop.model.enums.Page.USER;
+
 public class UserController implements BaseCommandController {
     @Inject
     private OrderServiceAware orderService;
@@ -17,7 +19,7 @@ public class UserController implements BaseCommandController {
 
         request.setAttribute("orders", orderService.getOrdersByUserId(user.getId()));
 
-        return Page.USER;
+        return USER;
     }
 
     public void setOrderService(OrderServiceAware orderService) {

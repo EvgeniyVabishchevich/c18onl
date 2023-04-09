@@ -65,8 +65,6 @@ public class CategoryDaoDb implements CategoryDao {
 
     @Override
     public Category getCategoryByName(String name) {
-        ProductDaoDb productDaoDb = new ProductDaoDb();
-
         try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
             String sql = "SELECT * FROM categories WHERE name = ?";
             try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
@@ -74,14 +72,7 @@ public class CategoryDaoDb implements CategoryDao {
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        Category category = new Category();
-
-                        category.setId(resultSet.getInt("id"));
-                        category.setName(resultSet.getString("name"));
-                        category.setImageName(resultSet.getString("image_name"));
-                        category.setProductList(productDaoDb.getProductsByCategoryId(category.getId()));
-
-                        return category;
+                        return getCategoryFromResultSet(resultSet);
                     }
                 }
             }
@@ -91,5 +82,39 @@ public class CategoryDaoDb implements CategoryDao {
             log.error("Error, while trying to get or close connection", e);
         }
         return null;
+    }
+
+    @Override
+    public Category getCategoryById(int id) {
+        try (ConnectionWrapper connectionWrapper = CONNECTION_POOL.getConnection()) {
+            String sql = "SELECT * FROM categories WHERE id = ?";
+            try (PreparedStatement preparedStatement = connectionWrapper.getConnection().prepareStatement(sql)) {
+                preparedStatement.setInt(1, id);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return getCategoryFromResultSet(resultSet);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Error, while trying to get category by name.", e);
+        } catch (Exception e) {
+            log.error("Error, while trying to get or close connection", e);
+        }
+        return null;
+    }
+
+    private Category getCategoryFromResultSet(ResultSet resultSet) throws SQLException {
+        ProductDaoDb productDaoDb = new ProductDaoDb();
+
+        Category category = new Category();
+
+        category.setId(resultSet.getInt("id"));
+        category.setName(resultSet.getString("name"));
+        category.setImageName(resultSet.getString("image_name"));
+        category.setProductList(productDaoDb.getProductsByCategoryId(category.getId()));
+
+        return category;
     }
 }

@@ -6,7 +6,7 @@ public enum RequestParams {
     PRODUCT_ID("productId"),
     IMAGE_NAME("imageName"),
     NAME("name"),
-    Price("price"),
+    PRICE("price"),
     CATEGORY("category"),
     CATEGORIES("categories"),
     CATEGORY_NAME("categoryName"),
@@ -17,7 +17,11 @@ public enum RequestParams {
     EMAIL("email"),
     SURNAME("surname"),
     DESCRIPTION("description"),
-    PAGE("page");
+    PAGE("page"),
+    SEARCH_REQUEST("searchRequest"),
+    TO_PRICE("toPrice"),
+    FROM_PRICE("fromPrice"),
+    PRODUCTS("products");
 
 
     private final String value;

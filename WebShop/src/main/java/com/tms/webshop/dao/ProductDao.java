@@ -10,4 +10,6 @@ public interface ProductDao {
     List<Product> getProductsByCategoryId(int categoryId);
 
     Product getProductById(int id);
+
+    List<Product> getProductsByTextInNameAndDescription(String searchRequest);
 }
