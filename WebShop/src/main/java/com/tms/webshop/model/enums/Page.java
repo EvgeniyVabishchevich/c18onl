@@ -5,18 +5,17 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum Page {
-    ADMIN("admin/admin.jsp"),
-    BUY("buy.jsp"),
-    CART("cart.jsp"),
-    CATEGORIES("categories.jsp"),
-    ERROR404("error404.jsp"),
-    LOGIN("login.jsp"),
-    REGISTER("newAccount.jsp"),
-    PRODUCTS("products.jsp"),
-    USER("user.jsp"),
-    SEARCH_RESULT("searchResult.jsp"),
-    SEARCH("search.jsp"),
-    CURRENT("");
+    ADMIN("admin/admin"),
+    BUY("buy"),
+    CART("cart"),
+    CATEGORIES("categories"),
+    ERROR404("error404"),
+    LOGIN("login"),
+    REGISTER("register"),
+    PRODUCTS("products"),
+    USER("user"),
+    SEARCH_RESULT("searchResult"),
+    SEARCH("search");
 
     private static final Map<String, Page> pagesMap = new ConcurrentHashMap<>();
 
@@ -29,7 +28,7 @@ public enum Page {
     }
 
     public static Page fromString(String type) {
-        return Optional.ofNullable(pagesMap.get(type)).orElseThrow(() -> new IllegalStateException("No such page."));
+        return Optional.ofNullable(pagesMap.get(type)).orElseThrow(() -> new IllegalStateException("No such page." + type));
     }
 
     Page(String value) {

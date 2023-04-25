@@ -1,41 +1,39 @@
 package com.tms.webshop.service;
 
-import com.tms.webshop.dao.CategoryDao;
 import com.tms.webshop.model.Category;
-import com.tms.webshop.model.Inject;
+import com.tms.webshop.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class CategoryService implements CategoryServiceAware {
-    @Inject
-    private CategoryDao categoryDao;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public void addCategory(String name, String imageName) {
-        categoryDao.addCategory(name, imageName);
+        categoryRepository.addCategory(name, imageName);
     }
 
     @Override
     public int getCategoryId(String name) {
-        return categoryDao.getCategoryByName(name).getId();
+        return categoryRepository.getCategoryByName(name).getId();
     }
 
     @Override
     public List<Category> getCategories() {
-        return categoryDao.getCategories();
+        return categoryRepository.getCategories();
     }
 
     @Override
     public Category getCategoryByName(String name) {
-        return categoryDao.getCategoryByName(name);
+        return categoryRepository.getCategoryByName(name);
     }
 
     @Override
     public String getCategoryNameById(int id) {
-        return categoryDao.getCategoryById(id).getName();
-    }
-
-    public void setCategoryDao(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
+        return categoryRepository.getCategoryById(id).getName();
     }
 }

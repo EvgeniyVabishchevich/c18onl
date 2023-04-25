@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebListener;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
 
-import static com.tms.webshop.dao.BaseRepository.CONNECTION_POOL;
+import static com.tms.webshop.repository.BaseRepository.CONNECTION_POOL;
 
 @Slf4j
 @WebListener

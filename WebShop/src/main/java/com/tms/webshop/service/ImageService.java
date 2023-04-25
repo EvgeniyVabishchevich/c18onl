@@ -1,25 +1,23 @@
 package com.tms.webshop.service;
 
-import com.tms.webshop.dao.ImageDao;
-import com.tms.webshop.model.Inject;
+import com.tms.webshop.repository.ImageRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
+@Service
+@RequiredArgsConstructor
 public class ImageService implements ImageServiceAware {
-    @Inject
-    private ImageDao imageDao;
+    private final ImageRepository imageRepository;
 
     @Override
     public void addImage(String imageName, InputStream imageStream) {
-        imageDao.addImage(imageName, imageStream);
+        imageRepository.addImage(imageName, imageStream);
     }
 
     @Override
     public byte[] getImageByName(String name) {
-        return imageDao.getImageByName(name);
-    }
-
-    public void setImageDao(ImageDao imageDao) {
-        this.imageDao = imageDao;
+        return imageRepository.getImageByName(name);
     }
 }
