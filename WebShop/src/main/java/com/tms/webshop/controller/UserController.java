@@ -22,15 +22,10 @@ public class UserController {
     private final CategoryServiceAware categoryService;
 
     @GetMapping
-    public ModelAndView execute(@ModelAttribute User user) {
+    public ModelAndView execute(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView(USER.getValue());
         modelAndView.addObject("orders", orderService.getOrdersByUserId(user.getId()));
         modelAndView.addObject("categories", categoryService.getCategories());
         return modelAndView;
-    }
-
-    @ModelAttribute
-    public User user() {
-        return new User();
     }
 }

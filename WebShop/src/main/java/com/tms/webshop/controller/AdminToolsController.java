@@ -8,7 +8,6 @@ import com.tms.webshop.service.ProductServiceAware;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +37,7 @@ public class AdminToolsController {
     private final CategoryServiceAware categoryService;
     private final ImageServiceAware imageService;
     private final ProductServiceAware productService;
+
     @GetMapping
     public ModelAndView showPage() {
         ModelAndView modelAndView = new ModelAndView();
@@ -50,7 +50,7 @@ public class AdminToolsController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public void createNewCategory(@RequestParam(IMAGE) MultipartFile image, @RequestParam(IMAGE_NAME) String imageName,
-                            @RequestParam(NAME) String name) {
+                                  @RequestParam(NAME) String name) {
         try (InputStream fileStream = image.getInputStream()) {
             imageService.addImage(imageName, fileStream);
 

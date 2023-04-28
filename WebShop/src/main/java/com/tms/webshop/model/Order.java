@@ -13,7 +13,8 @@ public class Order {
         this.products = products;
     }
 
-    public Order() {}
+    public Order() {
+    }
 
     public LocalDate getDate() {
         return date;

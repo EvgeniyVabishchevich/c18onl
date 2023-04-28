@@ -1,7 +1,6 @@
 package com.tms.webshop.controller;
 
 import com.tms.webshop.model.Product;
-import com.tms.webshop.model.enums.Page;
 import com.tms.webshop.model.enums.RequestParamsConstants;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.ProductServiceAware;
@@ -17,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.tms.webshop.model.enums.Page.*;
+import static com.tms.webshop.model.enums.Page.SEARCH;
 import static com.tms.webshop.model.enums.Page.SEARCH_RESULT;
 
 @Controller
@@ -40,9 +39,9 @@ public class SearchController {
     @GetMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView searchResult(@RequestParam(RequestParamsConstants.SEARCH_REQUEST) String searchRequest,
-                               @RequestParam(RequestParamsConstants.FROM_PRICE) String fromPrice,
-                               @RequestParam(RequestParamsConstants.TO_PRICE) String toPrice,
-                               @RequestParam(RequestParamsConstants.CATEGORY) String category) {
+                                     @RequestParam(RequestParamsConstants.FROM_PRICE) String fromPrice,
+                                     @RequestParam(RequestParamsConstants.TO_PRICE) String toPrice,
+                                     @RequestParam(RequestParamsConstants.CATEGORY) String category) {
         ModelAndView modelAndView = new ModelAndView();
 
         List<Product> searchResult = productService.getProductsByTextInNameAndDescription(searchRequest);

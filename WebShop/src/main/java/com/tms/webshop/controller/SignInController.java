@@ -7,14 +7,12 @@ import com.tms.webshop.service.UserServiceAware;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.ThreadContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,8 +20,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static com.tms.webshop.model.enums.Page.CATEGORIES;
-import static com.tms.webshop.model.enums.RequestParamsConstants.LOGIN;
-import static com.tms.webshop.model.enums.RequestParamsConstants.PASSWORD;
 
 @Controller
 @RequiredArgsConstructor
@@ -61,15 +57,5 @@ public class SignInController {
             modelAndView.setViewName(Page.LOGIN.getValue());
         }
         return modelAndView;
-    }
-
-    @ModelAttribute("cartProductsMap")
-    public HashMap<Integer, Integer> cartProductsMap() {
-        return new HashMap<>();
-    }
-
-    @ModelAttribute("user")
-    public User user() {
-        return new User();
     }
 }
