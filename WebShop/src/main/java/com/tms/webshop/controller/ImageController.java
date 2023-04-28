@@ -1,5 +1,6 @@
 package com.tms.webshop.controller;
 
+import com.tms.webshop.model.Product;
 import com.tms.webshop.service.ImageServiceAware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -26,9 +30,9 @@ public class ImageController {
     @ResponseStatus(value = HttpStatus.OK)
     public void getImage(@PathVariable String imageName, HttpServletResponse response, HttpServletRequest request) {
         byte[] image = imageService.getImageByName(imageName);
-
         response.setContentType(request.getServletContext().getMimeType(imageName));
         response.setContentLength(image.length);
+
         try {
             response.getOutputStream().write(image);
         } catch (IOException e) {

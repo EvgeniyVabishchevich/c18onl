@@ -1,19 +1,23 @@
 package com.tms.webshop.controller;
 
 import com.tms.webshop.model.Product;
+import com.tms.webshop.model.enums.Page;
 import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.ImageServiceAware;
 import com.tms.webshop.service.ProductServiceAware;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,17 +32,35 @@ import static com.tms.webshop.model.enums.RequestParamsConstants.PRICE;
 
 @Slf4j
 @Controller
+@RequestMapping(value = "/admin")
 @RequiredArgsConstructor
-@RequestMapping("/new-product")
-public class NewProductController {
-
-    private final ImageServiceAware imageService;
-
+public class AdminToolsController {
     private final CategoryServiceAware categoryService;
-
+    private final ImageServiceAware imageService;
     private final ProductServiceAware productService;
+    @GetMapping
+    public ModelAndView showPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("categories", categoryService.getCategories());
+        modelAndView.setViewName(Page.ADMIN.getValue());
+        return modelAndView;
+    }
 
-    @PostMapping
+    @PostMapping(value = "/new-category")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public void createNewCategory(@RequestParam(IMAGE) MultipartFile image, @RequestParam(IMAGE_NAME) String imageName,
+                            @RequestParam(NAME) String name) {
+        try (InputStream fileStream = image.getInputStream()) {
+            imageService.addImage(imageName, fileStream);
+
+            categoryService.addCategory(name, imageName);
+        } catch (IOException e) {
+            log.error("Error, while getting image from request", e);
+        }
+    }
+
+    @PostMapping(value = "/new-product")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public void execute(@RequestParam(IMAGE) MultipartFile image, @RequestParam(NAME) String name, @RequestParam(IMAGE_NAME) String imageName,

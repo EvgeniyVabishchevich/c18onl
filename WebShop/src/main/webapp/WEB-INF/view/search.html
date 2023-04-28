@@ -1,0 +1,55 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{scriptsLinks.html}">
+    <title>Search</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#filterForm').on('submit', (function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    contentType: 'application/json;',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        $('#searchResult').html(data);
+                    }
+                })
+            }));
+        })
+    </script>
+</head>
+<body>
+
+<div th:insert="~{header.html}"></div>
+
+<div class="text-center">
+    <input id="searchRequest" name="searchRequest" form="filterForm" placeholder="Search" type="text">
+    <button type="submit" id="searchButton">Search</button>
+</div>
+
+<div class="row">
+    <div id="searchResult" class="col-8">
+
+    </div>
+
+    <div class="col-4">
+
+        <form id="filterForm" th:method="get" th:action="@{/search/result}" class="border border-3 border-success rounded m-2 p-1">
+            <h1 class="">Filter</h1><br>
+            <label th:for="category" class="form-label ms-2">Category:</label>
+            <select th:id="category" th:name="category" form="filterForm" class="form-select border-success">
+                <option value="All">All</option>
+                <option th:each="category : ${categories}" th:value="${category.getName()}" th:text="${category.getName()}"></option>
+            </select><br>
+            <label th:for="price" class="form-label ms-2">Price:</label>
+            <input type="range" th:id="price" th:name="price" class="form-range bg-success border-success">
+            <button type="submit" class="btn btn-success position-absolute top-0 start-50 translate-middle-x">Apply</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,19 +1,15 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head th:insert="~{scriptsLinks.html}">
     <title>Registration</title>
-    <jsp:include page="scriptsLinks.jsp"/>
     <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
 </head>
 
 <body>
-<jsp:include page="header.jsp"/>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<form method="post" action="${contextPath}/register">
+<div th:insert="~{header.html}"></div>
+
+<form method="post" th:action="@{/register}">
     <div class="mb-3">
         <label for="login" class="form-label">Login</label>
         <input name="login" type="text" class="form-control" id="login">
@@ -45,7 +41,9 @@
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-<br>${mistake}
+<br>
+
+<label th:text="${mistake}"></label>
 
 </body>
 </html>
