@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.tms.webshop.model.enums.Page.SEARCH;
 import static com.tms.webshop.model.enums.Page.SEARCH_RESULT;
 
 @Controller
@@ -27,12 +28,20 @@ public class SearchController {
 
     private static final String ALL_CATEGORIES = "All";
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
+    public ModelAndView search() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("categories", categoryService.getCategories());
+        modelAndView.setViewName(SEARCH.getValue());
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ModelAndView search(@RequestParam(RequestParamsConstants.SEARCH_REQUEST) String searchRequest,
-                               @RequestParam(RequestParamsConstants.FROM_PRICE) String fromPrice,
-                               @RequestParam(RequestParamsConstants.TO_PRICE) String toPrice,
-                               @RequestParam(RequestParamsConstants.CATEGORY) String category) {
+    public ModelAndView searchResult(@RequestParam(RequestParamsConstants.SEARCH_REQUEST) String searchRequest,
+                                     @RequestParam(RequestParamsConstants.FROM_PRICE) String fromPrice,
+                                     @RequestParam(RequestParamsConstants.TO_PRICE) String toPrice,
+                                     @RequestParam(RequestParamsConstants.CATEGORY) String category) {
         ModelAndView modelAndView = new ModelAndView();
 
         List<Product> searchResult = productService.getProductsByTextInNameAndDescription(searchRequest);

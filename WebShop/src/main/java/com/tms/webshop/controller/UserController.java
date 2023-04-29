@@ -1,6 +1,7 @@
 package com.tms.webshop.controller;
 
 import com.tms.webshop.model.User;
+import com.tms.webshop.service.CategoryServiceAware;
 import com.tms.webshop.service.OrderServiceAware;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,16 +19,13 @@ import static com.tms.webshop.model.enums.Page.USER;
 @SessionAttributes("user")
 public class UserController {
     private final OrderServiceAware orderService;
+    private final CategoryServiceAware categoryService;
 
     @GetMapping
-    public ModelAndView execute(@ModelAttribute User user) {
+    public ModelAndView execute(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView(USER.getValue());
         modelAndView.addObject("orders", orderService.getOrdersByUserId(user.getId()));
+        modelAndView.addObject("categories", categoryService.getCategories());
         return modelAndView;
-    }
-
-    @ModelAttribute
-    public User user() {
-        return new User();
     }
 }

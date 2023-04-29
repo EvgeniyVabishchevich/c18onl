@@ -1,0 +1,33 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{scriptsLinks.html}">
+    <title>Search result</title>
+</head>
+<body>
+
+<div th:insert="~{header.html}"></div>
+
+<div class="row justify-content-start" th:each="product : ${products}">
+    <div class="card col-4 text-center border-2 border-dark m-3">
+        <div class="row g-0">
+            <div class="col-4">
+                <img style="height: 25vh;" class="card-img-bottom object-fit-contain p-1 border-end border-dark" th:src="@{/images/{imageName}(imageName=${product.getImageName()})}">
+            </div>
+            <div class="col-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.getName()}"></h5>
+
+                    <h4 class="card-subtitle text-start" th:text="'Description :'"></h4>
+                    <p class="card-text text-start" th:text="${product.getDescription()}"></p>
+
+                    <h4 class="card-subtitle text-start" th:text="'Price :'"></h4>
+                    <p class="card-text text-start" th:text="${product.getPrice() + '$'}"></p>
+
+                    <button onclick="addProductId(this.value)" th:value="${product.getId()}" class="btn btn-success">Buy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

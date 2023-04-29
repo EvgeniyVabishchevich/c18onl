@@ -1,0 +1,32 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{scriptsLinks.html}">
+    <title>User</title>
+</head>
+<body>
+<div th:insert="~{header.html}"></div>
+
+<label th:text="'Name : ' + ${user.getName()}"></label><br>
+<label th:text="'Surname : ' + ${user.getSurname()}"></label><br>
+<label th:text="'Email : ' + ${user.getEmail()}"></label><br>
+<label th:text="'Birthday : ' + ${user.getBirthday()}"></label><br>
+
+<div th:if="${session.user.getUserType().name() == 'ADMIN'}">
+    <label th:text="'You have admin privileges, press link to check them.'"></label><br>
+    <a th:href="@{/admin}" >Admin tools</a><br>
+    <hr>
+</div>
+
+<div th:each="order : ${orders}">
+    <label  th:text="'Order ' + ${order.getId()} + ' / Date : ' + ${order.getDate()}"></label><br>
+    <div th:each="product : ${order.getProducts.keySet()}">
+        <br>
+        <label th:text="'Product ' + ${product.getName()}"></label><br>
+        <label th:text="'Description : ' + ${product.getDescription()}"></label><br>
+        <label th:text="'Price : ' + ${product.getPrice()}"></label><br>
+        <label th:text="'Amoung : ' + ${order.getProducts().get(product)}"></label><br>
+    </div>
+    <hr>
+</div>
+
+</body>
+</html>

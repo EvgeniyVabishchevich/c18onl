@@ -112,6 +112,6 @@ public class UserRepositoryImpl implements UserRepository {
         return new User(UserType.valueOf(resultSet.getString("user_type")), resultSet.getString("login"),
                 resultSet.getString("name"), resultSet.getString("surname"),
                 resultSet.getString("email"), resultSet.getDate("birthday").toLocalDate(),
-                resultSet.getInt("id"));
+                resultSet.getInt("id"), resultSet.getString("password"));
     }
 }

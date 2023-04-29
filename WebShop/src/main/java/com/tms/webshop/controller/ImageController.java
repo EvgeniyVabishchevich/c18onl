@@ -26,9 +26,9 @@ public class ImageController {
     @ResponseStatus(value = HttpStatus.OK)
     public void getImage(@PathVariable String imageName, HttpServletResponse response, HttpServletRequest request) {
         byte[] image = imageService.getImageByName(imageName);
-
         response.setContentType(request.getServletContext().getMimeType(imageName));
         response.setContentLength(image.length);
+
         try {
             response.getOutputStream().write(image);
         } catch (IOException e) {

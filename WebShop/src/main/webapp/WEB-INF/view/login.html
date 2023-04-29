@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+
+<head th:insert="~{scriptsLinks.html}">
+    <title>Log in</title>
+    <meta charset="UTF-8">
+</head>
+
+<body class="text-center">
+
+<div th:insert="~{header.html}"></div>
+
+<div class="container mt-5">
+
+    <div class="row align-items-center justify-content-center">
+
+    <main class="form-signin col-4" >
+        <form th:method="POST" action="#" th:action="@{/login}" th:object="${unknownUser}">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Login" th:field="*{login}">
+                <label th:for="login" class="form-label">Login</label>
+                <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="form-text text-danger"></div>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" placeholder="Password" th:field="*{password}">
+                <label th:for="password">Password</label>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger"></p>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me" disabled> Remember me
+                </label>
+            </div>
+            <button class="w-100 btn btn-lg btn-success" type="submit">Sign in</button>
+            <p>Not a member? <a th:href="@{/register}">Register</a></p>
+
+            <p class="mt-5 mb-3 text-muted">&copy; Eugen Vabishchevich</p>
+        </form>
+    </main>
+
+    </div>
+
+</div>
+
+</body>
+</html>

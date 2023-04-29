@@ -1,25 +1,13 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{scriptsLinks.html}">
     <title>Admin tools</title>
-    <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
-    <script>
-        function hide(formId) {
-            const form = document.getElementById(formId);
-            if (form.style.display == 'none') {
-                form.style.display = 'block';
-            } else {
-                form.style.display = 'none';
-            }
-        }
-    </script>
-    <jsp:include page="../scriptsLinks.jsp"/>
 </head>
-<body>
-<jsp:include page="../header.jsp"/>
 
-Welcome, admin <br>
+<body>
+
+<div th:insert="~{header.html}"></div>
+
+<label th:text="'Welcome, admin'"></label> <br>
 
 <button onclick=hide("categoryForm")>Add category</button>
 <form id="categoryForm" enctype="multipart/form-data" style="display: none">
@@ -41,9 +29,9 @@ Welcome, admin <br>
 <form id="productForm" enctype="multipart/form-data" style="display: none">
     <label for="categorySelection">Category:</label>
     <select name="category" id="categorySelection" form="productForm">
-        <c:forEach var="category" items="${categories}">
-            <option value="${category.getName()}">${category.getName()}</option>
-        </c:forEach>
+        <div th:each="category : ${categories}">
+            <option value="${category.getName()}" th:text="${category.getName()}"></option>
+        </div>
     </select><br>
 
     <label for="productName">Name:</label>
@@ -63,12 +51,24 @@ Welcome, admin <br>
     <button type="submit">Add</button>
 </form>
 
+<script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+<script>
+    function hide(formId) {
+        const form = document.getElementById(formId);
+        if (form.style.display == 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+</script>
+
 <script>
     $('#categoryForm').on('submit', (function (e) {
         e.preventDefault();
 
         $.ajax({
-            url: '/new-category',
+            url: '/admin/new-category',
             type: 'post',
             data: new FormData(this),
             cache: false,
@@ -88,7 +88,7 @@ Welcome, admin <br>
         e.preventDefault();
 
         $.ajax({
-            url: '/new-product',
+            url: '/admin/new-product',
             type: 'post',
             data: new FormData(this),
             cache: false,
